@@ -87,7 +87,8 @@ header.top {
 .hero-in { position: relative; padding: 96px 0 84px; }
 .hero .logo { color: var(--text-1); }
 /* 两行锁排：(One 在上、THU) 在下并右移一格，括号纵向把两行夹住 */
-.lockup { display: grid; grid-template-columns: auto auto; gap: 0 6px; align-items: baseline; line-height: .92; }
+.lockup { display: grid; grid-template-columns: max-content; gap: 0; align-items: baseline; line-height: .92; }
+/* 两行错落：第二行整体右移，形成上下行 lockup（(One / THU)） */
 .lockup .row { display: flex; align-items: baseline; gap: 2px; }
 .lockup .p { font-family: var(--font-mono); font-weight: 400; color: var(--text-3); }
 .lockup .one {
@@ -99,7 +100,7 @@ header.top {
   letter-spacing: -.02em; font-size: clamp(52px, 8.4vw, 100px);
 }
 .lockup .p-lg { font-size: clamp(56px, 9vw, 108px); }
-.lockup .r2 { margin-left: clamp(20px, 4vw, 56px); }
+.lockup .r2 { margin-left: clamp(28px, 6vw, 84px); }
 @media (max-width: 520px) { .lockup .r2 { margin-left: 18px; } }
 .hero h1 {
   margin: 28px 0 0; font-size: clamp(30px, 5vw, 52px); line-height: 1.15;
