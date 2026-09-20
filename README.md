@@ -2,7 +2,7 @@
 
 OneTHU 官网：几何方块与线条风格的静态站点（无构建步骤，GitHub Pages 直接托管）。
 
-- **在线**：https://onethu.github.io/（若该域名尚未启用，见下方「域名」）
+- **在线**：**https://onethu.github.io/**（组织 [OneTHU](https://github.com/OneTHU) 的根站点）
 - **主程序仓库**：[smartThise/OneTHU](https://github.com/smartThise/OneTHU)
 - **下载**：站点所有下载入口都指向 [https://github.com/smartThise/OneTHU/releases/latest](https://github.com/smartThise/OneTHU/releases/latest)
 
@@ -12,6 +12,12 @@ OneTHU 官网：几何方块与线条风格的静态站点（无构建步骤，G
 |---|---|
 | `index.html` | 首屏（线条跳动动效 + `(One THU)` 标识）、为什么是 OneTHU、功能总览（12 组）、界面截图、插件市场（实时）、下载、仓库与上游、许可摘要 |
 | `tokens.html` | 设计令牌全貌：面 / 线 / 字色 / 品牌与强调 / 功能色 / 交互 / 字体与字号 / 间距 / 形状 / 阴影。**由 `assets/tokens.css` 解析生成**，改令牌即改此页 |
+
+## 部署
+
+仓库名 `onethu.github.io` 挂在组织 `OneTHU` 下，因此它是**组织根站点**：`main` 分支根目录
+直接发布到 https://onethu.github.io/ ，无需构建（`Settings → Pages` 已配置 branch=main / 根目录）。
+提交即上线（约 30 秒）。
 
 ## 本地预览
 
