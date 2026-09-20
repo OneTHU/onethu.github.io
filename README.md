@@ -15,10 +15,8 @@ OneTHU 官网：几何方块与线条风格的静态站点（无构建步骤，G
 | `index.html` | 首屏（几何交织背景 + `(One THU)` 双行标识）、01 为什么是 OneTHU、02 功能总览（12 组）、03 界面、04 插件与生态入口 |
 | `market.html` | 插件市场：实时读 OneTHU-Market 名单，分类页签（主题 / 官方 / 社区）+ 搜索 + ★ |
 | `download.html` | 下载：三端（macOS / Windows / Android）安装包、系统要求、安装说明、历史版本 |
-| `tokens.html` | 设计令牌全貌：面 / 线 / 字色 / 品牌与强调 / 功能色 / 交互 / 字体与字号 / 间距 / 形状 / 阴影 |
 
-前三页共用同一套头部 / 页脚 / 品牌标识与页面骨架，由 `tools/build-pages.py` 生成；
-`tokens.html` 的令牌表格另由 `assets/tokens.css` 解析生成（改令牌即改此页）。
+三页共用同一套头部 / 页脚 / 品牌标识与页面骨架，由 `tools/build-pages.py` 生成。
 
 ## 部署
 
@@ -39,11 +37,10 @@ python3 -m http.server 4173      # 然后打开 http://localhost:4173
 头部导航 / 页脚 / 品牌标识 / 页面骨架由脚本统一生成，避免多页漂移：
 
 ```bash
-python3 tools/build-pages.py     # 写入 index.html · market.html · download.html · tokens.html
+python3 tools/build-pages.py     # 写入 index.html · market.html · download.html
 ```
 
-只改正文文案时也可以直接编辑 HTML；但**导航或页脚有变动时请改脚本再跑一次**，
-否则各页会不一致（tokens 页的令牌表格始终来自 `assets/tokens.css`）。
+只改正文文案时也可以直接编辑 HTML；但**导航或页脚有变动时请改脚本再跑一次**，否则各页会不一致。
 
 ## 目录
 
@@ -79,9 +76,9 @@ assets/shots/        界面截图位（当前为几何占位 SVG，待替换）
 卡片上的 ★ 实时取各仓库的 `stargazers_count`（sessionStorage 缓存 10 分钟，匿名 API 限额 60 次/小时，
 故并发限制为 4）。点卡片跳转对应仓库。
 
-## 设计令牌
+## 样式来源
 
-`assets/tokens.css` 是主仓 `packages/ui/src/tokens.css` 的副本，同步方式：
+`assets/tokens.css` 是主仓 `packages/ui/src/tokens.css` 的副本（只作为站点自身的 CSS 变量，不单独成页），同步方式：
 
 ```bash
 cp ../OneTHU/packages/ui/src/tokens.css assets/tokens.css   # 需保留文件头的来源注释

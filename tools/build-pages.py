@@ -4,7 +4,7 @@
 页面本身是普通静态 HTML（提交在仓库里，Pages 直接托管，**浏览时无需构建**）。
 本脚本只用来统一「头部 / 页脚 / 品牌标识」三块共用标记：改完共用部分跑一次
 `python3 tools/build-pages.py` 重新生成，避免多页漂移。
-tokens.html 的令牌表格同样由本脚本解析 assets/tokens.css 生成。
+设计令牌只作为站点自身的 CSS 变量（assets/tokens.css）存在，不再单独成页。
 """
 import io, os
 
@@ -33,7 +33,6 @@ def head(title, desc, active):
         nav("index.html#shots", "界面", "shots", "hide-sm"),
         nav("market.html", "插件市场", "market"),
         nav("download.html", "下载", "download"),
-        nav("tokens.html", "设计令牌", "tokens", "hide-sm"),
         nav(MAIN, "GitHub", "github", "hide-sm"),
         '<a class="btn btn-primary btn-sm" href="%s">下载最新版</a>' % RELEASES,
     ])
@@ -68,7 +67,6 @@ FOOTER = """<footer class="bot">
       <div>
         <h5>下载</h5>
         <a href="%s">最新版 Releases</a>
-        <a href="download.html">三端安装包</a>
         <a href="%s/releases" target="_blank" rel="noopener">历史版本</a>
       </div>
       <div>
@@ -76,7 +74,6 @@ FOOTER = """<footer class="bot">
         <a href="%s/plugin-development.md" target="_blank" rel="noopener">插件开发指南</a>
         <a href="%s/api-reference.md" target="_blank" rel="noopener">API 参考</a>
         <a href="%s/architecture.md" target="_blank" rel="noopener">架构说明</a>
-        <a href="tokens.html">设计令牌</a>
       </div>
       <div>
         <h5>生态</h5>
@@ -146,8 +143,8 @@ FEATURES = [
      ["插件市场：人工审查收录，一键安装", "主题插件：配色令牌 / 品牌标识 / 附加 CSS", "插件 API 124 个方法、18 个命名空间"], ["扩展"], "blue"),
     ("OneTHU Harness", "内置 Rust 骨干插件：左下角常驻对话面板，一句话查课表、成绩、电费、订座位。",
      ["工具调用 + 两段式预约确认", "token 预算与模型调度", "与外部插件双向联动（插件可调 OH，OH 可调插件）"], ["Harness"], "green"),
-    ("设计与文档", "一套设计令牌贯穿三端与站点；文档覆盖插件开发、API 参考、架构与外部作业源。",
-     ["设计令牌全貌（本站 /tokens.html）", "插件开发指南 · API 参考 · 架构说明", "外部作业源接入与实测记录"], ["设计"], ""),
+    ("文档与生态", "插件开发指南、API 参考、架构说明与外部作业源实测记录，全部在主仓随代码同步更新。",
+     ["插件开发指南 · API 参考 · 架构说明", "外部作业源接入与实测记录", "官方示例插件 · 市场收录标准"], ["文档"], ""),
 ]
 
 SHOTS = [
@@ -177,7 +174,8 @@ def page_index():
       <div class="row"><span class="p p-lg">(</span><span class="one">One</span></div>
       <div class="row r2"><span class="thu">THU</span><span class="p p-lg">)</span></div>
     </div>
-    <h1>One THUer should have OneTHU.</h1>
+    <h1 class="claim"><span class="one">One</span> <span class="thuer">THUer</span> <span class="code">should have</span>
+      <span class="mark"><span class="one">One</span><span class="thu">THU</span></span>.</h1>
     <p class="slogan"><b>One App · One Identity · One Campus</b> —— 统一身份、统一数据层、统一界面的清华校园套件。</p>
     <div class="cta">
       <a class="btn btn-primary" href="%s">下载最新版（Releases）</a>
@@ -193,7 +191,7 @@ def page_index():
     <p class="sec-sub">清华的服务散在十几个系统里，各自登录、各自界面、各自过期。OneTHU 把它们收成一套：一个身份、一份数据、一套界面，三端同构。</p>
     <div class="cards">
       <div class="card reveal"><div class="sq"></div><h3>一个身份</h3><p>登录一次，全网通行；会话失效自动恢复，不让你在“已掉登录”的状态里白点。</p></div>
-      <div class="card reveal"><div class="sq blue"></div><h3>处处一致</h3><p>所有页面读同一份数据、用同一套设计令牌；同一个实体在任何页面都是同一个原子。</p></div>
+      <div class="card reveal"><div class="sq blue"></div><h3>处处一致</h3><p>所有页面读同一份数据、共用同一套界面与配色；同一个实体在任何页面都是同一个原子。</p></div>
       <div class="card reveal"><div class="sq green"></div><h3>一个对话入口</h3><p>OneTHU Harness：一句话查课表、成绩、电费、订座位——校园助手就在左下角。</p></div>
       <div class="card reveal"><div class="sq amber"></div><h3>数据可靠</h3><p>只读校方公开接口，状态判定不做乐观猜测；查不到就说查不到，不谎报“已提交”。</p></div>
       <div class="card reveal"><div class="sq red"></div><h3>全平台</h3><p>macOS / Windows / Android 功能对齐：通知、小组件、下载位置都在三端可用。</p></div>
@@ -224,7 +222,6 @@ def page_index():
     <div class="cards">
       <a class="card reveal" href="download.html" style="color:inherit"><div class="sq"></div><h3>下载安装</h3><p>macOS DMG · Windows EXE · Android APK，按平台直达最新版 Releases。</p></a>
       <a class="card reveal" href="market.html" style="color:inherit"><div class="sq blue"></div><h3>插件市场</h3><p>与应用内同一份名单，实时星数，点进仓库即可安装。</p></a>
-      <a class="card reveal" href="tokens.html" style="color:inherit"><div class="sq green"></div><h3>设计令牌</h3><p>三端与站点共用的一套令牌：颜色、字号、间距、形状、阴影。</p></a>
     </div>
   </div>
 </section>
@@ -241,8 +238,6 @@ def page_market():
   <div class="wrap page-head-in">
     <div class="crumb">MARKET / PLUGINS</div>
     <h1>插件市场</h1>
-    <p>与应用内「插件 → 市场」同一份名单：<a href="%s" target="_blank" rel="noopener">OneTHU-Market</a> 的
-      <code>registry.json</code>，人工审查收录。星数实时取自 GitHub，点卡片进仓库。</p>
   </div>
 </section>
 
@@ -272,8 +267,8 @@ def page_market():
     </div>
   </div>
 </section>
-""" % (MARKET_REPO, DOCS, MARKET_REPO)
-    return head("插件市场 · OneTHU", "OneTHU 插件市场：与应用内同一份名单（OneTHU-Market registry.json），实时星数，点卡片进仓库。", "market") + body + FOOTER
+""" % (DOCS, MARKET_REPO)
+    return head("插件市场 · OneTHU", "OneTHU 插件市场：官方与社区插件一览，点卡片进仓库。", "market") + body + FOOTER
 
 
 def page_download():
@@ -290,7 +285,6 @@ def page_download():
 <section class="block">
   <div class="wrap">
     <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">按平台获取</h2></div>
-    <p class="sec-sub">当前系统会按 UA 高亮；点任意一张卡都到「最新版」页面。</p>
     <div class="dl">
       <a data-os="macos" href="%s"><span class="sq"></span><span><span class="t">macOS</span><br/><span class="s">.dmg · Apple Silicon / Intel</span></span></a>
       <a data-os="windows" href="%s"><span class="sq"></span><span><span class="t">Windows</span><br/><span class="s">.exe · x64 安装器</span></span></a>
@@ -327,121 +321,7 @@ def page_download():
     return head("下载 · OneTHU", "OneTHU 下载：macOS DMG / Windows EXE / Android APK，直达最新版 Releases。", "download") + body + FOOTER
 
 
-def page_tokens():
-    """设计令牌全貌：解析 assets/tokens.css 生成（改令牌即改此页）。"""
-    import re
-    css = io.open(os.path.join(ROOT, 'assets/tokens.css'), encoding='utf-8').read()
-    vars_ = re.findall(r'--([\w-]+):\s*([^;]+);', css)
-
-    def val(name):
-        for k, v in vars_:
-            if k == name:
-                return v.strip()
-        return ''
-
-    def swatch(name, note=''):
-        return '''        <div class="swatch">
-          <div class="c" style="background: var(--%s)"></div>
-          <div class="m"><b>--%s</b><span class="v">%s</span>%s</div>
-        </div>
-''' % (name, name, val(name), note)
-
-    groups = [
-        ("面 Surface", [("bg", "页面底"), ("bg-soft", "次级底"), ("surface", "卡片"),
-                        ("surface-2", "卡片次级"), ("surface-3", "控件底"), ("skeleton", "骨架")]),
-        ("线 Line", [("border", "常规边线"), ("border-soft", "发丝线"), ("border-strong", "强调边线")]),
-        ("字色 Text", [("text-1", "正文"), ("text-2", "次要"), ("text-3", "三级"), ("text-dim", "禁用/占位")]),
-        ("品牌与强调 Brand", [("primary", "主按钮（黑）"), ("primary-hover", "主按钮悬停"),
-                              ("on-primary", "按钮前景"), ("accent", "业务蓝"),
-                              ("accent-soft", "蓝浅底"), ("accent-border", "蓝描边")]),
-        ("功能色 Functional", [("red", "危险/占用"), ("red-soft", "危险浅底"),
-                               ("amber", "提醒/进行中"), ("amber-soft", "提醒浅底"),
-                               ("green", "空闲/成功"), ("green-soft", "成功浅底")]),
-        ("交互 Interaction", [("hover", "悬停"), ("active", "按下")]),
-    ]
-
-    blocks = []
-    for i, (title, items) in enumerate(groups):
-        blocks.append('''      <div class="token-block" id="t%d">
-        <h3>%s</h3>
-        <div class="token-grid">
-%s        </div>
-      </div>
-''' % (i, title, ''.join(swatch(n, note) for n, note in items)))
-
-    type_rows = ''.join('''        <div class="type-row"><span class="k">--text-%s</span>
-          <span style="font-size: var(--text-%s)">%s</span></div>
-''' % (n, n, sample) for n, sample in [
-        ("xxs", "11px 极小：标签、脚注"), ("xs", "12px 小：辅助信息"), ("sm", "13px 次要正文"),
-        ("base", "14px 正文（默认值）"), ("md", "16px 小标题"), ("lg", "20px 区块标题"),
-        ("xl", "24px 页面标题")])
-
-    gap_rows = ''.join('''        <div class="type-row"><span class="k">--gap-%s</span>
-          <span style="display:inline-block;height:12px;width:var(--gap-%s);background:var(--primary)"></span></div>
-''' % (n, n) for n in ["1", "2", "3", "4", "5", "6"])
-
-    shape_rows = ''.join('''        <div class="shape" style="border-radius: var(--r-%s)">--r-%s<span>%s</span></div>
-''' % (n, n, val('r-' + n)) for n in ["sm", "md", "lg", "pill"])
-
-    shadow_rows = ''.join('''        <div class="shadow-box" style="box-shadow: var(--shadow-%s)">--shadow-%s</div>
-''' % (n, n) for n in ["1", "2", "3"])
-    shadow_rows += '''        <div class="shadow-box" style="box-shadow: var(--ring)">--ring 焦点环</div>
-'''
-
-    toc = ''.join('        <a href="#t%d">%s</a>\n' % (i, t) for i, (t, _) in enumerate(groups))
-    body = '''<section class="page-head">
-  <div class="grid-bg"></div>
-  <canvas id="bg" aria-hidden="true"></canvas>
-  <div class="wrap page-head-in">
-    <div class="crumb">DESIGN TOKENS</div>
-    <h1>设计令牌全貌</h1>
-    <p>桌面端 / 安卓端 / 插件界面与本站共用同一套令牌：中性蓝灰阶 + 黑色 primary 按钮 + 业务蓝强调，
-      配 pill 控件与紧凑字号刻度。本页内容直接解析 <code>assets/tokens.css</code> 生成——改令牌即改此页。</p>
-  </div>
-</section>
-
-<section class="block" style="border-bottom: 0">
-  <div class="wrap token-cols">
-    <aside class="toc">
-      <strong>本页目录</strong>
-%s      <a href="#type">字体与字号</a>
-      <a href="#gap">间距</a>
-      <a href="#shape">形状</a>
-      <a href="#shadow">阴影与焦点环</a>
-    </aside>
-    <div>
-%s      <div class="token-block" id="type">
-        <h3>字体与字号</h3>
-        <div class="type-row"><span class="k">--font-ui</span>
-          <span style="font-family: var(--font-ui)">中文界面字体栈：PingFang SC / Hiragino Sans GB / Noto Sans SC …</span></div>
-        <div class="type-row"><span class="k">--font-mono</span>
-          <span style="font-family: var(--font-mono)">ui-monospace / SF Mono / JetBrains Mono</span></div>
-%s      </div>
-      <div class="token-block" id="gap">
-        <h3>间距</h3>
-        <p class="hint">方块宽度即间距值（4 / 8 / 12 / 16 / 24 / 32 像素）。</p>
-%s      </div>
-      <div class="token-block" id="shape">
-        <h3>形状</h3>
-        <div class="shape-row">
-%s        </div>
-      </div>
-      <div class="token-block" id="shadow">
-        <h3>阴影与焦点环</h3>
-        <div class="shadow-row">
-%s        </div>
-        <p class="hint">布局令牌：<code>--sidebar-w: %s</code>（桌面端侧栏宽度）。</p>
-      </div>
-    </div>
-  </div>
-</section>
-''' % (toc, ''.join(blocks), type_rows, gap_rows, shape_rows, shadow_rows, val('sidebar-w'))
-    return head("设计令牌 · OneTHU",
-                "OneTHU 设计令牌全貌：面 / 线 / 字色 / 品牌与强调 / 功能色 / 字体 / 字号 / 间距 / 形状 / 阴影——三端与站点共用同一套令牌。",
-                "tokens") + body + FOOTER
-
 if __name__ == '__main__':
     write('index.html', page_index())
     write('market.html', page_market())
     write('download.html', page_download())
-    write('tokens.html', page_tokens())
