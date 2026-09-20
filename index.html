@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>OneTHU — One THUer should have OneTHU.</title>
+<meta name="description" content="OneTHU：统一身份、统一数据层、统一界面的清华校园套件，覆盖 macOS / Windows / Android；万物原子化、三端系统通知、桌面小组件、插件市场与 Harness 对话助手。"/>
+<link rel="icon" href="assets/img/icon.png"/>
+<link rel="stylesheet" href="assets/tokens.css"/>
+<link rel="stylesheet" href="assets/site.css"/>
+<meta property="og:title" content="OneTHU — One THUer should have OneTHU."/>
+<meta property="og:description" content="清华校园套件：一个身份、一份数据、一套界面；三端一致，插件可扩展。"/>
+<meta property="og:image" content="assets/img/banner.png"/>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a href="./" style="color:inherit;display:inline-flex;align-items:center;gap:10px">
+      <span class="brand" style="font-size:15px" aria-label="OneTHU">
+        <span class="p">(</span><span class="word"><i>O</i><i>n</i><i>e</i></span><span></span><span class="p"> </span><span class="u">T</span><span class="u">H</span><span class="u">U</span><span class="p">)</span>
+      </span>
+    </a>
+    <nav>
+      <a href="#features" class="hide-sm">功能</a>
+      <a href="#shots" class="hide-sm">界面</a>
+      <a href="#market">插件市场</a>
+      <a href="tokens.html" class="hide-sm">设计令牌</a>
+      <a href="https://github.com/smartThise/OneTHU" target="_blank" rel="noopener" class="hide-sm">GitHub</a>
+      <a class="btn btn-primary btn-sm" href="https://github.com/smartThise/OneTHU/releases/latest">下载最新版</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="grid-bg"></div>
+  <canvas id="lines" aria-hidden="true"></canvas>
+  <div class="wrap hero-in">
+    <svg class="logo" viewBox="0 0 368 96" role="img" aria-label="OneTHU 标识">
+      <g fill="currentColor">
+        <text x="6" y="66" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="76" font-weight="400">(</text>
+        <text x="42" y="68" font-family="Georgia, 'Times New Roman', serif" font-size="74" font-weight="500" letter-spacing="-2">One</text>
+        <text x="196" y="68" font-family="Inter, 'SF Pro Display', 'Helvetica Neue', system-ui, sans-serif" font-size="72" font-weight="800" letter-spacing="-1">THU</text>
+        <text x="352" y="66" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="76" font-weight="400">)</text>
+      </g>
+    </svg>
+    <h1>One THUer should have OneTHU.</h1>
+    <p class="slogan"><b>One App · One Identity · One Campus</b> —— 统一身份、统一数据层、统一界面的清华校园套件。</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/smartThise/OneTHU/releases/latest">下载最新版（Releases）</a>
+      <a class="btn" href="#features">看看能做什么</a>
+      <a class="btn btn-ghost" href="https://github.com/smartThise/OneTHU" target="_blank" rel="noopener">源码与文档</a>
+    </div>
+    <div class="meta">macOS DMG · Windows EXE · Android APK　|　<span data-os-name>最新版本</span>已高亮</div>
+    <div class="chips">
+      <span class="chip chip-accent">三端一致</span>
+      <span class="chip chip-mono">0.8.0</span>
+      <span class="chip">MIT（自有代码，附使用限制）</span>
+      <span class="chip">插件 API 124 方法 / 18 命名空间</span>
+      <span class="chip">外部作业源 4 系统</span>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="why">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">为什么是 OneTHU</h2></div>
+    <p class="sec-sub">清华的服务散在十几个系统里，各自登录、各自界面、各自过期。OneTHU 把它们收成一套：一个身份、一份数据、一套界面，三端同构。</p>
+    <div class="cards">
+      <div class="card reveal"><div class="sq"></div><h3>一个身份</h3><p>登录一次，全网通行；会话失效自动恢复，不让你在“已掉登录”的状态里白点。</p></div>
+      <div class="card reveal"><div class="sq blue"></div><h3>处处一致</h3><p>所有页面读同一份数据、用同一套设计令牌；同一个实体在任何页面都是同一个原子。</p></div>
+      <div class="card reveal"><div class="sq green"></div><h3>一个对话入口</h3><p>OneTHU Harness：一句话查课表、成绩、电费、订座位——校园助手就在左下角。</p></div>
+      <div class="card reveal"><div class="sq amber"></div><h3>数据可靠</h3><p>只读校方公开接口，状态判定不做乐观猜测；查不到就说查不到，不谎报“已提交”。</p></div>
+      <div class="card reveal"><div class="sq red"></div><h3>全平台</h3><p>macOS / Windows / Android 功能对齐：通知、小组件、下载位置都在三端可用。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="features">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">功能总览</h2></div>
+    <p class="sec-sub">十二组能力，从登录到插件、从手机通知到桌面小组件。每条都对应应用内的真实入口，不是规划。</p>
+    <div class="cards">
+        <div class="card reveal">
+          <div class="sq "></div>
+          <h3>统一身份与数据层</h3>
+          <p>登录一次，全校通行：网络学堂、信息门户、图书馆、校园卡共用同一次登录，二次验证支持。会话失效自动重漫游，弱网与前台挂起后可自愈。</p>
+          <ul><li>一次登录 · 全模块共用会话</li><li>二次认证（2FA）与凭证本机加密</li><li>会话保活 / 健康检查 / Cookie 导出导入</li></ul>
+          <div class="tag-row"><span class="tag">内核</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq blue"></div>
+          <h3>网络学堂全景</h3>
+          <p>课程、作业、通知、文件、讨论区一屏管完；作业 DDL 与提交状态真实查询，不做“已提交”的乐观猜测。</p>
+          <ul><li>课程详情 · 作业 / 通知 / 文件 / 分组 / 讨论区</li><li>全局搜索（课程 / 作业 / 通知 / 文件）</li><li>讨论区阅读与回复 · 附件下载</li></ul>
+          <div class="tag-row"><span class="tag">学习</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq amber"></div>
+          <h3>外部作业源聚合</h3>
+          <p>雨课堂、TUOJ（AI 版 / 经典版）、Tyche、DSA OJ 四个系统的作业统一进「全部作业」与「今日」，一处看全。</p>
+          <ul><li>只读：标题 / 课程 / 截止 / 状态，不代提交</li><li>雨课堂题干原生渲染：加密字体 + KaTeX 公式 + 图片代理</li><li>已批改显示 X/Y 与老师评语；试卷不显示提交入口</li></ul>
+          <div class="tag-row"><span class="tag">雨课堂</span><span class="tag">TUOJ</span><span class="tag">Tyche</span><span class="tag">DSA OJ</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq green"></div>
+          <h3>日程 · 课表 · 提醒</h3>
+          <p>课表、云日历、自定义日程（含重复规则）合成时间轴；提醒落到系统通知，不是应用内弹窗。</p>
+          <ul><li>三端系统通知（Windows / macOS / Android）</li><li>静默时段三结局：顺延 / DDL 改静默前最后一分钟 / 课程丢弃</li><li>每日早报只在有安排的日子发</li></ul>
+          <div class="tag-row"><span class="tag">通知</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq blue"></div>
+          <h3>桌面小组件（Android）</h3>
+          <p>一块小组件显示什么**按块绑定**：日程与 DDL、某个原子占满看详情、收藏夹图标组、1×1 快捷方式各占一块。</p>
+          <ul><li>五种初始形态：1×1 / 2×1 / 2×2 / 3×2 / 4×1</li><li>图标组每格独立可点；详情形态拉得越高行数越多</li><li>实时数据：教室本节空闲、洗衣机剩余分钟</li></ul>
+          <div class="tag-row"><span class="tag">小组件</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq "></div>
+          <h3>万物原子化</h3>
+          <p>页面、组件、实体（课程 / 作业 / 文件 / 通知 / 新闻 / 洗衣机 / 教室 / 场馆 / 图书馆）统一成“原子”：可搜、可收藏、可深链、可上桌面。</p>
+          <ul><li>原子注册表：唯一事实来源</li><li>收藏夹 = 可嵌套的原子面板</li><li>寻迹：今日日程地图 + POI + ETA + 一键前往</li></ul>
+          <div class="tag-row"><span class="tag">原子</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq amber"></div>
+          <h3>校园生活</h3>
+          <p>校园卡流水、宿舍电费、校园网、电子发票、银行代发、研究生收入；洗衣机接三家数据源。</p>
+          <ul><li>洗衣机：捷利 / 海乐生活 / 小兰智慧</li><li>教学楼教室实时占用 · 图书馆座位</li><li>邮箱（IMAP/SMTP）· 清华云盘 · THUbook · 在线服务</li></ul>
+          <div class="tag-row"><span class="tag">生活</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq red"></div>
+          <h3>预约查询</h3>
+          <p>图书馆座位、研讨间、空教室、公共空间与体育场馆余量一处查。</p>
+          <ul><li>场馆 / 场次 / 余量 / 我的预约 / 退订</li><li>体育场馆仅提供查询——预约请到官方网页完成</li></ul>
+          <div class="tag-row"><span class="tag">预约</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq "></div>
+          <h3>文件与下载</h3>
+          <p>课件、附件、云盘文件都能预览（Office / PDF / 图片 / 压缩包树），并决定存到哪儿。</p>
+          <ul><li>三端自定义下载位置（Android 走 SAF 目录授权）</li><li>「另存为」：这一次落哪儿由你当场选</li><li>大文件超限会明说，而不是转圈到超时</li></ul>
+          <div class="tag-row"><span class="tag">文件</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq blue"></div>
+          <h3>插件系统</h3>
+          <p>三种形态：JS 插件、Rust sidecar、Android 内嵌；能力覆盖命令、功能页、弹窗、剪贴板、原子、桌面小组件、系统通知。</p>
+          <ul><li>插件市场：人工审查收录，一键安装</li><li>主题插件：配色令牌 / 品牌标识 / 附加 CSS</li><li>插件 API 124 个方法、18 个命名空间</li></ul>
+          <div class="tag-row"><span class="tag">扩展</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq green"></div>
+          <h3>OneTHU Harness</h3>
+          <p>内置 Rust 骨干插件：左下角常驻对话面板，一句话查课表、成绩、电费、订座位。</p>
+          <ul><li>工具调用 + 两段式预约确认</li><li>token 预算与模型调度</li><li>与外部插件双向联动（插件可调 OH，OH 可调插件）</li></ul>
+          <div class="tag-row"><span class="tag">Harness</span></div>
+        </div>
+        <div class="card reveal">
+          <div class="sq "></div>
+          <h3>设计与文档</h3>
+          <p>一套设计令牌贯穿三端与站点；文档覆盖插件开发、API 参考、架构与外部作业源。</p>
+          <ul><li>设计令牌全貌（本站 /tokens.html）</li><li>插件开发指南 · API 参考 · 架构说明</li><li>外部作业源接入与实测记录</li></ul>
+          <div class="tag-row"><span class="tag">设计</span></div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="shots">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">界面</h2></div>
+    <p class="sec-sub">下方为界面截图位（当前是几何占位图，替换时保持 1600×1000 即可对齐）。</p>
+    <div class="shots">
+      <figure class="shot reveal">
+        <img src="assets/shots/today.svg" alt="今日 截图（占位，待替换）" loading="lazy" width="1600" height="1000"/>
+        <figcaption class="cap"><b>今日</b><span>课程 · 截止 · 日程一屏</span></figcaption>
+      </figure>
+      <figure class="shot reveal">
+        <img src="assets/shots/learn.svg" alt="网络学堂 截图（占位，待替换）" loading="lazy" width="1600" height="1000"/>
+        <figcaption class="cap"><b>网络学堂</b><span>作业 / 通知 / 文件 / 讨论区</span></figcaption>
+      </figure>
+      <figure class="shot reveal">
+        <img src="assets/shots/ykt.svg" alt="雨课堂详情 截图（占位，待替换）" loading="lazy" width="1600" height="1000"/>
+        <figcaption class="cap"><b>雨课堂详情</b><span>题干原生渲染 · 分数与评语</span></figcaption>
+      </figure>
+      <figure class="shot reveal">
+        <img src="assets/shots/schedule.svg" alt="日程与提醒 截图（占位，待替换）" loading="lazy" width="1600" height="1000"/>
+        <figcaption class="cap"><b>日程与提醒</b><span>课表 · 云日历 · 三端通知</span></figcaption>
+      </figure>
+      <figure class="shot reveal">
+        <img src="assets/shots/widget.svg" alt="桌面小组件 截图（占位，待替换）" loading="lazy" width="1600" height="1000"/>
+        <figcaption class="cap"><b>桌面小组件</b><span>1×1 快捷方式 / 图标组 / 详情</span></figcaption>
+      </figure>
+      <figure class="shot reveal">
+        <img src="assets/shots/life.svg" alt="校园生活 截图（占位，待替换）" loading="lazy" width="1600" height="1000"/>
+        <figcaption class="cap"><b>校园生活</b><span>校园卡 · 电费 · 洗衣机 · 图书馆</span></figcaption>
+      </figure>
+      <figure class="shot reveal">
+        <img src="assets/shots/trace.svg" alt="寻迹 截图（占位，待替换）" loading="lazy" width="1600" height="1000"/>
+        <figcaption class="cap"><b>寻迹</b><span>今日日程地图 · POI · ETA</span></figcaption>
+      </figure>
+      <figure class="shot reveal">
+        <img src="assets/shots/plugins.svg" alt="插件与市场 截图（占位，待替换）" loading="lazy" width="1600" height="1000"/>
+        <figcaption class="cap"><b>插件与市场</b><span>能力清单 · 市场 · 主题</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="market">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">插件市场</h2></div>
+    <p class="sec-sub">与应用内“插件 → 市场”同一份名单（<code>OneTHU-Market</code> 的 <code>registry.json</code>，人工审查收录）。星数实时取自 GitHub，点卡片进仓库。</p>
+    <div class="market-bar">
+      <div class="market-search">
+        <span aria-hidden="true">⌕</span>
+        <input id="market-search" type="search" placeholder="搜索插件：名称 / 描述 / 仓库 / 作者" aria-label="搜索插件"/>
+      </div>
+      <div class="tabs" id="market-tabs" role="tablist">
+        <button class="tab" role="tab" data-cat="all" aria-selected="true">全部</button>
+      </div>
+    </div>
+    <div class="market-grid" id="market-grid"></div>
+    <div class="market-empty" id="market-empty" hidden>没有匹配的插件。</div>
+  </div>
+</section>
+
+<section class="block" id="download">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">下载</h2></div>
+    <p class="sec-sub">所有安装包都在 GitHub Releases；下面按平台直连，或点“最新版”页面自行选择。</p>
+    <div class="cta" style="display:flex;gap:var(--gap-3);flex-wrap:wrap">
+      <a class="btn btn-primary" href="https://github.com/smartThise/OneTHU/releases/latest">前往最新版 Releases</a>
+      <a class="btn" href="https://github.com/smartThise/OneTHU#readme" target="_blank" rel="noopener">安装与上手说明</a>
+    </div>
+    <div class="dl">
+      <a data-os="macos" href="https://github.com/smartThise/OneTHU/releases/latest"><span class="sq"></span><span><span class="t">macOS</span><br/><span class="s">.dmg · Apple Silicon / Intel</span></span></a>
+      <a data-os="windows" href="https://github.com/smartThise/OneTHU/releases/latest"><span class="sq"></span><span><span class="t">Windows</span><br/><span class="s">.exe · x64 安装器</span></span></a>
+      <a data-os="android" href="https://github.com/smartThise/OneTHU/releases/latest"><span class="sq"></span><span><span class="t">Android</span><br/><span class="s">.apk · arm64 / universal</span></span></a>
+    </div>
+    <p class="sec-sub" style="margin-top:18px">装好之后：用清华统一认证账号登录（支持二次验证）；也可以先在登录页进入<strong>演示模式</strong>看界面；数据异常时点右下角刷新。</p>
+  </div>
+</section>
+
+<section class="block" id="repos">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">仓库与上游</h2></div>
+    <p class="sec-sub">主程序、市场、Harness 与官方示例插件；下方同时列出被本项目借鉴与移植的上游项目。</p>
+    <div class="repos">
+      <a class="repo-row reveal" href="https://github.com/smartThise/OneTHU" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">smartThise/OneTHU</span><br/><span class="d">主程序与全部文档</span></span></a>
+      <a class="repo-row reveal" href="https://github.com/smartThise/OneTHU-Market" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">OneTHU-Market</span><br/><span class="d">插件市场名单</span></span></a>
+      <a class="repo-row reveal" href="https://github.com/smartThise/OneTHU-Harness" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">OneTHU-Harness</span><br/><span class="d">对话助手（Rust 骨干插件）</span></span></a>
+      <a class="repo-row reveal" href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">OneTHU-plugin-hello</span><br/><span class="d">示例插件（MIT）</span></span></a>
+      <a class="repo-row reveal" href="https://github.com/smartThise/OneTHU-theme-barbie" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">OneTHU-theme-barbie</span><br/><span class="d">主题插件示例（MIT）</span></span></a>
+    </div>
+    <h3 style="margin:34px 0 10px;font-size:var(--text-md)">上游与致谢</h3>
+    <div class="repos">
+      <a class="repo-row" href="https://github.com/thu-info-community/thu-info-app" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">thu-info-app / thu-info-lib</span><br/><span class="d">数据层移植（经邮件授权，非商业用途，截止 2036-12-31）</span></span></a>
+      <a class="repo-row" href="https://github.com/robertying/learnX" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">LearnX</span><br/><span class="d">网络学堂子页移植（MIT，附例外条件）</span></span></a>
+      <a class="repo-row" href="https://github.com/Harry-Chen/thu-learn-lib" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">thu-learn-lib</span><br/><span class="d">接口结论验证</span></span></a>
+      <span class="repo-row"><span class="dot"></span><span><span class="n">thu-tok-auto · yuketang-helper-auto</span><br/><span class="d">接口结论来源（MIT）</span></span></span>
+    </div>
+  </div>
+</section>
+
+<footer class="bot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h5>下载</h5>
+        <a href="https://github.com/smartThise/OneTHU/releases/latest">最新版 Releases</a>
+        <a href="https://github.com/smartThise/OneTHU" target="_blank" rel="noopener">源码</a>
+        <a href="https://github.com/smartThise/OneTHU/releases" target="_blank" rel="noopener">历史版本</a>
+      </div>
+      <div>
+        <h5>文档</h5>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/docs/plugin-development.md" target="_blank" rel="noopener">插件开发指南</a>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/docs/api-reference.md" target="_blank" rel="noopener">API 参考</a>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/docs/architecture.md" target="_blank" rel="noopener">架构说明</a>
+        <a href="tokens.html">设计令牌</a>
+      </div>
+      <div>
+        <h5>生态</h5>
+        <a href="https://github.com/smartThise/OneTHU-Market" target="_blank" rel="noopener">插件市场名单</a>
+        <a href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener">示例插件</a>
+        <a href="https://github.com/smartThise/OneTHU-Harness" target="_blank" rel="noopener">Harness</a>
+      </div>
+      <div>
+        <h5>说明</h5>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSE" target="_blank" rel="noopener">许可（MIT + 使用限制）</a>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSES/THIRD-PARTY.md" target="_blank" rel="noopener">第三方组件许可</a>
+      </div>
+    </div>
+    <div class="fine">
+      OneTHU 是非官方的个人效率工具，与清华大学无关；所有数据均来自学校公开系统的网页接口，仅供个人学习与日常使用。<br/>
+      自有代码以 MIT 许可开源，<strong>附两条限制</strong>：严禁商业用途；严禁用于对清华大学信息服务的攻击性访问（抢课、自动预约提交等）。详见
+      <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSE" target="_blank" rel="noopener">LICENSE</a>。
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
