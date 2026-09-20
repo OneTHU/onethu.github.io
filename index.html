@@ -9,55 +9,31 @@
 <link rel="stylesheet" href="assets/tokens.css"/>
 <link rel="stylesheet" href="assets/site.css"/>
 <meta property="og:title" content="OneTHU — One THUer should have OneTHU."/>
-<meta property="og:description" content="清华校园套件：一个身份、一份数据、一套界面；三端一致，插件可扩展。"/>
+<meta property="og:description" content="OneTHU：统一身份、统一数据层、统一界面的清华校园套件，覆盖 macOS / Windows / Android；万物原子化、三端系统通知、桌面小组件、插件市场与 Harness 对话助手。"/>
 <meta property="og:image" content="assets/img/banner.png"/>
 </head>
 <body>
 
 <header class="top">
   <div class="wrap top-in">
-    <a href="./" style="color:inherit;display:inline-flex;align-items:center;gap:10px">
-      <span class="brand" style="font-size:15px" aria-label="OneTHU">
-        <span class="p">(</span><span class="word"><i>O</i><i>n</i><i>e</i></span><span></span><span class="p"> </span><span class="u">T</span><span class="u">H</span><span class="u">U</span><span class="p">)</span>
-      </span>
-    </a>
-    <nav>
-      <a href="#features" class="hide-sm">功能</a>
-      <a href="#shots" class="hide-sm">界面</a>
-      <a href="#market">插件市场</a>
-      <a href="tokens.html" class="hide-sm">设计令牌</a>
-      <a href="https://github.com/smartThise/OneTHU" target="_blank" rel="noopener" class="hide-sm">GitHub</a>
-      <a class="btn btn-primary btn-sm" href="https://github.com/smartThise/OneTHU/releases/latest">下载最新版</a>
-    </nav>
+    <a href="index.html" style="color:inherit"><span class="brand" style="font-size:15px" aria-label="OneTHU"><span class="p">(</span><span class="word"><i>O</i><i>n</i><i>e</i></span><span></span><span class="p"> </span><span class="u">T</span><span class="u">H</span><span class="u">U</span><span class="p">)</span></span></a>
+    <nav><a href="index.html#features" class="hide-sm" aria-current="page">功能</a><a href="index.html#shots" class="hide-sm">界面</a><a href="market.html">插件市场</a><a href="download.html">下载</a><a href="tokens.html" class="hide-sm">设计令牌</a><a href="https://github.com/smartThise/OneTHU" class="hide-sm">GitHub</a><a class="btn btn-primary btn-sm" href="https://github.com/smartThise/OneTHU/releases/latest">下载最新版</a></nav>
   </div>
 </header>
-
 <section class="hero">
   <div class="grid-bg"></div>
-  <canvas id="lines" aria-hidden="true"></canvas>
+  <canvas id="bg" aria-hidden="true"></canvas>
   <div class="wrap hero-in">
-    <svg class="logo" viewBox="0 0 368 96" role="img" aria-label="OneTHU 标识">
-      <g fill="currentColor">
-        <text x="6" y="66" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="76" font-weight="400">(</text>
-        <text x="42" y="68" font-family="Georgia, 'Times New Roman', serif" font-size="74" font-weight="500" letter-spacing="-2">One</text>
-        <text x="196" y="68" font-family="Inter, 'SF Pro Display', 'Helvetica Neue', system-ui, sans-serif" font-size="72" font-weight="800" letter-spacing="-1">THU</text>
-        <text x="352" y="66" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="76" font-weight="400">)</text>
-      </g>
-    </svg>
+    <div class="lockup" role="img" aria-label="(One THU)">
+      <div class="row"><span class="p p-lg">(</span><span class="one">One</span></div>
+      <div class="row r2"><span class="thu">THU</span><span class="p p-lg">)</span></div>
+    </div>
     <h1>One THUer should have OneTHU.</h1>
     <p class="slogan"><b>One App · One Identity · One Campus</b> —— 统一身份、统一数据层、统一界面的清华校园套件。</p>
     <div class="cta">
       <a class="btn btn-primary" href="https://github.com/smartThise/OneTHU/releases/latest">下载最新版（Releases）</a>
       <a class="btn" href="#features">看看能做什么</a>
       <a class="btn btn-ghost" href="https://github.com/smartThise/OneTHU" target="_blank" rel="noopener">源码与文档</a>
-    </div>
-    <div class="meta">macOS DMG · Windows EXE · Android APK　|　<span data-os-name>最新版本</span>已高亮</div>
-    <div class="chips">
-      <span class="chip chip-accent">三端一致</span>
-      <span class="chip chip-mono">0.8.0</span>
-      <span class="chip">MIT（自有代码，附使用限制）</span>
-      <span class="chip">插件 API 124 方法 / 18 命名空间</span>
-      <span class="chip">外部作业源 4 系统</span>
     </div>
   </div>
 </section>
@@ -112,7 +88,7 @@
         <div class="card reveal">
           <div class="sq blue"></div>
           <h3>桌面小组件（Android）</h3>
-          <p>一块小组件显示什么**按块绑定**：日程与 DDL、某个原子占满看详情、收藏夹图标组、1×1 快捷方式各占一块。</p>
+          <p>一块小组件显示什么按块绑定：日程与 DDL、某个原子占满看详情、收藏夹图标组、1×1 快捷方式各占一块。</p>
           <ul><li>五种初始形态：1×1 / 2×1 / 2×2 / 3×2 / 4×1</li><li>图标组每格独立可点；详情形态拉得越高行数越多</li><li>实时数据：教室本节空闲、洗衣机剩余分钟</li></ul>
           <div class="tag-row"><span class="tag">小组件</span></div>
         </div>
@@ -210,69 +186,22 @@
   </div>
 </section>
 
-<section class="block" id="market">
+<section class="block" id="next" style="border-bottom:0">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">插件市场</h2></div>
-    <p class="sec-sub">与应用内“插件 → 市场”同一份名单（<code>OneTHU-Market</code> 的 <code>registry.json</code>，人工审查收录）。星数实时取自 GitHub，点卡片进仓库。</p>
-    <div class="market-bar">
-      <div class="market-search">
-        <span aria-hidden="true">⌕</span>
-        <input id="market-search" type="search" placeholder="搜索插件：名称 / 描述 / 仓库 / 作者" aria-label="搜索插件"/>
-      </div>
-      <div class="tabs" id="market-tabs" role="tablist">
-        <button class="tab" role="tab" data-cat="all" aria-selected="true">全部</button>
-      </div>
-    </div>
-    <div class="market-grid" id="market-grid"></div>
-    <div class="market-empty" id="market-empty" hidden>没有匹配的插件。</div>
-  </div>
-</section>
-
-<section class="block" id="download">
-  <div class="wrap">
-    <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">下载</h2></div>
-    <p class="sec-sub">所有安装包都在 GitHub Releases；下面按平台直连，或点“最新版”页面自行选择。</p>
-    <div class="cta" style="display:flex;gap:var(--gap-3);flex-wrap:wrap">
-      <a class="btn btn-primary" href="https://github.com/smartThise/OneTHU/releases/latest">前往最新版 Releases</a>
-      <a class="btn" href="https://github.com/smartThise/OneTHU#readme" target="_blank" rel="noopener">安装与上手说明</a>
-    </div>
-    <div class="dl">
-      <a data-os="macos" href="https://github.com/smartThise/OneTHU/releases/latest"><span class="sq"></span><span><span class="t">macOS</span><br/><span class="s">.dmg · Apple Silicon / Intel</span></span></a>
-      <a data-os="windows" href="https://github.com/smartThise/OneTHU/releases/latest"><span class="sq"></span><span><span class="t">Windows</span><br/><span class="s">.exe · x64 安装器</span></span></a>
-      <a data-os="android" href="https://github.com/smartThise/OneTHU/releases/latest"><span class="sq"></span><span><span class="t">Android</span><br/><span class="s">.apk · arm64 / universal</span></span></a>
-    </div>
-    <p class="sec-sub" style="margin-top:18px">装好之后：用清华统一认证账号登录（支持二次验证）；也可以先在登录页进入<strong>演示模式</strong>看界面；数据异常时点右下角刷新。</p>
-  </div>
-</section>
-
-<section class="block" id="repos">
-  <div class="wrap">
-    <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">仓库与上游</h2></div>
-    <p class="sec-sub">主程序、市场、Harness 与官方示例插件；下方同时列出被本项目借鉴与移植的上游项目。</p>
-    <div class="repos">
-      <a class="repo-row reveal" href="https://github.com/smartThise/OneTHU" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">smartThise/OneTHU</span><br/><span class="d">主程序与全部文档</span></span></a>
-      <a class="repo-row reveal" href="https://github.com/smartThise/OneTHU-Market" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">OneTHU-Market</span><br/><span class="d">插件市场名单</span></span></a>
-      <a class="repo-row reveal" href="https://github.com/smartThise/OneTHU-Harness" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">OneTHU-Harness</span><br/><span class="d">对话助手（Rust 骨干插件）</span></span></a>
-      <a class="repo-row reveal" href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">OneTHU-plugin-hello</span><br/><span class="d">示例插件（MIT）</span></span></a>
-      <a class="repo-row reveal" href="https://github.com/smartThise/OneTHU-theme-barbie" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">OneTHU-theme-barbie</span><br/><span class="d">主题插件示例（MIT）</span></span></a>
-    </div>
-    <h3 style="margin:34px 0 10px;font-size:var(--text-md)">上游与致谢</h3>
-    <div class="repos">
-      <a class="repo-row" href="https://github.com/thu-info-community/thu-info-app" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">thu-info-app / thu-info-lib</span><br/><span class="d">数据层移植（经邮件授权，非商业用途，截止 2036-12-31）</span></span></a>
-      <a class="repo-row" href="https://github.com/robertying/learnX" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">LearnX</span><br/><span class="d">网络学堂子页移植（MIT，附例外条件）</span></span></a>
-      <a class="repo-row" href="https://github.com/Harry-Chen/thu-learn-lib" target="_blank" rel="noopener"><span class="dot"></span><span><span class="n">thu-learn-lib</span><br/><span class="d">接口结论验证</span></span></a>
-      <span class="repo-row"><span class="dot"></span><span><span class="n">thu-tok-auto · yuketang-helper-auto</span><br/><span class="d">接口结论来源（MIT）</span></span></span>
+    <div class="cards">
+      <a class="card reveal" href="download.html" style="color:inherit"><div class="sq"></div><h3>下载安装</h3><p>macOS DMG · Windows EXE · Android APK，按平台直达最新版 Releases。</p></a>
+      <a class="card reveal" href="market.html" style="color:inherit"><div class="sq blue"></div><h3>插件市场</h3><p>与应用内同一份名单，实时星数，点进仓库即可安装。</p></a>
+      <a class="card reveal" href="tokens.html" style="color:inherit"><div class="sq green"></div><h3>设计令牌</h3><p>三端与站点共用的一套令牌：颜色、字号、间距、形状、阴影。</p></a>
     </div>
   </div>
 </section>
-
 <footer class="bot">
   <div class="wrap">
     <div class="cols">
       <div>
         <h5>下载</h5>
         <a href="https://github.com/smartThise/OneTHU/releases/latest">最新版 Releases</a>
-        <a href="https://github.com/smartThise/OneTHU" target="_blank" rel="noopener">源码</a>
+        <a href="download.html">三端安装包</a>
         <a href="https://github.com/smartThise/OneTHU/releases" target="_blank" rel="noopener">历史版本</a>
       </div>
       <div>
@@ -284,7 +213,8 @@
       </div>
       <div>
         <h5>生态</h5>
-        <a href="https://github.com/smartThise/OneTHU-Market" target="_blank" rel="noopener">插件市场名单</a>
+        <a href="market.html">插件市场</a>
+        <a href="https://github.com/smartThise/OneTHU-Market" target="_blank" rel="noopener">市场名单仓库</a>
         <a href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener">示例插件</a>
         <a href="https://github.com/smartThise/OneTHU-Harness" target="_blank" rel="noopener">Harness</a>
       </div>

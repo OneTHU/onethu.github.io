@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>插件市场 · OneTHU</title>
+<meta name="description" content="OneTHU 插件市场：与应用内同一份名单（OneTHU-Market registry.json），实时星数，点卡片进仓库。"/>
+<link rel="icon" href="assets/img/icon.png"/>
+<link rel="stylesheet" href="assets/tokens.css"/>
+<link rel="stylesheet" href="assets/site.css"/>
+<meta property="og:title" content="插件市场 · OneTHU"/>
+<meta property="og:description" content="OneTHU 插件市场：与应用内同一份名单（OneTHU-Market registry.json），实时星数，点卡片进仓库。"/>
+<meta property="og:image" content="assets/img/banner.png"/>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a href="index.html" style="color:inherit"><span class="brand" style="font-size:15px" aria-label="OneTHU"><span class="p">(</span><span class="word"><i>O</i><i>n</i><i>e</i></span><span></span><span class="p"> </span><span class="u">T</span><span class="u">H</span><span class="u">U</span><span class="p">)</span></span></a>
+    <nav><a href="index.html#features" class="hide-sm">功能</a><a href="index.html#shots" class="hide-sm">界面</a><a href="market.html" aria-current="page">插件市场</a><a href="download.html">下载</a><a href="tokens.html" class="hide-sm">设计令牌</a><a href="https://github.com/smartThise/OneTHU" class="hide-sm">GitHub</a><a class="btn btn-primary btn-sm" href="https://github.com/smartThise/OneTHU/releases/latest">下载最新版</a></nav>
+  </div>
+</header>
+<section class="page-head">
+  <div class="grid-bg"></div>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="wrap page-head-in">
+    <div class="crumb">MARKET / PLUGINS</div>
+    <h1>插件市场</h1>
+    <p>与应用内「插件 → 市场」同一份名单：<a href="https://github.com/smartThise/OneTHU-Market" target="_blank" rel="noopener">OneTHU-Market</a> 的
+      <code>registry.json</code>，人工审查收录。星数实时取自 GitHub，点卡片进仓库。</p>
+  </div>
+</section>
+
+<section class="block" style="border-bottom:0">
+  <div class="wrap">
+    <div class="market-bar">
+      <div class="market-search">
+        <span aria-hidden="true">⌕</span>
+        <input id="market-search" type="search" placeholder="搜索插件：名称 / 描述 / 仓库 / 作者" aria-label="搜索插件"/>
+      </div>
+      <div class="tabs" id="market-tabs" role="tablist">
+        <button class="tab" role="tab" data-cat="all" aria-selected="true">全部</button>
+      </div>
+    </div>
+    <div class="market-grid" id="market-grid"></div>
+    <div class="market-empty" id="market-empty" hidden>没有匹配的插件。</div>
+
+    <div class="feature-row" style="margin-top:34px">
+      <span class="idx">i</span>
+      <div>
+        <h4>数据来源与限制</h4>
+        <p>名单来自市场仓库，星数取自 GitHub 公开 API（匿名限额 60 次/小时，本站缓存 10 分钟，刚打开时星数可能短暂为空）。
+          想自己写插件：从 <a href="https://github.com/smartThise/OneTHU/blob/dev3/docs/plugin-development.md" target="_blank" rel="noopener">插件开发指南</a> 与
+          <a href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener">示例插件</a> 开始，
+          收录标准与提交方式见 <a href="https://github.com/smartThise/OneTHU-Market" target="_blank" rel="noopener">市场仓库</a>。</p>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="bot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h5>下载</h5>
+        <a href="https://github.com/smartThise/OneTHU/releases/latest">最新版 Releases</a>
+        <a href="download.html">三端安装包</a>
+        <a href="https://github.com/smartThise/OneTHU/releases" target="_blank" rel="noopener">历史版本</a>
+      </div>
+      <div>
+        <h5>文档</h5>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/docs/plugin-development.md" target="_blank" rel="noopener">插件开发指南</a>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/docs/api-reference.md" target="_blank" rel="noopener">API 参考</a>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/docs/architecture.md" target="_blank" rel="noopener">架构说明</a>
+        <a href="tokens.html">设计令牌</a>
+      </div>
+      <div>
+        <h5>生态</h5>
+        <a href="market.html">插件市场</a>
+        <a href="https://github.com/smartThise/OneTHU-Market" target="_blank" rel="noopener">市场名单仓库</a>
+        <a href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener">示例插件</a>
+        <a href="https://github.com/smartThise/OneTHU-Harness" target="_blank" rel="noopener">Harness</a>
+      </div>
+      <div>
+        <h5>说明</h5>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSE" target="_blank" rel="noopener">许可（MIT + 使用限制）</a>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSES/THIRD-PARTY.md" target="_blank" rel="noopener">第三方组件许可</a>
+      </div>
+    </div>
+    <div class="fine">
+      OneTHU 是非官方的个人效率工具，与清华大学无关；所有数据均来自学校公开系统的网页接口，仅供个人学习与日常使用。<br/>
+      自有代码以 MIT 许可开源，<strong>附两条限制</strong>：严禁商业用途；严禁用于对清华大学信息服务的攻击性访问（抢课、自动预约提交等）。详见
+      <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSE" target="_blank" rel="noopener">LICENSE</a>。
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

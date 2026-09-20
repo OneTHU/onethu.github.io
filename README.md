@@ -8,10 +8,17 @@ OneTHU 官网：几何方块与线条风格的静态站点（无构建步骤，G
 
 ## 页面
 
+四个页面各管一件事，互不挤在一页里：
+
 | 页面 | 内容 |
 |---|---|
-| `index.html` | 首屏（线条跳动动效 + `(One THU)` 标识）、为什么是 OneTHU、功能总览（12 组）、界面截图、插件市场（实时）、下载、仓库与上游、许可摘要 |
-| `tokens.html` | 设计令牌全貌：面 / 线 / 字色 / 品牌与强调 / 功能色 / 交互 / 字体与字号 / 间距 / 形状 / 阴影。**由 `assets/tokens.css` 解析生成**，改令牌即改此页 |
+| `index.html` | 首屏（几何交织背景 + `(One THU)` 双行标识）、01 为什么是 OneTHU、02 功能总览（12 组）、03 界面、04 插件与生态入口 |
+| `market.html` | 插件市场：实时读 OneTHU-Market 名单，分类页签（主题 / 官方 / 社区）+ 搜索 + ★ |
+| `download.html` | 下载：三端（macOS / Windows / Android）安装包、系统要求、安装说明、历史版本 |
+| `tokens.html` | 设计令牌全貌：面 / 线 / 字色 / 品牌与强调 / 功能色 / 交互 / 字体与字号 / 间距 / 形状 / 阴影 |
+
+前三页共用同一套头部 / 页脚 / 品牌标识与页面骨架，由 `tools/build-pages.py` 生成；
+`tokens.html` 的令牌表格另由 `assets/tokens.css` 解析生成（改令牌即改此页）。
 
 ## 部署
 
@@ -27,12 +34,23 @@ python3 -m http.server 4173      # 然后打开 http://localhost:4173
 
 无需 npm、无需构建：改完 HTML/CSS/JS 直接刷新。
 
+## 重新生成页面
+
+头部导航 / 页脚 / 品牌标识 / 页面骨架由脚本统一生成，避免多页漂移：
+
+```bash
+python3 tools/build-pages.py     # 写入 index.html · market.html · download.html · tokens.html
+```
+
+只改正文文案时也可以直接编辑 HTML；但**导航或页脚有变动时请改脚本再跑一次**，
+否则各页会不一致（tokens 页的令牌表格始终来自 `assets/tokens.css`）。
+
 ## 目录
 
 ```
 assets/tokens.css    设计令牌（与主仓 packages/ui/src/tokens.css 同步）
 assets/site.css      站点样式（几何方块 + 线条）
-assets/site.js       线条动效 canvas · 插件市场拉取 · 滚动显现 · 平台识别
+assets/site.js       几何交织背景 canvas · 插件市场拉取 · 滚动显现 · 平台识别
 assets/img/          logo.svg（(One THU) 标识）· icon.png（favicon）· banner.png
 assets/shots/        界面截图位（当前为几何占位 SVG，待替换）
 ```

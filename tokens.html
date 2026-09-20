@@ -4,247 +4,280 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>设计令牌 · OneTHU</title>
-<meta name="description" content="OneTHU 设计令牌全貌：面 / 线 / 字色 / 品牌与强调 / 功能色 / 字体 / 字号 / 间距 / 形状 / 阴影，三端与站点共用一套令牌。"/>
+<meta name="description" content="OneTHU 设计令牌全貌：面 / 线 / 字色 / 品牌与强调 / 功能色 / 字体 / 字号 / 间距 / 形状 / 阴影——三端与站点共用同一套令牌。"/>
 <link rel="icon" href="assets/img/icon.png"/>
 <link rel="stylesheet" href="assets/tokens.css"/>
 <link rel="stylesheet" href="assets/site.css"/>
-<style>
-  .token-hero { padding: 70px 0 40px; border-bottom: 1px solid var(--border-soft); }
-  .token-cols { display: grid; grid-template-columns: 200px 1fr; gap: 40px; align-items: start; }
-  @media (max-width: 860px) { .token-cols { grid-template-columns: 1fr; } }
-  .toc { position: sticky; top: 78px; font-size: var(--text-sm); }
-  .toc a { display: block; padding: 3px 0; color: var(--text-2); }
-</style>
+<meta property="og:title" content="设计令牌 · OneTHU"/>
+<meta property="og:description" content="OneTHU 设计令牌全貌：面 / 线 / 字色 / 品牌与强调 / 功能色 / 字体 / 字号 / 间距 / 形状 / 阴影——三端与站点共用同一套令牌。"/>
+<meta property="og:image" content="assets/img/banner.png"/>
 </head>
 <body>
 
 <header class="top">
   <div class="wrap top-in">
-    <a href="./" style="color:inherit;display:inline-flex;align-items:center;gap:10px">
-      <span class="brand" style="font-size:15px" aria-label="OneTHU">
-        <span class="p">(</span><span class="word"><i>O</i><i>n</i><i>e</i></span><span></span><span class="p"> </span><span class="u">T</span><span class="u">H</span><span class="u">U</span><span class="p">)</span>
-      </span>
-    </a>
-    <nav>
-      <a href="index.html">首页</a>
-      <a href="index.html#market">插件市场</a>
-      <a href="https://github.com/smartThise/OneTHU/blob/dev3/packages/ui/src/tokens.css" target="_blank" rel="noopener">令牌源文件</a>
-    </nav>
+    <a href="index.html" style="color:inherit"><span class="brand" style="font-size:15px" aria-label="OneTHU"><span class="p">(</span><span class="word"><i>O</i><i>n</i><i>e</i></span><span></span><span class="p"> </span><span class="u">T</span><span class="u">H</span><span class="u">U</span><span class="p">)</span></span></a>
+    <nav><a href="index.html#features" class="hide-sm">功能</a><a href="index.html#shots" class="hide-sm">界面</a><a href="market.html">插件市场</a><a href="download.html">下载</a><a href="tokens.html" class="hide-sm" aria-current="page">设计令牌</a><a href="https://github.com/smartThise/OneTHU" class="hide-sm">GitHub</a><a class="btn btn-primary btn-sm" href="https://github.com/smartThise/OneTHU/releases/latest">下载最新版</a></nav>
   </div>
 </header>
-
-<div class="token-hero">
-  <div class="wrap">
-    <div class="sec-head"><span class="sec-num">T</span><h2 class="sec-title">设计令牌全貌</h2></div>
-    <p class="sec-sub">
-      三端（macOS / Windows / Android）、插件界面与本站共用同一套令牌：中性蓝灰阶 + 黑 primary 按钮 +
-      业务蓝强调；pill 控件与紧凑字号刻度。本页直接由 <code>assets/tokens.css</code> 渲染——
-      改令牌即改此页，不会与实现脱节。
-    </p>
+<section class="page-head">
+  <div class="grid-bg"></div>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="wrap page-head-in">
+    <div class="crumb">DESIGN TOKENS</div>
+    <h1>设计令牌全貌</h1>
+    <p>桌面端 / 安卓端 / 插件界面与本站共用同一套令牌：中性蓝灰阶 + 黑色 primary 按钮 + 业务蓝强调，
+      配 pill 控件与紧凑字号刻度。本页内容直接解析 <code>assets/tokens.css</code> 生成——改令牌即改此页。</p>
   </div>
-</div>
+</section>
 
-<section class="block" style="border-bottom:0">
+<section class="block" style="border-bottom: 0">
   <div class="wrap token-cols">
     <aside class="toc">
-      <strong style="font-size:var(--text-xs);color:var(--text-3)">本页目录</strong>
-      <a href="#t0">面 Surface</a><a href="#t1">线 Line</a><a href="#t2">字色 Text</a><a href="#t3">品牌与强调 Brand</a><a href="#t4">功能色 Functional</a><a href="#t5">交互 Interaction</a>
+      <strong>本页目录</strong>
+        <a href="#t0">面 Surface</a>
+        <a href="#t1">线 Line</a>
+        <a href="#t2">字色 Text</a>
+        <a href="#t3">品牌与强调 Brand</a>
+        <a href="#t4">功能色 Functional</a>
+        <a href="#t5">交互 Interaction</a>
       <a href="#type">字体与字号</a>
       <a href="#gap">间距</a>
       <a href="#shape">形状</a>
       <a href="#shadow">阴影与焦点环</a>
     </aside>
     <div>
-    <div class="token-block" id="t0">
-      <h3 style="margin:0 0 14px;font-size:var(--text-md)">面 Surface</h3>
-      <div class="token-grid">
-      <div class="swatch">
-        <div class="c" style="background: var(--bg)"></div>
-        <div class="m"><b>--bg</b>#ffffff<br/>页面底</div>
+      <div class="token-block" id="t0">
+        <h3>面 Surface</h3>
+        <div class="token-grid">
+        <div class="swatch">
+          <div class="c" style="background: var(--bg)"></div>
+          <div class="m"><b>--bg</b><span class="v">#ffffff</span>页面底</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--bg-soft)"></div>
+          <div class="m"><b>--bg-soft</b><span class="v">#f9fafb</span>次级底</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--surface)"></div>
+          <div class="m"><b>--surface</b><span class="v">#ffffff</span>卡片</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--surface-2)"></div>
+          <div class="m"><b>--surface-2</b><span class="v">#f9fafb</span>卡片次级</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--surface-3)"></div>
+          <div class="m"><b>--surface-3</b><span class="v">#ebeef2</span>控件底</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--skeleton)"></div>
+          <div class="m"><b>--skeleton</b><span class="v">rgba(0, 0, 0, 0.04)</span>骨架</div>
+        </div>
+        </div>
       </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--bg-soft)"></div>
-        <div class="m"><b>--bg-soft</b>#f9fafb<br/>次级底</div>
+      <div class="token-block" id="t1">
+        <h3>线 Line</h3>
+        <div class="token-grid">
+        <div class="swatch">
+          <div class="c" style="background: var(--border)"></div>
+          <div class="m"><b>--border</b><span class="v">rgba(0, 0, 0, 0.1)</span>常规边线</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--border-soft)"></div>
+          <div class="m"><b>--border-soft</b><span class="v">rgba(0, 0, 0, 0.04)</span>发丝线</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--border-strong)"></div>
+          <div class="m"><b>--border-strong</b><span class="v">rgba(0, 0, 0, 0.16)</span>强调边线</div>
+        </div>
+        </div>
       </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--surface)"></div>
-        <div class="m"><b>--surface</b>#ffffff<br/>卡片</div>
+      <div class="token-block" id="t2">
+        <h3>字色 Text</h3>
+        <div class="token-grid">
+        <div class="swatch">
+          <div class="c" style="background: var(--text-1)"></div>
+          <div class="m"><b>--text-1</b><span class="v">#0f1115</span>正文</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--text-2)"></div>
+          <div class="m"><b>--text-2</b><span class="v">#61666b</span>次要</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--text-3)"></div>
+          <div class="m"><b>--text-3</b><span class="v">#81858c</span>三级</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--text-dim)"></div>
+          <div class="m"><b>--text-dim</b><span class="v">#d5dbe3</span>禁用/占位</div>
+        </div>
+        </div>
       </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--surface-2)"></div>
-        <div class="m"><b>--surface-2</b>#f9fafb<br/>卡片次级</div>
+      <div class="token-block" id="t3">
+        <h3>品牌与强调 Brand</h3>
+        <div class="token-grid">
+        <div class="swatch">
+          <div class="c" style="background: var(--primary)"></div>
+          <div class="m"><b>--primary</b><span class="v">#0f1115</span>主按钮（黑）</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--primary-hover)"></div>
+          <div class="m"><b>--primary-hover</b><span class="v">#43454a</span>主按钮悬停</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--on-primary)"></div>
+          <div class="m"><b>--on-primary</b><span class="v">#ffffff</span>按钮前景</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--accent)"></div>
+          <div class="m"><b>--accent</b><span class="v">#4176e6</span>业务蓝</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--accent-soft)"></div>
+          <div class="m"><b>--accent-soft</b><span class="v">#edf3fe</span>蓝浅底</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--accent-border)"></div>
+          <div class="m"><b>--accent-border</b><span class="v">#c9d9f9</span>蓝描边</div>
+        </div>
+        </div>
       </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--surface-3)"></div>
-        <div class="m"><b>--surface-3</b>#ebeef2<br/>控件底</div>
+      <div class="token-block" id="t4">
+        <h3>功能色 Functional</h3>
+        <div class="token-grid">
+        <div class="swatch">
+          <div class="c" style="background: var(--red)"></div>
+          <div class="m"><b>--red</b><span class="v">#e5484d</span>危险/占用</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--red-soft)"></div>
+          <div class="m"><b>--red-soft</b><span class="v">#feecec</span>危险浅底</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--amber)"></div>
+          <div class="m"><b>--amber</b><span class="v">#d9730d</span>提醒/进行中</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--amber-soft)"></div>
+          <div class="m"><b>--amber-soft</b><span class="v">#fdf2e2</span>提醒浅底</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--green)"></div>
+          <div class="m"><b>--green</b><span class="v">#22c55e</span>空闲/成功</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--green-soft)"></div>
+          <div class="m"><b>--green-soft</b><span class="v">#e6f9ee</span>成功浅底</div>
+        </div>
+        </div>
       </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--skeleton)"></div>
-        <div class="m"><b>--skeleton</b>rgba(0, 0, 0, 0.04)<br/>骨架</div>
+      <div class="token-block" id="t5">
+        <h3>交互 Interaction</h3>
+        <div class="token-grid">
+        <div class="swatch">
+          <div class="c" style="background: var(--hover)"></div>
+          <div class="m"><b>--hover</b><span class="v">rgba(38, 49, 72, 0.06)</span>悬停</div>
+        </div>
+        <div class="swatch">
+          <div class="c" style="background: var(--active)"></div>
+          <div class="m"><b>--active</b><span class="v">rgba(38, 49, 72, 0.1)</span>按下</div>
+        </div>
+        </div>
       </div>
+      <div class="token-block" id="type">
+        <h3>字体与字号</h3>
+        <div class="type-row"><span class="k">--font-ui</span>
+          <span style="font-family: var(--font-ui)">中文界面字体栈：PingFang SC / Hiragino Sans GB / Noto Sans SC …</span></div>
+        <div class="type-row"><span class="k">--font-mono</span>
+          <span style="font-family: var(--font-mono)">ui-monospace / SF Mono / JetBrains Mono</span></div>
+        <div class="type-row"><span class="k">--text-xxs</span>
+          <span style="font-size: var(--text-xxs)">11px 极小：标签、脚注</span></div>
+        <div class="type-row"><span class="k">--text-xs</span>
+          <span style="font-size: var(--text-xs)">12px 小：辅助信息</span></div>
+        <div class="type-row"><span class="k">--text-sm</span>
+          <span style="font-size: var(--text-sm)">13px 次要正文</span></div>
+        <div class="type-row"><span class="k">--text-base</span>
+          <span style="font-size: var(--text-base)">14px 正文（默认值）</span></div>
+        <div class="type-row"><span class="k">--text-md</span>
+          <span style="font-size: var(--text-md)">16px 小标题</span></div>
+        <div class="type-row"><span class="k">--text-lg</span>
+          <span style="font-size: var(--text-lg)">20px 区块标题</span></div>
+        <div class="type-row"><span class="k">--text-xl</span>
+          <span style="font-size: var(--text-xl)">24px 页面标题</span></div>
       </div>
-    </div>
-    <div class="token-block" id="t1">
-      <h3 style="margin:0 0 14px;font-size:var(--text-md)">线 Line</h3>
-      <div class="token-grid">
-      <div class="swatch">
-        <div class="c" style="background: var(--border)"></div>
-        <div class="m"><b>--border</b>rgba(0, 0, 0, 0.1)<br/>常规边线</div>
+      <div class="token-block" id="gap">
+        <h3>间距</h3>
+        <p class="hint">方块宽度即间距值（4 / 8 / 12 / 16 / 24 / 32 像素）。</p>
+        <div class="type-row"><span class="k">--gap-1</span>
+          <span style="display:inline-block;height:12px;width:var(--gap-1);background:var(--primary)"></span></div>
+        <div class="type-row"><span class="k">--gap-2</span>
+          <span style="display:inline-block;height:12px;width:var(--gap-2);background:var(--primary)"></span></div>
+        <div class="type-row"><span class="k">--gap-3</span>
+          <span style="display:inline-block;height:12px;width:var(--gap-3);background:var(--primary)"></span></div>
+        <div class="type-row"><span class="k">--gap-4</span>
+          <span style="display:inline-block;height:12px;width:var(--gap-4);background:var(--primary)"></span></div>
+        <div class="type-row"><span class="k">--gap-5</span>
+          <span style="display:inline-block;height:12px;width:var(--gap-5);background:var(--primary)"></span></div>
+        <div class="type-row"><span class="k">--gap-6</span>
+          <span style="display:inline-block;height:12px;width:var(--gap-6);background:var(--primary)"></span></div>
       </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--border-soft)"></div>
-        <div class="m"><b>--border-soft</b>rgba(0, 0, 0, 0.04)<br/>发丝线</div>
+      <div class="token-block" id="shape">
+        <h3>形状</h3>
+        <div class="shape-row">
+        <div class="shape" style="border-radius: var(--r-sm)">--r-sm<span>6px</span></div>
+        <div class="shape" style="border-radius: var(--r-md)">--r-md<span>8px</span></div>
+        <div class="shape" style="border-radius: var(--r-lg)">--r-lg<span>12px</span></div>
+        <div class="shape" style="border-radius: var(--r-pill)">--r-pill<span>999px</span></div>
+        </div>
       </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--border-strong)"></div>
-        <div class="m"><b>--border-strong</b>rgba(0, 0, 0, 0.16)<br/>强调边线</div>
+      <div class="token-block" id="shadow">
+        <h3>阴影与焦点环</h3>
+        <div class="shadow-row">
+        <div class="shadow-box" style="box-shadow: var(--shadow-1)">--shadow-1</div>
+        <div class="shadow-box" style="box-shadow: var(--shadow-2)">--shadow-2</div>
+        <div class="shadow-box" style="box-shadow: var(--shadow-3)">--shadow-3</div>
+        <div class="shadow-box" style="box-shadow: var(--ring)">--ring 焦点环</div>
+        </div>
+        <p class="hint">布局令牌：<code>--sidebar-w: 224px</code>（桌面端侧栏宽度）。</p>
       </div>
-      </div>
-    </div>
-    <div class="token-block" id="t2">
-      <h3 style="margin:0 0 14px;font-size:var(--text-md)">字色 Text</h3>
-      <div class="token-grid">
-      <div class="swatch">
-        <div class="c" style="background: var(--text-1)"></div>
-        <div class="m"><b>--text-1</b>#0f1115<br/>正文</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--text-2)"></div>
-        <div class="m"><b>--text-2</b>#61666b<br/>次要</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--text-3)"></div>
-        <div class="m"><b>--text-3</b>#81858c<br/>三级</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--text-dim)"></div>
-        <div class="m"><b>--text-dim</b>#d5dbe3<br/>禁用/占位</div>
-      </div>
-      </div>
-    </div>
-    <div class="token-block" id="t3">
-      <h3 style="margin:0 0 14px;font-size:var(--text-md)">品牌与强调 Brand</h3>
-      <div class="token-grid">
-      <div class="swatch">
-        <div class="c" style="background: var(--primary)"></div>
-        <div class="m"><b>--primary</b>#0f1115<br/>主按钮（黑）</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--primary-hover)"></div>
-        <div class="m"><b>--primary-hover</b>#43454a<br/>主按钮 hover</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--on-primary)"></div>
-        <div class="m"><b>--on-primary</b>#ffffff<br/>按钮前景</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--accent)"></div>
-        <div class="m"><b>--accent</b>#4176e6<br/>业务蓝</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--accent-soft)"></div>
-        <div class="m"><b>--accent-soft</b>#edf3fe<br/>蓝浅底</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--accent-border)"></div>
-        <div class="m"><b>--accent-border</b>#c9d9f9<br/>蓝描边</div>
-      </div>
-      </div>
-    </div>
-    <div class="token-block" id="t4">
-      <h3 style="margin:0 0 14px;font-size:var(--text-md)">功能色 Functional</h3>
-      <div class="token-grid">
-      <div class="swatch">
-        <div class="c" style="background: var(--red)"></div>
-        <div class="m"><b>--red</b>#e5484d<br/>危险/占用</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--red-soft)"></div>
-        <div class="m"><b>--red-soft</b>#feecec<br/>危险浅底</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--amber)"></div>
-        <div class="m"><b>--amber</b>#d9730d<br/>提醒/进行中</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--amber-soft)"></div>
-        <div class="m"><b>--amber-soft</b>#fdf2e2<br/>提醒浅底</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--green)"></div>
-        <div class="m"><b>--green</b>#22c55e<br/>空闲/成功</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--green-soft)"></div>
-        <div class="m"><b>--green-soft</b>#e6f9ee<br/>成功浅底</div>
-      </div>
-      </div>
-    </div>
-    <div class="token-block" id="t5">
-      <h3 style="margin:0 0 14px;font-size:var(--text-md)">交互 Interaction</h3>
-      <div class="token-grid">
-      <div class="swatch">
-        <div class="c" style="background: var(--hover)"></div>
-        <div class="m"><b>--hover</b>rgba(38, 49, 72, 0.06)<br/>悬停</div>
-      </div>
-      <div class="swatch">
-        <div class="c" style="background: var(--active)"></div>
-        <div class="m"><b>--active</b>rgba(38, 49, 72, 0.1)<br/>按下</div>
-      </div>
-      </div>
-    </div>
-
-    <div class="token-block" id="type">
-      <h3 style="margin:0 0 14px;font-size:var(--text-md)">字体与字号</h3>
-      <div class="type-row"><span class="k">--font-ui</span><span style="font-family:var(--font-ui)">中文界面字体栈：PingFang SC / Hiragino Sans GB / Noto Sans SC…</span></div>
-      <div class="type-row"><span class="k">--font-mono</span><span style="font-family:var(--font-mono)">--font-mono: ui-monospace / SF Mono / JetBrains Mono</span></div>
-      <div class="type-row"><span class="k">--text-xxs</span><span style="font-size:var(--text-xxs)">11px 极小：标签、脚注</span></div>
-      <div class="type-row"><span class="k">--text-xs</span><span style="font-size:var(--text-xs)">12px 小：辅助信息</span></div>
-      <div class="type-row"><span class="k">--text-sm</span><span style="font-size:var(--text-sm)">13px 次要正文</span></div>
-      <div class="type-row"><span class="k">--text-base</span><span style="font-size:var(--text-base)">14px 正文（默认）</span></div>
-      <div class="type-row"><span class="k">--text-md</span><span style="font-size:var(--text-md)">16px 小标题</span></div>
-      <div class="type-row"><span class="k">--text-lg</span><span style="font-size:var(--text-lg)">20px 区块标题</span></div>
-      <div class="type-row"><span class="k">--text-xl</span><span style="font-size:var(--text-xl)">24px 页面标题</span></div>
-    </div>
-    <div class="token-block" id="gap">
-      <h3 style="margin:0 0 14px;font-size:var(--text-md)">间距</h3>
-      <p style="color:var(--text-3);font-size:var(--text-sm);margin:0 0 8px">方块长度即间距值（4 / 8 / 12 / 16 / 24 / 32）。</p>
-      <div class="type-row"><span class="k">--gap-1</span><span style="display:inline-block;height:14px;width:var(--gap-1);background:var(--primary)"></span></div>
-      <div class="type-row"><span class="k">--gap-2</span><span style="display:inline-block;height:14px;width:var(--gap-2);background:var(--primary)"></span></div>
-      <div class="type-row"><span class="k">--gap-3</span><span style="display:inline-block;height:14px;width:var(--gap-3);background:var(--primary)"></span></div>
-      <div class="type-row"><span class="k">--gap-4</span><span style="display:inline-block;height:14px;width:var(--gap-4);background:var(--primary)"></span></div>
-      <div class="type-row"><span class="k">--gap-5</span><span style="display:inline-block;height:14px;width:var(--gap-5);background:var(--primary)"></span></div>
-      <div class="type-row"><span class="k">--gap-6</span><span style="display:inline-block;height:14px;width:var(--gap-6);background:var(--primary)"></span></div>
-    </div>
-    <div class="token-block" id="shape">
-      <h3 style="margin:0 0 14px;font-size:var(--text-md)">形状</h3>
-      <div class="shape-row">
-      <div class="shape" style="border-radius: var(--r-sm)">--r-sm<br/>6px</div>
-      <div class="shape" style="border-radius: var(--r-md)">--r-md<br/>8px</div>
-      <div class="shape" style="border-radius: var(--r-lg)">--r-lg<br/>12px</div>
-      <div class="shape" style="border-radius: var(--r-pill)">--r-pill<br/>999px</div>
-      </div>
-    </div>
-    <div class="token-block" id="shadow">
-      <h3 style="margin:0 0 14px;font-size:var(--text-md)">阴影与焦点环</h3>
-      <div class="shadow-row">
-      <div class="shadow-box" style="box-shadow: var(--shadow-1)">--shadow-1</div>
-      <div class="shadow-box" style="box-shadow: var(--shadow-2)">--shadow-2</div>
-      <div class="shadow-box" style="box-shadow: var(--shadow-3)">--shadow-3</div>
-      <div class="shadow-box" style="box-shadow: var(--ring)">--ring</div>
-      </div>
-      <p style="color:var(--text-3);font-size:var(--text-sm);margin:16px 0 0">
-        布局令牌：<code>--sidebar-w: 224px</code>（桌面端侧栏宽度）。
-      </p>
-    </div>
     </div>
   </div>
 </section>
-
 <footer class="bot">
-  <div class="wrap fine">
-    令牌源文件：主仓 <a href="https://github.com/smartThise/OneTHU/blob/dev3/packages/ui/src/tokens.css" target="_blank" rel="noopener">packages/ui/src/tokens.css</a>
-    ，本站副本 <code>assets/tokens.css</code>（同步方式写在文件头）。
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h5>下载</h5>
+        <a href="https://github.com/smartThise/OneTHU/releases/latest">最新版 Releases</a>
+        <a href="download.html">三端安装包</a>
+        <a href="https://github.com/smartThise/OneTHU/releases" target="_blank" rel="noopener">历史版本</a>
+      </div>
+      <div>
+        <h5>文档</h5>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/docs/plugin-development.md" target="_blank" rel="noopener">插件开发指南</a>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/docs/api-reference.md" target="_blank" rel="noopener">API 参考</a>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/docs/architecture.md" target="_blank" rel="noopener">架构说明</a>
+        <a href="tokens.html">设计令牌</a>
+      </div>
+      <div>
+        <h5>生态</h5>
+        <a href="market.html">插件市场</a>
+        <a href="https://github.com/smartThise/OneTHU-Market" target="_blank" rel="noopener">市场名单仓库</a>
+        <a href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener">示例插件</a>
+        <a href="https://github.com/smartThise/OneTHU-Harness" target="_blank" rel="noopener">Harness</a>
+      </div>
+      <div>
+        <h5>说明</h5>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSE" target="_blank" rel="noopener">许可（MIT + 使用限制）</a>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSES/THIRD-PARTY.md" target="_blank" rel="noopener">第三方组件许可</a>
+      </div>
+    </div>
+    <div class="fine">
+      OneTHU 是非官方的个人效率工具，与清华大学无关；所有数据均来自学校公开系统的网页接口，仅供个人学习与日常使用。<br/>
+      自有代码以 MIT 许可开源，<strong>附两条限制</strong>：严禁商业用途；严禁用于对清华大学信息服务的攻击性访问（抢课、自动预约提交等）。详见
+      <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSE" target="_blank" rel="noopener">LICENSE</a>。
+    </div>
   </div>
 </footer>
 

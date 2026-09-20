@@ -1,7 +1,7 @@
 /* ============================================================
    OneTHU 站点交互
-   ① 首屏线条跳动动效（canvas：水平流线 + 正弦叠加 + 指针扰动，DPR 感知、离屏暂停、
-      prefers-reduced-motion 时只画静态一帧）
+   ① 首屏/页头几何背景（canvas：方框 + 圆 + 斜线交叉的格网，叠贯穿长线与一条蓝色弧；
+      指针视差、DPR≤2、离屏暂停，prefers-reduced-motion 时只画静态一帧）
    ② 插件市场：拉 OneTHU-Market 的 registry.json（GitHub contents API 优先、raw 兜底），
       补齐各仓库 star 数（sessionStorage 缓存 10 分钟），按分类/搜索过滤
    ③ 滚动显现、平台识别、复制按钮
@@ -11,12 +11,31 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const MARKET_REPO = 'smartThise/OneTHU-Market';
 const REGISTRY_PATHS = ['registry.json'];
 
-/* ── ① 线条跳动 ── */
-function lineField(canvas) {
+/* ── ① 几何交织背景 ──
+   一张缓慢转动的格网：每格随机是「方框 / 圆 / 斜线交叉」，再叠几条贯穿画面的长线。
+   交点处提亮、指针附近的单元被推开（视差），整体只走发丝线 + 少量品牌蓝。 */
+function latticeField(canvas) {
   const ctx = canvas.getContext('2d');
-  let w = 0, h = 0, dpr = 1, raf = 0, running = false;
-  let pointer = { x: -1e4, y: -1e4, active: false };
-  const LINES = 26;
+  let w = 0, h = 0, dpr = 1, raf = 0, running = false, t0 = 0;
+  let px = -1e4, py = -1e4, pointerActive = false;
+  const CELL = 104;          // 格距（px，CSS 单位）
+  let cols = 0, rows = 0, cells = [];
+
+  /* 每格一个固定「造型」，用确定性伪随机（同一次加载里稳定，不闪） */
+  function buildCells() {
+    cols = Math.ceil(w / CELL) + 2;
+    rows = Math.ceil(h / CELL) + 2;
+    cells = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const n = (r * 73856093) ^ (c * 19349663);
+        const kind = ((n >>> 3) % 5);              // 0-1 方框 / 2 圆 / 3 斜线 / 4 空
+        const spin = (((n >>> 7) % 100) / 100) * 0.6 - 0.3;
+        const accent = ((n >>> 11) % 7) === 0;     // 少量蓝色单元
+        cells.push({ r, c, kind, spin, accent, seed: ((n >>> 5) % 1000) / 1000 });
+      }
+    }
+  }
 
   function resize() {
     dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -26,71 +45,110 @@ function lineField(canvas) {
     canvas.width = Math.floor(w * dpr);
     canvas.height = Math.floor(h * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    buildCells();
   }
 
-  /* 一条线：基线 + 三组正弦（不同频率/相位/速度）+ 指针处的局部隆起 */
-  function drawLine(i, t) {
-    const p = i / (LINES - 1);
-    const y0 = 24 + p * (h - 48);
-    const amp = 5 + 12 * (1 - Math.abs(p - 0.45) * 1.4);
-    const blue = i % 7 === 3;
-    ctx.beginPath();
-    ctx.lineWidth = blue ? 1.5 : 1;
-    ctx.strokeStyle = blue ? 'rgba(65,118,230,.42)' : 'rgba(15,17,21,.10)';
-    const step = 12;
-    for (let x = -step; x <= w + step; x += step) {
-      const k = x / Math.max(1, w);
-      let y = y0
-        + Math.sin(k * 6.2 + t * 1.1 + p * 2.4) * amp
-        + Math.sin(k * 13.7 - t * 0.7 + p * 4.1) * amp * 0.34
-        + Math.sin(k * 27.1 + t * 1.9) * amp * 0.12;
-      if (pointer.active) {
-        const dx = x - pointer.x, dy = y - pointer.y;
-        const d2 = dx * dx + dy * dy;
-        y += Math.exp(-d2 / 12000) * 22 * Math.sign(pointer.y - y || 1) * -1;
-      }
-      if (x <= -step) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  const INK = 'rgba(15,17,21,';
+  const BLUE = 'rgba(65,118,230,';
+
+  function unit(cell, t) {
+    const cx = (cell.c - 0.5) * CELL;
+    const cy = (cell.r - 0.5) * CELL;
+    /* 视差：指针附近单元被推开一点，营造“交织在动”的手感 */
+    let dx = 0, dy = 0;
+    if (pointerActive) {
+      const ox = cx - px, oy = cy - py;
+      const d2 = ox * ox + oy * oy;
+      const push = Math.exp(-d2 / (CELL * CELL * 3.2)) * 14;
+      const len = Math.sqrt(d2) || 1;
+      dx = (ox / len) * push; dy = (oy / len) * push;
     }
+    return { x: cx + dx, y: cy + dy };
+  }
+
+  function draw(now) {
+    const t = (now - t0) / 1000;
+    ctx.clearRect(0, 0, w, h);
+    ctx.lineWidth = 1;
+
+    for (const cell of cells) {
+      if (cell.kind === 4) continue;
+      const { x, y } = unit(cell, t);
+      const half = CELL * 0.34;
+      const breathe = 1 + 0.06 * Math.sin(t * 0.5 + cell.seed * 6.28);
+      const col = cell.accent ? BLUE : INK;
+      const alpha = cell.accent ? 0.46 : 0.17 + 0.05 * Math.sin(t * 0.4 + cell.seed * 9);
+      ctx.strokeStyle = col + alpha.toFixed(3) + ')';
+
+      if (cell.kind <= 1) {
+        /* 方框：缓慢自转 */
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(cell.spin * 0.35 + Math.sin(t * 0.22 + cell.seed * 6.28) * 0.05);
+        const s = half * breathe;
+        ctx.strokeRect(-s, -s, s * 2, s * 2);
+        if (cell.kind === 0 && cell.accent) {
+          ctx.fillStyle = BLUE + '0.10)';
+          ctx.fillRect(-s, -s, s * 2, s * 2);
+        }
+        ctx.restore();
+      } else if (cell.kind === 2) {
+        /* 圆：半径呼吸 + 直径线，与相邻方框形成交织感 */
+        ctx.beginPath();
+        ctx.arc(x, y, half * breathe * 0.92, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x - half * 1.5, y); ctx.lineTo(x + half * 1.5, y);
+        ctx.strokeStyle = col + (alpha * 0.75).toFixed(3) + ')';
+        ctx.stroke();
+      } else {
+        /* 斜线交叉（X） */
+        ctx.beginPath();
+        ctx.moveTo(x - half, y - half); ctx.lineTo(x + half, y + half);
+        ctx.moveTo(x + half, y - half); ctx.lineTo(x - half, y + half);
+        ctx.stroke();
+      }
+    }
+
+    /* 贯穿画面的长线：与格网交叉，交点提亮 */
+    const lines = [
+      { y: h * 0.22, slope: 0.12, a: 0.16 },
+      { y: h * 0.52, slope: -0.18, a: 0.13 },
+      { y: h * 0.80, slope: 0.08, a: 0.16 },
+    ];
+    for (const [i, ln] of lines.entries()) {
+      const shift = Math.sin(t * 0.18 + i) * 16;
+      ctx.strokeStyle = INK + ln.a + ')';
+      ctx.beginPath();
+      ctx.moveTo(-40, ln.y + shift + ln.slope * -40);
+      ctx.lineTo(w + 40, ln.y + shift + ln.slope * (w + 40));
+      ctx.stroke();
+    }
+    /* 一个缓慢移动的蓝色圆弧：唯一的“活物” */
+    const ax = w * (0.5 + 0.34 * Math.sin(t * 0.09));
+    const ay = h * (0.5 + 0.22 * Math.cos(t * 0.12));
+    ctx.strokeStyle = BLUE + '0.40)';
+    ctx.beginPath();
+    ctx.arc(ax, ay, 86, t * 0.3, t * 0.3 + Math.PI * 1.25);
     ctx.stroke();
   }
 
-  /* 稀疏方块：几何语言的点缀，随行高与时间缓慢明灭 */
-  function drawSquares(t) {
-    for (let i = 0; i < 14; i++) {
-      const seed = i * 137.5;
-      const x = ((seed * 7.3) % 100) / 100 * w;
-      const y = ((seed * 3.1) % 100) / 100 * h;
-      const s = 4 + ((i * 5) % 3) * 3;
-      const a = 0.05 + 0.05 * (0.5 + 0.5 * Math.sin(t * 0.9 + i));
-      ctx.fillStyle = i % 5 === 0 ? `rgba(65,118,230,${a + 0.12})` : `rgba(15,17,21,${a})`;
-      ctx.fillRect(Math.round(x), Math.round(y), s, s);
-    }
-  }
-
-  function frame(now) {
-    if (!running) return;
-    const t = now / 1000;
-    ctx.clearRect(0, 0, w, h);
-    for (let i = 0; i < LINES; i++) drawLine(i, t);
-    drawSquares(t);
-    raf = requestAnimationFrame(frame);
-  }
-
+  function frame(now) { if (!running) return; draw(now); raf = requestAnimationFrame(frame); }
   function start() { if (running || REDUCED) return; running = true; raf = requestAnimationFrame(frame); }
   function stop() { running = false; cancelAnimationFrame(raf); }
-  function staticFrame() { ctx.clearRect(0, 0, w, h); for (let i = 0; i < LINES; i++) drawLine(i, 0.6); drawSquares(1.2); }
 
   resize();
-  if (REDUCED) staticFrame(); else start();
-  addEventListener('resize', () => { resize(); if (REDUCED) staticFrame(); });
+  if (REDUCED) draw(t0 = performance.now()); else start();
+  addEventListener('resize', () => { resize(); if (REDUCED) draw(performance.now()); });
   addEventListener('pointermove', (e) => {
     const rect = canvas.getBoundingClientRect();
-    pointer = { x: e.clientX - rect.left, y: e.clientY - rect.top, active: e.clientY < rect.bottom + 120 && e.clientY > rect.top - 120 };
+    const inside = e.clientY > rect.top - 160 && e.clientY < rect.bottom + 160;
+    pointerActive = inside;
+    px = e.clientX - rect.left; py = e.clientY - rect.top;
   });
-  addEventListener('pointerleave', () => { pointer.active = false; });
-  /* 离屏暂停：省电，也避免多标签页时抢帧 */
+  addEventListener('pointerleave', () => { pointerActive = false; });
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(([entry]) => { entry.isIntersecting ? start() : stop(); }, { threshold: 0 }).observe(canvas);
+    new IntersectionObserver(([e]) => { e.isIntersecting ? start() : stop(); }, { threshold: 0 }).observe(canvas);
   }
 }
 
@@ -314,8 +372,8 @@ async function copyButtons() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('lines');
-  if (canvas) lineField(canvas);
+  const canvas = document.getElementById('bg');
+  if (canvas) latticeField(canvas);
   observeReveals();
   detectPlatform();
   void copyButtons();
