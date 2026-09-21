@@ -8,6 +8,7 @@
 .onethu-demo/
 docs-src/
 docs-site/
+overrides/
 tools/
 site/
 mkdocs.yml

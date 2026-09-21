@@ -19,6 +19,7 @@ site_dir: site
 theme:
   name: material
   language: zh
+  custom_dir: overrides   # 只用来修首页标题，见 overrides/main.html
   logo: assets/logo.svg
   favicon: assets/favicon.png
   # 不加载 Google Fonts：与官网同一套系统字体栈，校内网络访问更稳

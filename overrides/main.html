@@ -1,0 +1,18 @@
+{#-
+  Material 主题定制入口（theme.custom_dir = overrides）
+
+  只改一处：首页标题。站内首页 index.md 放在导航的「首页」分组下，
+  mkdocs 因而不认它是 top-level 首页（page.is_homepage 为假），
+  默认模板会拼出「OneTHU 文档 - OneTHU 文档」。这里让标题与站点名相同时只留一段。
+-#}
+{% extends "base.html" %}
+
+{% block htmltitle %}
+  {% if page.is_homepage or (page.title | striptags) == config.site_name %}
+    <title>{{ config.site_name }}</title>
+  {% elif page.meta and page.meta.title %}
+    <title>{{ page.meta.title }} - {{ config.site_name }}</title>
+  {% else %}
+    <title>{{ page.title | striptags }} - {{ config.site_name }}</title>
+  {% endif %}
+{% endblock %}
