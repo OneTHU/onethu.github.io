@@ -112,10 +112,12 @@ nav:
       - 插件开发指南: plugin-development.md
       - API 参考: api-reference.md
       - Rust sidecar 骨架: examples/harness-skel/README.md
-  - 架构与实现:
-      - 系统架构: architecture.md
+  - 作业:
+      - 作业区（聚合 / 忽略 / 提交）: homework.md
       - 外部作业源（接入）: external-homework.md
       - 外部作业源（设计与实测）: 外部作业源-需求与实现方案.md
+  - 架构与实现:
+      - 系统架构: architecture.md
       - 安卓 release 陷阱与取证: android-release-traps.md
       - 脱敏演示版构建: demo-build.md
   - 规范与许可:

@@ -18,6 +18,7 @@ OneTHU 是清华大学校园助手应用：登录一次，网络学堂、信息�
 | **使用者**：安装、登录、排障 | [安装与上手](quickstart.md) → [外部作业源（接入）](external-homework.md) → [交流与反馈](community.md) |
 | **插件开发者**：开发插件 | [插件开发指南](plugin-development.md) → [API 参考](api-reference.md) → [Rust sidecar 骨架](examples/harness-skel/README.md) |
 | **宿主贡献者**：修改宿主实现 | [系统架构](architecture.md) → [构建与发布](build-and-release.md) → [安卓 release 陷阱与取证](android-release-traps.md) |
+| **作业功能使用者与贡献者** | [作业区（聚合 / 忽略 / 提交）](homework.md) → [外部作业源（接入）](external-homework.md) |
 | **外部作业源贡献者**：接入新平台 | [外部作业源（接入）](external-homework.md) → [外部作业源（设计与实测）](外部作业源-需求与实现方案.md) |
 | **界面贡献者**：修改用户可见文案 | [UI 文案与信息密度](ui-copy-audit.md)；提交前执行 `pnpm lint:ui-copy` |
 | **分发与合规**：确认许可范围 | [许可与致谢](license.md) |
@@ -32,6 +33,7 @@ OneTHU 是清华大学校园助手应用：登录一次，网络学堂、信息�
 | [插件开发指南](plugin-development.md) | 插件形态与清单、权限模型、UI 通道与结构化结果、小组件、发版与市场收录、三种插件形态的通信协议 |
 | [API 参考](api-reference.md) | `ctx.onethu.*` 命名空间与方法的完整参考 |
 | [系统架构](architecture.md) | 进程模型、会话管线、插件宿主、主题系统、模型调度、构建流程 |
+| [作业区（聚合 / 忽略 / 提交）](homework.md) | 作业分组与忽略、网络学堂附件上传与必交附件预检、雨课堂主观题原生作答、学术红线与测试工具 |
 | [外部作业源（接入）](external-homework.md) | 雨课堂 / TUOJ / Tyche / DSA OJ 的接入方式、凭据维护与故障恢复 |
 | [外部作业源（设计与实测）](外部作业源-需求与实现方案.md) | 接口探测、加密字体与 LaTeX 方案、原生详情页与嵌入式提交入口的实现记录 |
 | [安卓 release 陷阱与取证](android-release-traps.md) | `@InvokeArg`、R8、UA 伪装等 release 专属故障与真机日志导出通道 |
