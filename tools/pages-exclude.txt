@@ -3,6 +3,8 @@
 .git/
 .github/
 .pages/
+.onethu/           # 工作流里主仓的检出目录，绝不能进产物
+.onethu-demo/
 docs-src/
 docs-site/
 tools/

@@ -31,10 +31,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 检出本站
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 检出主仓（文档正文来源）
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: smartThise/OneTHU
           ref: ${{ inputs.onethu_ref || 'dev3' }}
@@ -56,7 +56,7 @@ jobs:
             exit 1
           fi
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
           cache: pip
@@ -89,7 +89,23 @@ jobs:
             cp .pages/docs/404.html .pages/404.html
           fi
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: 校验产物内容
+        run: |
+          # 兜底：产物里一旦混入源码/工作目录就不发布（曾经把主仓检出 rsync 进去，
+          # 上传阶段因其中的软链直接失败）
+          stray=""
+          for path in docs-src docs-site tools site .onethu .onethu-demo .github .git \
+                      mkdocs.yml requirements-docs.txt README.md .gitignore; do
+            [ -e ".pages/$path" ] && stray="$stray $path"
+          done
+          if [ -n "$stray" ]; then
+            echo "::error::产物里混入了不该发布的路径：$stray"
+            exit 1
+          fi
+          echo "产物顶层内容："
+          ls -A .pages
+
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: .pages
 
@@ -101,4 +117,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
