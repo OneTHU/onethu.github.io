@@ -2,8 +2,8 @@ name: pages
 
 # 官网（本仓库根目录的静态页）与文档站（/docs/）一起构建并发布到 GitHub Pages。
 # 文档站正文来自主仓 smartThise/OneTHU 的 docs/：
-#   · 主仓文档更新后不会自动触发本仓库 —— 靠每日定时重建跟进，
-#     需要立刻生效时在本仓库手动触发本工作流（或推送任意提交）。
+#   · 主仓文档更新不会自动触发本仓库，由每日定时重建跟进；
+#     需要立即生效时在本仓库手动触发本工作流（或推送任意提交）。
 #   · 手动触发可指定主仓分支（默认 dev3）。
 on:
   push:
@@ -51,7 +51,7 @@ jobs:
         run: |
           python3 tools/build-pages.py >/dev/null
           if ! git diff --quiet -- index.html market.html download.html; then
-            echo "::error::index/market/download.html 与 tools/build-pages.py 不一致；请本地重跑脚本并提交"
+            echo "::error::index/market/download.html 与 tools/build-pages.py 不一致；请重新执行脚本并提交"
             git diff --stat -- index.html market.html download.html
             exit 1
           fi
@@ -83,23 +83,23 @@ jobs:
       - name: 组装站点（官网静态页 + /docs/）
         run: |
           rsync -a --exclude-from=tools/pages-exclude.txt ./ .pages/
-          # GitHub Pages 只认站点根目录的 404.html；文档站的 404 页用的是
-          # /docs/ 绝对路径，放到根目录后整站任何 404 都能落到它上面
+          # GitHub Pages 仅使用站点根目录的 404.html；文档站的 404 页使用
+          # /docs/ 绝对路径，复制到根目录后全站 404 均由该页承担
           if [ ! -f .pages/404.html ]; then
             cp .pages/docs/404.html .pages/404.html
           fi
 
       - name: 校验产物内容
         run: |
-          # 兜底：产物里一旦混入源码/工作目录就不发布（曾经把主仓检出 rsync 进去，
-          # 上传阶段因其中的软链直接失败）
+          # 产物断言：混入源码或工作目录即中止发布。历史上曾将主仓检出一并打包，
+          # 上传阶段因其中的符号链接失败
           stray=""
           for path in docs-src docs-site tools site .onethu .onethu-demo .github .git \
                       mkdocs.yml requirements-docs.txt README.md .gitignore; do
             [ -e ".pages/$path" ] && stray="$stray $path"
           done
           if [ -n "$stray" ]; then
-            echo "::error::产物里混入了不该发布的路径：$stray"
+            echo "::error::产物中混入了不应发布的路径：$stray"
             exit 1
           fi
           echo "产物顶层内容："

@@ -1,4 +1,4 @@
 # 文档站构建依赖（Material for MkDocs）。
 # 安装：pip install -r requirements-docs.txt
-# 本地预览可直接跑 tools/docs-serve.sh（在仓库外建 venv：exFAT 不支持 venv 的符号链接）。
+# 本地预览可执行 tools/docs-serve.sh（venv 建于仓库外：exFAT 不支持 venv 的符号链接）。
 mkdocs-material==9.7.7

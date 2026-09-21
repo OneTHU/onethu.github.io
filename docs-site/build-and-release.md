@@ -9,13 +9,13 @@
 | 用途 | 要求 |
 |---|---|
 | 全平台 | Node ≥ 20、pnpm、Rust toolchain（桌面 / 移动壳需 Rust 编译） |
-| Android | Android SDK + NDK；`apps/desktop/src-tauri/gen/android` 为 git 跟踪的软链，目标目录必须在支持符号链接的卷上（如 APFS） |
+| Android | Android SDK + NDK；`apps/desktop/src-tauri/gen/android` 为 git 跟踪的软链，目标目录必须位于支持符号链接的卷（如 APFS） |
 | 桌面原生模块 | macOS 需 Xcode 命令行工具；Windows 需 MSVC 生成工具 |
 
-!!! tip "载体选择"
+!!! tip "构建位置"
 
-    Rust 与前端构建都应在本地磁盘（APFS / NTFS）上进行。仓库放在 exFAT 等外置卷时，
-    用 `CARGO_TARGET_DIR` 把 Cargo 产物指到本地磁盘，避免硬链接与权限相关的构建失败。
+    Rust 与前端构建均在本地磁盘（APFS / NTFS）上进行。仓库位于 exFAT 等外置卷时，
+    使用 `CARGO_TARGET_DIR` 将 Cargo 产物指向本地磁盘，可避免硬链接与权限相关的构建失败。
 
 ## 2. 仓库结构
 
@@ -36,25 +36,25 @@ OneTHU/
 ## 3. 日常开发
 
 ```bash
-pnpm install                                  # workspace 全量装依赖
+pnpm install                                  # 安装 workspace 全部依赖
 
-pnpm dev                                      # 纯浏览器预览（Vite dev server）
-pnpm --filter @onethu/desktop tauri:dev       # 原生桌面壳开发模式（前端热更）
+pnpm dev                                      # 浏览器预览（Vite dev server）
+pnpm --filter @onethu/desktop tauri:dev       # 原生桌面壳开发模式（前端热更新）
 
-bash apps/desktop/scripts/dev-launch.sh       # tauri:dev 的实际入口（含前置清理）
+bash apps/desktop/scripts/dev-launch.sh       # tauri:dev 的入口（含前置清理）
 node apps/desktop/scripts/build-harness.mjs   # 重建 Harness sidecar
 ```
 
-浏览器预览读不到原生传输层的响应头与会话 Cookie，涉及登录态、插件宿主、通知、
-小组件的验证必须在原生壳中进行。
+浏览器预览无法读取原生传输层的响应头与会话 Cookie；涉及登录态、插件宿主、通知与
+小组件的验证须在原生壳中进行。
 
 ## 4. 生产构建
 
 ```bash
-pnpm build                                              # 构建全部包；web 资产产出到 apps/desktop/dist
-pnpm --filter @onethu/desktop build:harness             # 构建 sidecar（必须先于打包）
+pnpm build                                              # 构建全部包；web 资产产出至 apps/desktop/dist
+pnpm --filter @onethu/desktop build:harness             # 构建 sidecar（须先于打包）
 
-pnpm --filter @onethu/desktop tauri:build               # 桌面安装包（自动先跑前端构建）
+pnpm --filter @onethu/desktop tauri:build               # 桌面安装包（自动先执行前端构建）
 pnpm --filter @onethu/desktop exec tauri android build --apk   # Android APK（arm64 / universal）
 bash apps/desktop/scripts/build-demo-apk.sh             # 脱敏演示版 APK（见「脱敏演示版构建」）
 ```
@@ -65,10 +65,10 @@ bash apps/desktop/scripts/build-demo-apk.sh             # 脱敏演示版 APK（
 | Android APK | `apps/desktop/src-tauri/gen/android/.../build/outputs/apk/` |
 | 前端资产 | `apps/desktop/dist/` |
 
-!!! warning "sidecar 必须在目标平台现场构建"
+!!! warning "sidecar 须在目标平台现场构建"
 
-    仓库不携带任何架构的二进制。Harness sidecar 若在错误平台上构建并打进安装包，
-    插件宿主拉起必然失败。CI 在目标平台现场构建，本地跨平台打包时同样需要先重建。
+    仓库不携带任何架构的二进制。Harness sidecar 若在其他平台构建并打入安装包，
+    插件宿主将无法启动。CI 在目标平台现场构建；本地跨平台打包时同样需要先重建。
 
 ## 5. CI 发布链路
 
@@ -76,8 +76,8 @@ bash apps/desktop/scripts/build-demo-apk.sh             # 脱敏演示版 APK（
 
 | 触发 | 行为 |
 |---|---|
-| 推送 `v*` 标签 | 构建 macOS（aarch64，`.dmg`）与 Windows（NSIS `.exe`）安装包并上传为 Release 产物 |
-| 手动触发 | 可只跑 Windows job，用于日常验证 Windows 构建链 |
+| 推送 `v*` 标签 | 构建 macOS（aarch64，`.dmg`）与 Windows（NSIS `.exe`）安装包，并上传为 Release 产物 |
+| 手动触发 | 可只执行 Windows job，用于验证 Windows 构建链 |
 
 Android APK **不在 CI 构建**：`gen/android` 不入库，签名在本机完成。发布前请核对
 签名版本号与 `tauri.conf.json` 中的版本号一致。
@@ -86,7 +86,7 @@ Android APK **不在 CI 构建**：`gen/android` 不入库，签名在本机完�
 
 | 分支 | 用途 |
 |---|---|
-| `dev2` | 日常开发（推送到远端的 `dev3`） |
+| `dev2` | 日常开发（推送至远端的 `dev3`） |
 | `dev3` | 发布线（GitHub 与清华 GitLab 两个远端同步） |
 | `demo` | 脱敏演示版：包名 `app.onethu.demo`，可与正式版共存，见 [脱敏演示版构建](demo-build.md) |
 
@@ -104,21 +104,21 @@ cd apps/desktop/src-tauri/gen/android && ./gradlew :tauri-plugin-onethu-mobile:c
 ```
 
 `tools/` 下的测试脚本覆盖通知编排、小组件快照与原生重画、外部作业源状态、插件 UI 逻辑、
-主题联动、市场名单解析等链路，是改动的第一道护栏。完整的命令清单（含 Android 目标交叉
-检查、macOS 通知探针、Windows 通知模块编译检查）见
+主题联动、市场名单解析等链路，是改动的第一道护栏。完整命令清单（含 Android 目标交叉检查、
+macOS 通知探针、Windows 通知模块编译检查）见
 [系统架构 §8](architecture.md#8-构建与发布)。
 
 ## 8. 常见构建陷阱
 
 | 陷阱 | 现象 | 处理 |
 |---|---|---|
-| exFAT / 网络卷上构建 | 链接与权限错误、构建产物异常 | 产物目录指向本地磁盘 |
-| 新增 Tauri Android 命令参数类缺 `@InvokeArg` | release 包调用即抛 `no Creators`，debug 包正常 | 参数类必须加注解，并在 release 包真机验证 |
-| XML 注释中出现 `--` | AAPT 资源解析直接失败 | 注释内不要写连续短横线 |
-| `res/` 下出现 `._*` 文件 | AppleDouble 被当作资源 | 构建前 `find res -name '._*' -delete` |
-| 裸 UA 字符串判定安卓 | 主窗口伪装导致判定恒假 | 多信号判定，见对应文档 |
+| 在 exFAT / 网络卷上构建 | 链接与权限错误、构建产物异常 | 将产物目录指向本地磁盘 |
+| 新增 Tauri Android 命令参数类缺少 `@InvokeArg` | release 包调用即抛 `no Creators`，debug 包正常 | 参数类必须加注解，并在 release 包上真机验证 |
+| XML 注释中出现 `--` | AAPT 资源解析失败 | 注释内不写连续短横线 |
+| `res/` 下出现 `._*` 文件 | AppleDouble 被当作资源 | 构建前执行 `find res -name '._*' -delete` |
+| 以裸 UA 字符串判定安卓 | 主窗口伪装导致判定恒为假 | 改用多信号判定，见对应文档 |
 
-详细成因、复现与取证通道见 [安卓 release 陷阱与取证](android-release-traps.md)。
+成因、复现与取证通道见 [安卓 release 陷阱与取证](android-release-traps.md)。
 
 ## 9. 文档站自身的构建
 
@@ -126,7 +126,7 @@ cd apps/desktop/src-tauri/gen/android && ./gradlew :tauri-plugin-onethu-mobile:c
 `docs/`：
 
 ```bash
-bash tools/sync-docs.sh          # 主仓文档 → docs-src/（本仓库预览用；CI 会检出主仓）
+python3 tools/sync-docs.py ../OneTHU/docs    # 主仓文档 → docs-src/（本仓库预览用；CI 检出主仓）
 bash tools/docs-serve.sh         # 本地预览 http://127.0.0.1:8000
 ```
 

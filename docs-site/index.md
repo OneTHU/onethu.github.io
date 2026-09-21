@@ -4,8 +4,8 @@ OneTHU 是清华大学校园助手应用：登录一次，网络学堂、信息�
 校园网、体育场馆与选课查询共用同一会话，覆盖 macOS / Windows / Android 三端，并通过插件
 系统开放扩展能力。
 
-本文档面向三类读者——使用者、插件开发者、宿主贡献者——覆盖上手、插件与 API、系统架构、
-构建发布与许可合规。
+本文档面向使用者、插件开发者与宿主贡献者，覆盖安装上手、插件与 API、系统架构、构建发布
+与许可合规。
 
 [:material-download: 下载最新版](https://github.com/smartThise/OneTHU/releases/latest){ .md-button .md-button--primary }
 [:material-home: 官网](https://onethu.github.io/){ .md-button }
@@ -13,14 +13,14 @@ OneTHU 是清华大学校园助手应用：登录一次，网络学堂、信息�
 
 ## 按角色进入
 
-| 我是谁 | 阅读顺序 |
+| 角色 | 阅读顺序 |
 |---|---|
 | **使用者**：安装、登录、排障 | [安装与上手](quickstart.md) → [外部作业源（接入）](external-homework.md) → [交流与反馈](community.md) |
-| **插件开发者**：写一个插件 | [插件开发指南](plugin-development.md) → [API 参考](api-reference.md) → [Rust sidecar 骨架](examples/harness-skel/README.md) |
-| **宿主贡献者**：改宿主实现 | [系统架构](architecture.md) → [构建与发布](build-and-release.md) → [安卓 release 陷阱与取证](android-release-traps.md) |
-| **外部作业源贡献者**：接新平台 | [外部作业源（接入）](external-homework.md) → [外部作业源（设计与实测）](外部作业源-需求与实现方案.md) |
-| **界面贡献者**：写用户可见文案 | [UI 文案与信息密度](ui-copy-audit.md)（改完跑 `pnpm lint:ui-copy`） |
-| **分发与合规**：许可范围 | [许可与致谢](license.md) |
+| **插件开发者**：开发插件 | [插件开发指南](plugin-development.md) → [API 参考](api-reference.md) → [Rust sidecar 骨架](examples/harness-skel/README.md) |
+| **宿主贡献者**：修改宿主实现 | [系统架构](architecture.md) → [构建与发布](build-and-release.md) → [安卓 release 陷阱与取证](android-release-traps.md) |
+| **外部作业源贡献者**：接入新平台 | [外部作业源（接入）](external-homework.md) → [外部作业源（设计与实测）](外部作业源-需求与实现方案.md) |
+| **界面贡献者**：修改用户可见文案 | [UI 文案与信息密度](ui-copy-audit.md)；提交前执行 `pnpm lint:ui-copy` |
+| **分发与合规**：确认许可范围 | [许可与致谢](license.md) |
 
 ## 文档全貌
 
@@ -42,11 +42,11 @@ OneTHU 是清华大学校园助手应用：登录一次，网络学堂、信息�
 
 ## 关于本站
 
-- **正文来源**：插件、API、架构等工程文档的正文在主仓
+- **正文来源**：插件、API、架构等工程文档的正文位于主仓
   [`smartThise/OneTHU/docs`](https://github.com/smartThise/OneTHU/tree/dev3/docs)，
-  由本站构建时同步；首页、快速开始、构建与发布、许可、交流这几页在本站仓库维护。
-- **阅读与更新**：文档随主仓更新自动重建（也可手动触发构建）。文档与实现不一致时，**以代码为准**
-  ——权威文件清单见 [文档导览](overview.md)。
+  由本站构建时同步；首页、快速开始、构建与发布、许可与致谢、交流与反馈在本站仓库维护。
+- **更新方式**：文档随主仓更新自动重建，也可手动触发构建。文档与实现不一致时以代码为准，
+  权威文件清单见 [文档导览](overview.md)。
 - **许可**：文档站代码以 MIT 开源（见
-  [本站 LICENSE](https://github.com/OneTHU/onethu.github.io/blob/main/LICENSE)），
+  [本站 LICENSE](https://github.com/OneTHU/onethu.github.io/blob/main/LICENSE)）；
   正文中的名称、标识与截图归主仓所有。

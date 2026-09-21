@@ -1,10 +1,10 @@
 # ============================================================
 # OneTHU 文档站（Material for MkDocs）
 #
-# 文档正文不在本仓库：本仓库只管「主题 / 导航 / 构建 / 部署」。
-#   · 正文来源：主仓 smartThise/OneTHU 的 docs/（由 tools/sync-docs.sh 同步）
+# 文档正文不在本仓库：本仓库只负责主题、导航、构建与部署。
+#   · 正文来源：主仓 smartThise/OneTHU 的 docs/（由 tools/sync-docs.py 同步）
 #   · 本站自有页面：docs-site/（首页、快速开始、构建与发布、许可、交流）
-#   两者在构建前合成为 docs-src/（不入库），再由此配置构建。
+#   两者在构建前合成为 docs-src/（不入库），再由本配置构建。
 #
 # 本地预览：bash tools/docs-serve.sh
 # 线上地址：https://onethu.github.io/docs/
@@ -22,12 +22,12 @@ theme:
   custom_dir: overrides   # 只用来修首页标题，见 overrides/main.html
   logo: assets/logo.svg
   favicon: assets/favicon.png
-  # 不加载 Google Fonts：与官网同一套系统字体栈，校内网络访问更稳
+  # 不加载 Google Fonts：与官网使用同一套系统字体栈，校内网络访问更稳定
   font: false
   palette:
-    # 仅亮色，与官网 tokens.css（也仅亮色）保持一致
+    # 仅亮色；与官网 tokens.css 保持一致
     - scheme: default
-      primary: custom   # 具体取值见 docs-site/assets/extra.css（主仓设计令牌）
+      primary: custom   # 取值见 docs-site/assets/extra.css（取自主仓设计令牌）
       accent: custom
   features:
     - navigation.instant
@@ -44,7 +44,7 @@ theme:
     - content.tabs.link
 
 markdown_extensions:
-  # 锚点算法对齐 GitHub：主仓文档的自建目录（#1-插件能力与形态 等）在站内也点得通
+  # 锚点算法与 GitHub 一致：主仓文档的自建目录（#1-插件能力与形态 等）在站内可正常跳转
   - toc:
       permalink: true
       title: 本页目录
@@ -77,7 +77,7 @@ plugins:
 
 validation:
   links:
-    # 主仓文档里指向仓库文件（LICENSE 等）的链接由同步脚本改写为 GitHub 地址
+    # 主仓文档中指向仓库文件（LICENSE 等）的链接由同步脚本改写为 GitHub 地址
     absolute_links: ignore
     unrecognized_links: ignore
 

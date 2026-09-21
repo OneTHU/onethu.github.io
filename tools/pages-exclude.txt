@@ -3,7 +3,7 @@
 .git/
 .github/
 .pages/
-# 工作流里主仓的检出目录（rsync 的排除文件不支持行尾注释，注释只能单独成行）
+# 工作流中主仓的检出目录（rsync 排除文件不支持行尾注释，注释须独立成行）
 .onethu/
 .onethu-demo/
 docs-src/

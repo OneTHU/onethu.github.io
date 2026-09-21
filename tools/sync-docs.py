@@ -6,13 +6,13 @@
     # 例：python3 tools/sync-docs.py ../OneTHU/docs
 
 规则：
-  · 逐目录复制，后面的目录只补前面没有的文件（用于只存在于 demo 分支的文档），互不覆盖；
-  · 跳过 macOS / exFAT 副产物（`._*`、`.DS_Store`），否则会被当成文档页；
-  · 主仓 `docs/README.md` 在站内改名为 `overview.md` —— 站内首页是本站自有的 `index.md`；
+  · 逐目录复制，后续目录只补前面缺失的文件（用于仅存在于 demo 分支的文档），互不覆盖；
+  · 跳过 macOS / exFAT 副产物（`._*`、`.DS_Store`），否则会被视为文档页；
+  · 主仓 `docs/README.md` 在站内改名为 `overview.md`：站内首页由本站自有的 `index.md` 提供；
   · 指向仓库内其他文件（`../LICENSE` 等）的相对链接改写为主仓 GitHub 地址，避免站内 404；
-  · 最后叠加本站自有页面 `docs-site/`（可覆盖上面任何文件）。
+  · 最后叠加本站自有页面 `docs-site/`（可覆盖以上任意文件）。
 
-文档正文的权威位置始终是主仓，本脚本只做单向复制，不修改主仓任何文件。
+文档正文的权威位置始终是主仓；本脚本只做单向复制，不修改主仓文件。
 """
 import os
 import re
@@ -52,8 +52,8 @@ def copy_tree(src, dst, only_missing=False):
             if only_missing and os.path.exists(target):
                 skipped_existing.append(rel_path)
                 continue
-            # 用 copyfile 而非 copy2：exFAT 上复制元数据会写出 `._*` 旁文件，
-            # 那种文件会被 mkdocs 当成文档页，也会混进构建产物
+            # 使用 copyfile 而非 copy2：exFAT 上复制元数据会生成 `._*` 旁文件，
+            # 该文件会被 mkdocs 视为文档页并混入构建产物
             shutil.copyfile(os.path.join(base, name), target)
             added.append(rel_path)
     return added, skipped_existing
@@ -106,9 +106,9 @@ def main(argv):
     # 本站自有页面叠加在最后
     if os.path.isdir(SITE_PAGES):
         added, _ = copy_tree(SITE_PAGES, DEST)
-        print('· 本站自有页面 docs-site/ 叠加 %d 个文件' % len(added))
+        print('· 叠加本站自有页面 docs-site/：%d 个文件' % len(added))
 
-    # 兜底：清掉任何来源留下的 AppleDouble 旁文件
+    # 兜底：清理任何来源留下的 AppleDouble 旁文件
     removed = 0
     for base, dirs, files in os.walk(DEST):
         for name in files:

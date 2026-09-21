@@ -2,8 +2,8 @@
 """由本脚本生成站点页面（index / market / download）。
 
 页面本身是普通静态 HTML（提交在仓库里，Pages 直接托管，**浏览时无需构建**）。
-文档站（`/docs/`）不在本脚本范围内：它由 mkdocs + tools/sync-docs.py 构建，见 README。
-本脚本只用来统一「头部 / 页脚 / 品牌标识」三块共用标记：改完共用部分跑一次
+文档站（`/docs/`）不在本脚本范围内：由 mkdocs 与 tools/sync-docs.py 构建，见 README。
+本脚本只用来统一「头部 / 页脚 / 品牌标识」三块共用标记：修改共用部分后执行一次
 `python3 tools/build-pages.py` 重新生成，避免多页漂移。
 设计令牌只作为站点自身的 CSS 变量（assets/tokens.css）存在，不再单独成页。
 """
@@ -114,7 +114,7 @@ def write(name, html):
 def card(title, desc, items=None, tags=None, cls="", href=""):
     li = "".join("<li>%s</li>" % x for x in (items or []))
     tg = "".join('<span class="tag">%s</span>' % x for x in (tags or []))
-    # href 非空时整卡可点（文档卡片用），标记与样式与其他卡片一致
+    # href 非空时整张卡片可点击（文档卡片使用），标记与样式与其他卡片一致
     opener = '<a class="card reveal" href="%s" style="color:inherit">' % href if href else '<div class="card reveal">'
     closer = '</a>' if href else '</div>'
     return """        %s
