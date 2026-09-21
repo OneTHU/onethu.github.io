@@ -55,9 +55,14 @@ pnpm build                                              # 构建全部包；web 
 pnpm --filter @onethu/desktop build:harness             # 构建 sidecar（须先于打包）
 
 pnpm --filter @onethu/desktop tauri:build               # 桌面安装包（自动先执行前端构建）
-pnpm --filter @onethu/desktop exec tauri android build --apk   # Android APK（arm64 / universal）
-bash apps/desktop/scripts/build-demo-apk.sh             # 脱敏演示版 APK（见「脱敏演示版构建」）
+
+bash apps/desktop/scripts/build-release-apk.sh          # 发布线 Android APK（arm64；见 §6 双线纪律）
+bash apps/desktop/scripts/build-demo-apk.sh             # demo 线脱敏演示版 APK（见「脱敏演示版构建」）
 ```
+
+Android 打包脚本先自检发布线不变量（正式包名 + 不脱敏），再把工程置于内盘、构建并签名
+（默认 debug 证书，与线上 Release 同证书）。直接调用
+`pnpm --filter @onethu/desktop exec tauri android build --apk` 会跳过这些前置步骤。
 
 | 产物 | 路径 |
 |---|---|
@@ -90,6 +95,14 @@ Android APK **不在 CI 构建**：`gen/android` 不入库，签名在本机完�
 | `dev3` | 发布线（GitHub 与清华 GitLab 两个远端同步） |
 | `demo` | 脱敏演示版：包名 `app.onethu.demo`，可与正式版共存，见 [脱敏演示版构建](demo-build.md) |
 
+**双线纪律**（2026-09-21 事故后加）：`demo` 与发布线只允许在少数文件上不同——脱敏开关
+（`packages/core/src/privacy/config.ts`）、应用身份（`tauri.conf.json` 的 `identifier` 与
+`productName`）、demo 专属文档与脚本。镜像改动**只按文件摘取**（`git checkout <sha> -- <files>`
+后在发布线单独提交），**不得 merge 或快进把 `demo` 合入发布线**：demo 的脱敏开关与
+`app.onethu.demo` 身份会一并进入正式版（2026-09-21 的实际事故）。
+
+门禁：`node tools/release-line-check.mjs` 检查 git 引用，`--worktree` 在镜像提交前自查工作区。
+
 ## 7. 提交前自检
 
 ```bash
@@ -113,6 +126,9 @@ macOS 通知探针、Windows 通知模块编译检查）见
 | 陷阱 | 现象 | 处理 |
 |---|---|---|
 | 在 exFAT / 网络卷上构建 | 链接与权限错误、构建产物异常 | 将产物目录指向本地磁盘 |
+| Android 工程放在 exFAT / 网络卷上 | Gradle 将 `._*` 副档当作真实条目，报 `is not a directory` 或 `Failed to delete some children` | 工程置于内盘（APFS），再以符号链接挂回 |
+| 工程经符号链接后 `rootDirRel` 解析到仓库之外 | npm 在错误目录找不到 `package.json` | `app/build.gradle.kts` 改用绝对路径 |
+| Gradle 调 cargo 时工作目录为 `apps/desktop` | 落回外置卷的 target，`build.rs` 读到 `._*.toml` 而 panic | 以 `CARGO_TARGET_DIR` 强制覆盖 |
 | 新增 Tauri Android 命令参数类缺少 `@InvokeArg` | release 包调用即抛 `no Creators`，debug 包正常 | 参数类必须加注解，并在 release 包上真机验证 |
 | XML 注释中出现 `--` | AAPT 资源解析失败 | 注释内不写连续短横线 |
 | `res/` 下出现 `._*` 文件 | AppleDouble 被当作资源 | 构建前执行 `find res -name '._*' -delete` |
