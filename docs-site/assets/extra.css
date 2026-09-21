@@ -1,0 +1,47 @@
+/* ============================================================
+   OneTHU 文档站样式覆盖
+   取值来自主仓设计令牌（官网 assets/tokens.css 为其副本）：
+   仅亮色 · 黑 primary 按钮 · 业务蓝强调 · 系统字体栈
+   ============================================================ */
+
+:root {
+  /* 字体：与官网同一套系统字体栈，不加载外部字体（校内网络访问更稳） */
+  --md-text-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC",
+    "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --md-code-font: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* 主色（黑）/ 强调色（业务蓝） */
+  --md-primary-fg-color: #0f1115;
+  --md-primary-fg-color--light: #43454a;
+  --md-primary-fg-color--dark: #000000;
+  --md-primary-bg-color: #ffffff;
+  --md-accent-fg-color: #4176e6;
+  --md-typeset-a-color: #4176e6;
+
+  /* 面 / 字色 */
+  --md-default-fg-color: #0f1115;
+  --md-default-fg-color--light: #61666b;
+  --md-default-fg-color--lighter: #81858c;
+  --md-default-bg-color: #ffffff;
+  --md-code-bg-color: #f9fafb;
+  --md-code-fg-color: #0f1115;
+}
+
+/* 页头 / 抽屉里的品牌字标：按字标本身比例显示 */
+.md-header__button.md-logo :is(img, svg) { height: 1.35rem; width: auto; }
+.md-nav__title .md-nav__button.md-logo :is(img, svg) { height: 1.6rem; }
+
+/* 表格：表头淡底、圆角，与官网表格观感一致 */
+.md-typeset table:not([class]) { border-radius: 8px; }
+.md-typeset table:not([class]) th { background-color: #f9fafb; }
+
+/* 代码块 / 提示块圆角 */
+.md-typeset pre > code { border-radius: 8px; }
+.md-typeset .admonition,
+.md-typeset details { border-radius: 8px; }
+
+/* 按钮圆角（首页入口按钮） */
+.md-typeset .md-button { border-radius: 8px; }
+
+/* 正文里的图片不撑破内容区 */
+.md-typeset img { max-width: 100%; }

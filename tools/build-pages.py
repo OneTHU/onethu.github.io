@@ -2,6 +2,7 @@
 """由本脚本生成站点页面（index / market / download）。
 
 页面本身是普通静态 HTML（提交在仓库里，Pages 直接托管，**浏览时无需构建**）。
+文档站（`/docs/`）不在本脚本范围内：它由 mkdocs + tools/sync-docs.py 构建，见 README。
 本脚本只用来统一「头部 / 页脚 / 品牌标识」三块共用标记：改完共用部分跑一次
 `python3 tools/build-pages.py` 重新生成，避免多页漂移。
 设计令牌只作为站点自身的 CSS 变量（assets/tokens.css）存在，不再单独成页。
@@ -13,7 +14,8 @@ ROOT = os.path.dirname(HERE)
 
 MAIN = "https://github.com/smartThise/OneTHU"
 RELEASES = MAIN + "/releases/latest"
-DOCS = MAIN + "/blob/dev3/docs"
+DOCS = "docs/"                              # 本站文档站（Material for MkDocs 构建，见 README「文档站」）
+DOCS_PLUGIN = DOCS + "plugin-development/"      # 最常用的文档入口
 MARKET_REPO = "https://github.com/smartThise/OneTHU-Market"
 
 BRAND = ('<span class="brand" style="font-size:15px" aria-label="OneTHU">'
@@ -33,6 +35,7 @@ def head(title, desc, active):
         nav("index.html#shots", "界面", "shots", "hide-sm"),
         nav("market.html", "插件市场", "market"),
         nav("download.html", "下载", "download"),
+        nav(DOCS, "文档", "docs"),
         nav(MAIN, "GitHub", "github", "hide-sm"),
         '<a class="btn btn-primary btn-sm" href="%s">下载最新版</a>' % RELEASES,
     ])
@@ -71,9 +74,10 @@ FOOTER = """<footer class="bot">
       </div>
       <div>
         <h5>文档</h5>
-        <a href="%s/plugin-development.md" target="_blank" rel="noopener">插件开发指南</a>
-        <a href="%s/api-reference.md" target="_blank" rel="noopener">API 参考</a>
-        <a href="%s/architecture.md" target="_blank" rel="noopener">架构说明</a>
+        <a href="%s">全部文档</a>
+        <a href="%splugin-development/">插件开发指南</a>
+        <a href="%sapi-reference/">API 参考</a>
+        <a href="%sbuild-and-release/">构建与发布</a>
       </div>
       <div>
         <h5>生态</h5>
@@ -99,7 +103,7 @@ FOOTER = """<footer class="bot">
 <script src="assets/site.js"></script>
 </body>
 </html>
-""" % (RELEASES, MAIN, DOCS, DOCS, DOCS, MARKET_REPO, MAIN, MAIN, MAIN)
+""" % (RELEASES, MAIN, DOCS, DOCS, DOCS, DOCS, MARKET_REPO, MAIN, MAIN, MAIN)
 
 
 def write(name, html):
@@ -107,17 +111,20 @@ def write(name, html):
     print('写入', name, len(html), '字符')
 
 
-def card(title, desc, items=None, tags=None, cls=""):
+def card(title, desc, items=None, tags=None, cls="", href=""):
     li = "".join("<li>%s</li>" % x for x in (items or []))
     tg = "".join('<span class="tag">%s</span>' % x for x in (tags or []))
-    return """        <div class="card reveal">
+    # href 非空时整卡可点（文档卡片用），标记与样式与其他卡片一致
+    opener = '<a class="card reveal" href="%s" style="color:inherit">' % href if href else '<div class="card reveal">'
+    closer = '</a>' if href else '</div>'
+    return """        %s
           <div class="sq %s"></div>
           <h3>%s</h3>
           <p>%s</p>
           %s
           %s
-        </div>
-""" % (cls, title, desc, "<ul>%s</ul>" % li if li else "", '<div class="tag-row">%s</div>' % tg if tg else "")
+        %s
+""" % (opener, cls, title, desc, "<ul>%s</ul>" % li if li else "", '<div class="tag-row">%s</div>' % tg if tg else "", closer)
 
 
 FEATURES = [
@@ -143,8 +150,8 @@ FEATURES = [
      ["插件市场：人工审查收录，一键安装", "主题插件：配色令牌 / 品牌标识 / 附加 CSS", "插件 API 124 个方法、18 个命名空间"], ["扩展"], "blue"),
     ("OneTHU Harness", "内置 Rust 骨干插件：左下角常驻对话面板，一句话查课表、成绩、电费、订座位。",
      ["工具调用 + 两段式预约确认", "token 预算与模型调度", "与外部插件双向联动（插件可调 OH，OH 可调插件）"], ["Harness"], "green"),
-    ("文档与生态", "插件开发指南、API 参考、架构说明与外部作业源实测记录，全部在主仓随代码同步更新。",
-     ["插件开发指南 · API 参考 · 架构说明", "外部作业源接入与实测记录", "官方示例插件 · 市场收录标准"], ["文档"], ""),
+    ("文档与生态", "在线文档站：插件开发指南、API 参考、系统架构、构建发布与外部作业源实测记录。",
+     ["插件开发指南 · API 参考 · 构建与发布", "外部作业源接入与实测记录", "官方示例插件 · 市场收录标准"], ["文档"], ""),
 ]
 
 SHOTS = [
@@ -160,7 +167,8 @@ SHOTS = [
 
 
 def page_index():
-    cards = "".join(card(t, d, i, g, c) for t, d, i, g, c in FEATURES)
+    links = {"文档与生态": DOCS}
+    cards = "".join(card(t, d, i, g, c, links.get(t, "")) for t, d, i, g, c in FEATURES)
     shots = "".join("""      <figure class="shot reveal">
         <img src="assets/shots/%s.svg" alt="%s 截图（占位，待替换）" loading="lazy" width="1600" height="1000"/>
         <figcaption class="cap"><b>%s</b><span>%s</span></figcaption>
@@ -180,7 +188,7 @@ def page_index():
     <div class="cta">
       <a class="btn btn-primary" href="%s">下载最新版（Releases）</a>
       <a class="btn" href="#features">看看能做什么</a>
-      <a class="btn btn-ghost" href="%s" target="_blank" rel="noopener">源码与文档</a>
+      <a class="btn btn-ghost" href="docs/">文档</a>
     </div>
   </div>
 </section>
@@ -225,7 +233,7 @@ def page_index():
     </div>
   </div>
 </section>
-""" % (RELEASES, MAIN, cards, shots)
+""" % (RELEASES, cards, shots)
     return head("OneTHU — One THUer should have OneTHU.",
                 "OneTHU：统一身份、统一数据层、统一界面的清华校园套件，覆盖 macOS / Windows / Android；万物原子化、三端系统通知、桌面小组件、插件市场与 Harness 对话助手。",
                 "features") + body + FOOTER
@@ -260,14 +268,14 @@ def page_market():
       <div>
         <h4>数据来源与限制</h4>
         <p>名单来自市场仓库，星数取自 GitHub 公开 API（匿名限额 60 次/小时，本站缓存 10 分钟，刚打开时星数可能短暂为空）。
-          想自己写插件：从 <a href="%s/plugin-development.md" target="_blank" rel="noopener">插件开发指南</a> 与
+          想自己写插件：从 <a href="%s" target="_blank" rel="noopener">插件开发指南</a> 与
           <a href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener">示例插件</a> 开始，
           收录标准与提交方式见 <a href="%s" target="_blank" rel="noopener">市场仓库</a>。</p>
       </div>
     </div>
   </div>
 </section>
-""" % (DOCS, MARKET_REPO)
+""" % (DOCS_PLUGIN, MARKET_REPO)
     return head("插件市场 · OneTHU", "OneTHU 插件市场：官方与社区插件一览，点卡片进仓库。", "market") + body + FOOTER
 
 

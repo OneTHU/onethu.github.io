@@ -1,36 +1,84 @@
 # onethu.github.io
 
-OneTHU 官网：几何方块与线条风格的静态站点（无构建步骤，GitHub Pages 直接托管）。
+OneTHU 官网与文档站。官网是几何方块与线条风格的静态站点（页面直接提交在仓库里，浏览时无需构建）；
+文档站（`/docs/`）由 Material for MkDocs 从**主仓文档**构建。两者由同一个工作流一起发布到 GitHub Pages。
 
-- **在线**：**https://onethu.github.io/**（组织 [OneTHU](https://github.com/OneTHU) 的根站点）
+- **官网**：**https://onethu.github.io/**
+- **文档**：**https://onethu.github.io/docs/**（组织 [OneTHU](https://github.com/OneTHU) 的根站点）
 - **主程序仓库**：[smartThise/OneTHU](https://github.com/smartThise/OneTHU)
 - **下载**：站点所有下载入口都指向 [https://github.com/smartThise/OneTHU/releases/latest](https://github.com/smartThise/OneTHU/releases/latest)
 
 ## 页面
-
-四个页面各管一件事，互不挤在一页里：
 
 | 页面 | 内容 |
 |---|---|
 | `index.html` | 首屏（几何交织背景 + `(One THU)` 双行标识）、01 为什么是 OneTHU、02 功能总览（12 组）、03 界面、04 插件与生态入口 |
 | `market.html` | 插件市场：实时读 OneTHU-Market 名单，分类页签（主题 / 官方 / 社区）+ 搜索 + ★ |
 | `download.html` | 下载：三端（macOS / Windows / Android）安装包、系统要求、安装说明、历史版本 |
+| `/docs/`（构建产物，不入库） | 文档站：安装与上手、构建与发布、插件开发、API 参考、系统架构、外部作业源、许可与交流 |
 
-三页共用同一套头部 / 页脚 / 品牌标识与页面骨架，由 `tools/build-pages.py` 生成。
+前三页共用同一套头部 / 页脚 / 品牌标识与页面骨架，由 `tools/build-pages.py` 生成。
 
 ## 部署
 
-仓库名 `onethu.github.io` 挂在组织 `OneTHU` 下，因此它是**组织根站点**：`main` 分支根目录
-直接发布到 https://onethu.github.io/ ，无需构建（`Settings → Pages` 已配置 branch=main / 根目录）。
-提交即上线（约 30 秒）。
+仓库名 `onethu.github.io` 挂在组织 `OneTHU` 下，因此它是**组织根站点**。
+发布源为 **GitHub Actions**（`Settings → Pages → Source = GitHub Actions`），
+由 [`.github/workflows/pages.yml`](.github/workflows/pages.yml) 构建 `_pages` 产物并部署：
 
-## 本地预览
+| 触发 | 说明 |
+|---|---|
+| 推送到 `main` | 官网改动即发布（约 1 分钟） |
+| 每天 04:17（UTC+8） | 重建一次，跟进主仓文档更新 |
+| 手动触发 | 可指定主仓文档来源分支（默认 `dev3`） |
+
+**主仓文档更新不会自动触发本仓库**：需要立刻生效时手动跑一次工作流（或推送任意提交）：
+
+```bash
+gh workflow run pages.yml -R OneTHU/onethu.github.io     # 默认取主仓 dev3
+gh workflow run pages.yml -R OneTHU/onethu.github.io -f onethu_ref=demo
+```
+
+工作流还会校验 `index/market/download.html` 与生成脚本一致（不一致即失败），避免导航 / 页脚漂移。
+
+## 文档站
+
+文档正文**不在本仓库**：本仓库只负责主题、导航、构建与部署。
+
+| 位置 | 角色 |
+|---|---|
+| 主仓 [`OneTHU/docs`](https://github.com/smartThise/OneTHU/tree/dev3/docs) | 工程文档真源（插件、API、架构、外部作业源、安卓陷阱、文案规范） |
+| 本仓库 `docs-site/` | 文档站自有页面：首页、快速开始、构建与发布、许可与致谢、交流与反馈 |
+| 本仓库 `mkdocs.yml` | 主题（Material，配色取自官网设计令牌）、导航结构、Markdown 扩展 |
+| 本仓库 `tools/sync-docs.py` | 同步脚本：主仓 `docs/` → `docs-src/`（构建时才生成，不入库） |
+| 本仓库 `requirements-docs.txt` | 构建依赖（`mkdocs-material==9.7.7`） |
+
+同步脚本做四件事：复制主仓文档（跳过 exFAT 的 `._*` 旁文件）→ 主仓 `README.md` 改名
+`overview.md`（站内首页由本站的 `index.md` 提供）→ 把指向仓库其他文件的相对链接
+（`../LICENSE` 等）改写为主仓 GitHub 地址 → 叠加 `docs-site/`。
+
+**改文档往哪儿写**
+
+- 插件开发、API 参考、系统架构、外部作业源、安卓陷阱、文案规范 → **主仓 `docs/`**（随代码同步、可在 GitHub 直接读）
+- 安装上手、构建发布、许可、交流这类站点页面 → **本仓库 `docs-site/`**
+- 导航标题与分组 → 本仓库 `mkdocs.yml` 的 `nav`
+
+**本地预览**
+
+```bash
+bash tools/docs-serve.sh                 # 同步 + 起服务，http://127.0.0.1:8000/docs/
+ONETHU_REPO=/path/to/OneTHU bash tools/docs-serve.sh
+```
+
+构建环境（venv）默认建在 `~/Library/Caches/onethu/docs-venv`：本仓库位于 exFAT 卷时，
+venv/符号链接无法在仓库内创建。只同步不预览用 `python3 tools/sync-docs.py ../OneTHU/docs`。
+
+## 本地预览（官网）
 
 ```bash
 python3 -m http.server 4173      # 然后打开 http://localhost:4173
 ```
 
-无需 npm、无需构建：改完 HTML/CSS/JS 直接刷新。
+官网无需 npm、无需构建：改完 HTML/CSS/JS 直接刷新。
 
 ## 重新生成页面
 
@@ -40,16 +88,26 @@ python3 -m http.server 4173      # 然后打开 http://localhost:4173
 python3 tools/build-pages.py     # 写入 index.html · market.html · download.html
 ```
 
-只改正文文案时也可以直接编辑 HTML；但**导航或页脚有变动时请改脚本再跑一次**，否则各页会不一致。
+只改正文文案时也可以直接编辑 HTML；但**导航或页脚有变动时请改脚本再跑一次**，否则各页会不一致
+（CI 会校验两者是否一致）。
 
 ## 目录
 
 ```
+index.html           官网首页          market.html   插件市场
+download.html        下载页            404.html      构建时取自文档站
+robots.txt           sitemap 指向      .nojekyll     产物标记
+mkdocs.yml           文档站配置        requirements-docs.txt  文档站依赖
+docs-site/           文档站自有页面（首页 / 快速开始 / 构建与发布 / 许可 / 交流 + 品牌 CSS）
+docs-src/            文档源（构建时生成，不入库）
 assets/tokens.css    设计令牌（与主仓 packages/ui/src/tokens.css 同步）
-assets/site.css      站点样式（几何方块 + 线条）
+assets/site.css      官网样式（几何方块 + 线条）
 assets/site.js       几何交织背景 canvas · 插件市场拉取 · 滚动显现 · 平台识别
 assets/img/          logo.svg（(One THU) 标识）· icon.png（favicon）· banner.png
 assets/shots/        界面截图位（当前为几何占位 SVG，待替换）
+tools/build-pages.py 官网页面生成      tools/sync-docs.py   文档同步
+tools/docs-serve.sh  文档站本地预览    tools/pages-exclude.txt  产物排除清单
+.github/workflows/pages.yml  构建并部署到 Pages
 ```
 
 ## 替换截图
@@ -83,6 +141,8 @@ assets/shots/        界面截图位（当前为几何占位 SVG，待替换）
 ```bash
 cp ../OneTHU/packages/ui/src/tokens.css assets/tokens.css   # 需保留文件头的来源注释
 ```
+
+文档站的配色取自同一套令牌，写在 `docs-site/assets/extra.css`（`--md-primary-fg-color` 等）。
 
 ## 许可
 

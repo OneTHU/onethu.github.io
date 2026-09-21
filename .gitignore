@@ -1,0 +1,9 @@
+# 文档站构建产物与同步目录（均由 tools/ 脚本生成，不入库）
+docs-src/
+site/
+.pages/
+.cache/
+
+# macOS / exFAT 副产物
+.DS_Store
+._*

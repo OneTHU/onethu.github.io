@@ -1,0 +1,15 @@
+# 构建 Pages 产物时排除的路径（其余文件原样成为站点静态文件）
+# 由 .github/workflows/pages.yml 的 rsync --exclude-from 使用
+.git/
+.github/
+.pages/
+docs-src/
+docs-site/
+tools/
+site/
+mkdocs.yml
+requirements-docs.txt
+README.md
+.gitignore
+.DS_Store
+._*

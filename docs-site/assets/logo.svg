@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 368 96" role="img" aria-label="OneTHU">
+  <title>(One / THU)</title>
+  <g fill="currentColor">
+    <text x="6" y="70" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+          font-size="76" font-weight="400" transform="scale(1,1.06) translate(0,-4)">(</text>
+    <text x="42" y="68" font-family="Georgia, 'Playfair Display', 'Times New Roman', serif"
+          font-size="74" font-weight="500" letter-spacing="-2">One</text>
+    <text x="196" y="68" font-family="Inter, 'SF Pro Display', 'Helvetica Neue', system-ui, sans-serif"
+          font-size="72" font-weight="800" letter-spacing="-1">THU</text>
+    <text x="352" y="70" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+          font-size="76" font-weight="400" transform="scale(1,1.06) translate(0,-4)">)</text>
+  </g>
+</svg>

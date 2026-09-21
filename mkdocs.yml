@@ -1,0 +1,125 @@
+# ============================================================
+# OneTHU 文档站（Material for MkDocs）
+#
+# 文档正文不在本仓库：本仓库只管「主题 / 导航 / 构建 / 部署」。
+#   · 正文来源：主仓 smartThise/OneTHU 的 docs/（由 tools/sync-docs.sh 同步）
+#   · 本站自有页面：docs-site/（首页、快速开始、构建与发布、许可、交流）
+#   两者在构建前合成为 docs-src/（不入库），再由此配置构建。
+#
+# 本地预览：bash tools/docs-serve.sh
+# 线上地址：https://onethu.github.io/docs/
+# ============================================================
+
+site_name: OneTHU 文档
+site_description: OneTHU —— 清华大学校园助手：快速开始、插件开发、API 参考、系统架构与构建发布。
+site_url: https://onethu.github.io/docs/
+docs_dir: docs-src
+site_dir: site
+
+theme:
+  name: material
+  language: zh
+  logo: assets/logo.svg
+  favicon: assets/favicon.png
+  # 不加载 Google Fonts：与官网同一套系统字体栈，校内网络访问更稳
+  font: false
+  palette:
+    # 仅亮色，与官网 tokens.css（也仅亮色）保持一致
+    - scheme: default
+      primary: custom   # 具体取值见 docs-site/assets/extra.css（主仓设计令牌）
+      accent: custom
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+
+markdown_extensions:
+  # 锚点算法对齐 GitHub：主仓文档的自建目录（#1-插件能力与形态 等）在站内也点得通
+  - toc:
+      permalink: true
+      title: 本页目录
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds: {case: lower}
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - def_list
+  # 站内图标短代码（:material-xxx:），与 Material 主题自带图标集一致
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_css:
+  - assets/extra.css
+
+plugins:
+  - search:
+      lang: [zh, en]
+
+validation:
+  links:
+    # 主仓文档里指向仓库文件（LICENSE 等）的链接由同步脚本改写为 GitHub 地址
+    absolute_links: ignore
+    unrecognized_links: ignore
+
+copyright: >
+  OneTHU 是非官方的个人效率工具，与清华大学无关；自有代码以 MIT 开源并附两条限制：
+  严禁商业用途；严禁用于对清华大学信息服务的攻击性访问。
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/smartThise/OneTHU
+      name: 主仓库
+    - icon: fontawesome/brands/github
+      link: https://github.com/OneTHU/onethu.github.io
+      name: 本站仓库
+    - icon: fontawesome/solid/house
+      link: https://onethu.github.io/
+      name: 官网
+    - icon: fontawesome/solid/comments
+      link: https://github.com/smartThise/OneTHU/issues
+      name: 问题反馈
+
+nav:
+  - 首页:
+      - OneTHU 文档: index.md
+      - 文档导览: overview.md
+  - 快速开始:
+      - 安装与上手: quickstart.md
+      - 构建与发布: build-and-release.md
+  - 插件开发:
+      - 插件开发指南: plugin-development.md
+      - API 参考: api-reference.md
+      - Rust sidecar 骨架: examples/harness-skel/README.md
+  - 架构与实现:
+      - 系统架构: architecture.md
+      - 外部作业源（接入）: external-homework.md
+      - 外部作业源（设计与实测）: 外部作业源-需求与实现方案.md
+      - 安卓 release 陷阱与取证: android-release-traps.md
+      - 脱敏演示版构建: demo-build.md
+  - 规范与许可:
+      - UI 文案与信息密度: ui-copy-audit.md
+      - 许可与致谢: license.md
+      - 交流与反馈: community.md
+  - 官网: https://onethu.github.io/
+  - GitHub: https://github.com/smartThise/OneTHU

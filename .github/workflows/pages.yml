@@ -1,0 +1,104 @@
+name: pages
+
+# 官网（本仓库根目录的静态页）与文档站（/docs/）一起构建并发布到 GitHub Pages。
+# 文档站正文来自主仓 smartThise/OneTHU 的 docs/：
+#   · 主仓文档更新后不会自动触发本仓库 —— 靠每日定时重建跟进，
+#     需要立刻生效时在本仓库手动触发本工作流（或推送任意提交）。
+#   · 手动触发可指定主仓分支（默认 dev3）。
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 20 * * *' # 每天 04:17（UTC+8）重建一次，跟进主仓文档更新
+  workflow_dispatch:
+    inputs:
+      onethu_ref:
+        description: 主仓文档来源分支
+        required: false
+        default: dev3
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出本站
+        uses: actions/checkout@v4
+
+      - name: 检出主仓（文档正文来源）
+        uses: actions/checkout@v4
+        with:
+          repository: smartThise/OneTHU
+          ref: ${{ inputs.onethu_ref || 'dev3' }}
+          path: .onethu
+
+      - name: 取回 demo 分支独有文档（脱敏演示版构建说明）
+        continue-on-error: true
+        run: |
+          git -C .onethu fetch --depth 1 origin demo
+          mkdir -p "$RUNNER_TEMP/onethu-demo-docs"
+          git -C .onethu archive FETCH_HEAD docs | tar -x -C "$RUNNER_TEMP/onethu-demo-docs" --strip-components=1
+
+      - name: 校验官网页面与生成脚本一致
+        run: |
+          python3 tools/build-pages.py >/dev/null
+          if ! git diff --quiet -- index.html market.html download.html; then
+            echo "::error::index/market/download.html 与 tools/build-pages.py 不一致；请本地重跑脚本并提交"
+            git diff --stat -- index.html market.html download.html
+            exit 1
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: requirements-docs.txt
+
+      - name: 安装文档站依赖
+        run: pip install -r requirements-docs.txt
+
+      - name: 同步文档源（主仓 docs → docs-src）
+        env:
+          ONETHU_REF: ${{ inputs.onethu_ref || 'dev3' }}
+        run: python3 tools/sync-docs.py .onethu/docs "$RUNNER_TEMP/onethu-demo-docs"
+
+      - name: 构建文档站（/docs/）
+        run: |
+          set -o pipefail
+          mkdir -p .pages
+          mkdocs build --site-dir .pages/docs 2>&1 | tee "$RUNNER_TEMP/mkdocs-build.log"
+          if grep -q '^WARNING' "$RUNNER_TEMP/mkdocs-build.log"; then
+            echo "::warning::文档构建存在警告，详见下方日志"
+            grep '^WARNING' "$RUNNER_TEMP/mkdocs-build.log"
+          fi
+
+      - name: 组装站点（官网静态页 + /docs/）
+        run: |
+          rsync -a --exclude-from=tools/pages-exclude.txt ./ .pages/
+          # GitHub Pages 只认站点根目录的 404.html；文档站的 404 页用的是
+          # /docs/ 绝对路径，放到根目录后整站任何 404 都能落到它上面
+          if [ ! -f .pages/404.html ]; then
+            cp .pages/docs/404.html .pages/404.html
+          fi
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
