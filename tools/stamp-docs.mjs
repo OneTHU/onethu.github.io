@@ -5,7 +5,7 @@
  * 约定与主仓一致：每份文档在标题下方带一行 `> 最后更新：YYYY-MM-DD HH:MM`。
  * 主仓同步过来的文档由主仓维护其时间戳，这里只处理本站自有页面与 README。
  *
- *   node tools/stamp-docs.mjs            # 改过的取当前时间，未改的取该文件最后一次提交时间
+ *   node tools/stamp-docs.mjs            # 默认：只给**改动过**的文档打当前时间，其余不动
  *   node tools/stamp-docs.mjs --all      # 全部取当前时间
  *   node tools/stamp-docs.mjs --from-git # 全部取最后一次提交时间（回填用）
  */
@@ -88,12 +88,9 @@ const targets = [...walk(path.join(ROOT, "docs-site")), path.join(ROOT, "README.
 let changed = 0;
 for (const file of targets.sort()) {
   const rel = path.relative(ROOT, file);
+  if (mode === "auto" && !isDirty(rel)) continue; // 未改动 → 保留现有时间戳
   const value =
-    mode === "all"
-      ? stampOf(Date.now())
-      : mode === "git"
-        ? stampOf(lastCommitMs(rel) ?? Date.now())
-        : stampOf(isDirty(rel) ? Date.now() : (lastCommitMs(rel) ?? Date.now()));
+    mode === "all" ? stampOf(Date.now()) : mode === "git" ? stampOf(lastCommitMs(rel) ?? Date.now()) : stampOf(Date.now());
   if (applyStamp(file, value)) {
     console.log("写入", rel, value);
     changed += 1;
