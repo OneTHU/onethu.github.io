@@ -371,6 +371,35 @@ async function copyButtons() {
   });
 }
 
+/* ── ④ 界面横滑：鼠标拖拽 + 滚轮映射横向 ── */
+function initShotRail() {
+  const rail = document.querySelector('.rail');
+  if (!rail) return;
+  let down = null, moved = 0;
+  rail.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    down = { x: e.clientX, left: rail.scrollLeft };
+    moved = 0;
+    rail.classList.add('dragging');
+  });
+  addEventListener('pointermove', (e) => {
+    if (!down) return;
+    const dx = e.clientX - down.x;
+    moved = Math.max(moved, Math.abs(dx));
+    rail.scrollLeft = down.left - dx;
+  });
+  addEventListener('pointerup', () => { down = null; rail.classList.remove('dragging'); });
+  rail.addEventListener('click', (e) => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
+  rail.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      const max = rail.scrollWidth - rail.clientWidth;
+      const before = rail.scrollLeft;
+      rail.scrollLeft += e.deltaY;
+      if (rail.scrollLeft !== before || (before > 0 && before < max)) e.preventDefault();
+    }
+  }, { passive: false });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('bg');
   if (canvas) latticeField(canvas);
@@ -378,4 +407,5 @@ document.addEventListener('DOMContentLoaded', () => {
   detectPlatform();
   void copyButtons();
   void initMarket();
+  initShotRail();
 });

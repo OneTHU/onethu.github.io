@@ -180,6 +180,8 @@ section.block { position: relative; padding: 76px 0; border-bottom: 1px solid va
   padding: 4px 4px 18px; scrollbar-width: none;
 }
 .rail::-webkit-scrollbar { display: none; }
+.rail { cursor: grab; }
+.rail.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
 .rail .shot { scroll-snap-align: start; }
 .shot {
   border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
@@ -187,7 +189,7 @@ section.block { position: relative; padding: 76px 0; border-bottom: 1px solid va
   transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
 }
 .shot:hover { border-color: var(--accent-border); box-shadow: var(--shadow-2); transform: translateY(-2px); }
-.shot img { width: 100%; display: block; background: var(--bg); }
+.shot img { width: 100%; height: auto; display: block; background: var(--bg); }
 .shot .cap { display: flex; flex-direction: column; gap: 1px; padding: 9px 12px 10px; border-top: 1px solid var(--border-soft); }
 .shot .cap b { font-size: var(--text-sm); font-weight: 650; }
 .shot .cap span { color: var(--text-3); font-size: var(--text-xxs); }
