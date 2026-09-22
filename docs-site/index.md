@@ -37,7 +37,7 @@ OneTHU 是清华大学校园助手应用：登录一次，网络学堂、信息�
 | [外部作业源（接入）](external-homework.md) | 雨课堂 / TUOJ / Tyche / DSA OJ 的接入方式、凭据维护与故障恢复 |
 | [外部作业源（设计与实测）](外部作业源-需求与实现方案.md) | 接口探测、加密字体与 LaTeX 方案、原生详情页与嵌入式提交入口的实现记录 |
 | [安卓 release 陷阱与取证](android-release-traps.md) | `@InvokeArg`、R8、UA 伪装等 release 专属故障与真机日志导出通道 |
-| [脱敏演示版构建](demo-build.md) | `demo` 分支脱敏演示版与正式版的差异、脱敏口径与残余风险 |
+| [脱敏演示版构建](demo-build.md) | `demo` 分支脱敏演示版与正式版的差异、脱敏规则与残余风险 |
 | [UI 文案与信息密度](ui-copy-audit.md) | 文案禁用词与字数规则、历次用户反馈的根因与修法 |
 | [许可与致谢](license.md) | MIT 附加限制、第三方组件授权范围与使用边界 |
 | [交流与反馈](community.md) | 用户群、问题反馈与插件生态 |

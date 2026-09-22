@@ -17,7 +17,7 @@ OneTHU 官网与文档站。官网为几何方块与线条风格的静态站点�
 | `download.html` | 下载：三端（macOS / Windows / Android）安装包、系统要求、安装说明、历史版本 |
 | `/docs/`（构建产物，不入库） | 文档站：安装与上手、构建与发布、插件开发、API 参考、系统架构、外部作业源、许可与交流 |
 
-前三页共用同一套头部、页脚、品牌标识与页面骨架，由 `tools/build-pages.py` 生成。
+前三页共用同一套头部、导航、页脚与品牌标识，由 `tools/build-pages.py` 同步；正文各自维护。
 
 ## 部署
 
@@ -85,16 +85,17 @@ python3 -m http.server 4173      # 然后打开 http://localhost:4173
 
 官网无 npm 依赖与构建步骤：修改 HTML/CSS/JS 后刷新即可。
 
-## 重新生成页面
+## 同步共用头部、导航与页脚
 
-头部导航、页脚、品牌标识与页面骨架由脚本统一生成，避免多页漂移：
+三页的头、导航、页脚必须完全一致，手改容易漂移，因此由脚本统一同步；页面正文（首屏、
+功能区、界面截图区、下载说明等）不由脚本改动，直接编辑 HTML 即可：
 
 ```bash
-python3 tools/build-pages.py     # 写入 index.html · market.html · download.html
+python3 tools/build-pages.py     # 同步 index.html · market.html · download.html 的共用块
 ```
 
-仅修改正文文案时可直接编辑 HTML；导航或页脚有变动时须修改脚本并重新生成，否则各页不一致
-（CI 会校验两者是否一致）。
+导航、页脚或页面标题与描述有变动时修改脚本后运行一次；内容一致时脚本不写盘，CI 以
+`git diff --exit-code` 校验三页与脚本一致。
 
 ## 目录
 
@@ -111,7 +112,7 @@ assets/site.css      官网样式（几何方块 + 线条）
 assets/site.js       几何交织背景 canvas · 插件市场拉取 · 滚动显现 · 平台识别
 assets/img/          logo.svg（(One THU) 标识）· icon.png（favicon）· banner.png
 assets/shots/        界面实拍截图（720×1600 WebP，首页横滑轨道）
-tools/build-pages.py 官网页面生成      tools/sync-docs.py   文档同步
+tools/build-pages.py 共用头/导航/页脚同步   tools/sync-docs.py   文档同步
 tools/docs-serve.sh  文档站本地预览    tools/pages-exclude.txt  产物排除清单
 .github/workflows/pages.yml  构建并部署到 Pages
 ```
@@ -132,7 +133,7 @@ tools/docs-serve.sh  文档站本地预览    tools/pages-exclude.txt  产物排
 | `yuyue.webp` | 预约：场馆 · 座位 · 我的预约 |
 | `xuanke.webp` | 选课：筛选 · 余量 · 收藏夹 |
 | `zaixian.webp` | 在线服务：常用服务 · 办事进度 |
-| `plugins.webp` | 插件与Agent：OH 对话 · 工具调用 |
+| `plugins.webp` | 插件与 Agent：OH 对话 · 工具调用 |
 
 ## 插件市场
 

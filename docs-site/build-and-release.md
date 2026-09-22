@@ -117,7 +117,7 @@ cd apps/desktop/src-tauri/gen/android && ./gradlew :tauri-plugin-onethu-mobile:c
 ```
 
 `tools/` 下的测试脚本覆盖通知编排、小组件快照与原生重画、外部作业源状态、插件 UI 逻辑、
-主题联动、市场名单解析等链路，是改动的第一道护栏。完整命令清单（含 Android 目标交叉检查、
+主题联动、市场名单解析等链路，是改动的第一道检查。完整命令清单（含 Android 目标交叉检查、
 macOS 通知探针、Windows 通知模块编译检查）见
 [系统架构 §8](architecture.md#8-构建与发布)。
 

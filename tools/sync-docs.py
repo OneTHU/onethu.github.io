@@ -108,7 +108,7 @@ def main(argv):
         added, _ = copy_tree(SITE_PAGES, DEST)
         print('· 叠加本站自有页面 docs-site/：%d 个文件' % len(added))
 
-    # 兜底：清理任何来源留下的 AppleDouble 旁文件
+    # 清理任何来源留下的 AppleDouble 旁文件
     removed = 0
     for base, dirs, files in os.walk(DEST):
         for name in files:
