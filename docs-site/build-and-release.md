@@ -1,5 +1,7 @@
 # 构建与发布
 
+> 最后更新：2026-09-22 22:57
+
 本文档说明 OneTHU 从源码到安装包的完整链路：环境要求、开发与生产构建、sidecar（Harness）
 的构建位置、CI 发布与提交前自检。宿主实现细节见 [系统架构](architecture.md)，
 安卓 release 专属故障见 [安卓 release 陷阱与取证](android-release-traps.md)。

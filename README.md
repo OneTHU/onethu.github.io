@@ -1,5 +1,7 @@
 # onethu.github.io
 
+> 最后更新：2026-09-22 22:57
+
 OneTHU 官网与文档站。官网为几何方块与线条风格的静态站点，页面直接提交在仓库中，浏览时无需构建；
 文档站（`/docs/`）由 Material for MkDocs 从**主仓文档**构建。两者由同一个工作流发布到 GitHub Pages。
 
@@ -39,6 +41,15 @@ gh workflow run pages.yml -R OneTHU/onethu.github.io -f onethu_ref=demo
 ```
 
 工作流还会校验 `index/market/download.html` 与生成脚本一致（不一致即失败），避免导航与页脚漂移。
+
+## 文档更新时间
+
+每份文档（`docs-site/**` 与本站 README）在标题下方带一行 `> 最后更新：YYYY-MM-DD HH:MM`；
+主仓同步过来的文档由主仓维护其时间戳。改动本站文档后执行一次：
+
+```bash
+node tools/stamp-docs.mjs      # 改过的取当前时间，未改的取该文件最后一次提交时间
+```
 
 ## 文档站
 

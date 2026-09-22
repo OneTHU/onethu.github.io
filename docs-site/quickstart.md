@@ -1,5 +1,7 @@
 # 安装与上手
 
+> 最后更新：2026-09-22 22:57
+
 ## 1. 安装
 
 安装包发布在 [GitHub Releases](https://github.com/smartThise/OneTHU/releases/latest)，
