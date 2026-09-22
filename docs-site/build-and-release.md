@@ -1,6 +1,6 @@
 # 构建与发布
 
-> 最后更新：2026-09-22 22:57
+> 最后更新：2026-09-22 23:00
 
 本文档说明 OneTHU 从源码到安装包的完整链路：环境要求、开发与生产构建、sidecar（Harness）
 的构建位置、CI 发布与提交前自检。宿主实现细节见 [系统架构](architecture.md)，
@@ -93,11 +93,10 @@ Android APK **不在 CI 构建**：`gen/android` 不入库，签名在本机完�
 
 | 分支 | 用途 |
 |---|---|
-| `dev2` | 日常开发（推送至远端的 `dev3`） |
-| `dev3` | 发布线（GitHub 与清华 GitLab 两个远端同步） |
+| `dev3` | 开发与发布都在此分支（GitHub 与清华 GitLab 两个远端同步）；本地检出的分支名为 `dev2`，推送目标为 `dev3` |
 | `demo` | 脱敏演示版：包名 `app.onethu.demo`，可与正式版共存，见 [脱敏演示版构建](demo-build.md) |
 
-**双线纪律**（2026-09-21 事故后加）：`demo` 与发布线只允许在少数文件上不同——脱敏开关
+**双线纪律**（2026-09-21 事故后加）：`demo` 与发布线 `dev3` 只允许在少数文件上不同——脱敏开关
 （`packages/core/src/privacy/config.ts`）、应用身份（`tauri.conf.json` 的 `identifier` 与
 `productName`）、demo 专属文档与脚本。镜像改动**只按文件摘取**（`git checkout <sha> -- <files>`
 后在发布线单独提交），**不得 merge 或快进把 `demo` 合入发布线**：demo 的脱敏开关与
