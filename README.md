@@ -110,7 +110,7 @@ assets/tokens.css    设计令牌（与主仓 packages/ui/src/tokens.css 同步�
 assets/site.css      官网样式（几何方块 + 线条）
 assets/site.js       几何交织背景 canvas · 插件市场拉取 · 滚动显现 · 平台识别
 assets/img/          logo.svg（(One THU) 标识）· icon.png（favicon）· banner.png
-assets/shots/        界面截图位（当前为几何占位 SVG，待替换）
+assets/shots/        界面实拍截图（720×1600 WebP，首页横滑轨道）
 tools/build-pages.py 官网页面生成      tools/sync-docs.py   文档同步
 tools/docs-serve.sh  文档站本地预览    tools/pages-exclude.txt  产物排除清单
 .github/workflows/pages.yml  构建并部署到 Pages
@@ -118,20 +118,21 @@ tools/docs-serve.sh  文档站本地预览    tools/pages-exclude.txt  产物排
 
 ## 替换截图
 
-`assets/shots/` 下 8 个占位文件，替换时保持 **1600×1000（16:10）** 即可，文件名不变则无需修改 HTML：
+`assets/shots/` 下为应用实拍截图（emulator 脱敏截图，720×1600 WebP），首页「界面」横滑轨道使用。
+替换时保持 **720×1600（9:20）**、文件名不变即可，无需修改 HTML：
 
 | 文件 | 画面 |
 |---|---|
-| `today.svg` | 今日：课程 · 截止 · 日程 |
-| `learn.svg` | 网络学堂：作业 / 通知 / 文件 / 讨论区 |
-| `ykt.svg` | 雨课堂详情：题干渲染 · 分数与评语 |
-| `schedule.svg` | 日程与提醒：课表 · 云日历 · 三端通知 |
-| `widget.svg` | 桌面小组件：1×1 / 图标组 / 详情 |
-| `life.svg` | 校园生活：校园卡 · 电费 · 洗衣机 · 图书馆 |
-| `trace.svg` | 寻迹：日程地图 · POI · ETA |
-| `plugins.svg` | 插件与市场 |
-
-替换 PNG/JPG 时，将 `index.html` 中对应的 `.svg` 后缀改为实际后缀（或另存为同名 SVG）。
+| `jintian.webp` | 今日：作业 · 课程 · 日程 |
+| `wangluo.webp` | 网络学堂：作业 / 通知 / 文件 / 讨论区 |
+| `richeng.webp` | 日程与提醒：课表 · 云日历 · 三端通知 |
+| `xunji2.webp` | 寻迹：日程地图 · POI · ETA |
+| `yunpan.webp` | 云盘：清华云盘 · 文件预览与下载 |
+| `shenghuo.webp` | 校园生活：校园卡 · 电费 · 洗衣机 |
+| `yuyue.webp` | 预约：场馆 · 座位 · 我的预约 |
+| `xuanke.webp` | 选课：筛选 · 余量 · 收藏夹 |
+| `zaixian.webp` | 在线服务：常用服务 · 办事进度 |
+| `plugins.webp` | 插件与Agent：OH 对话 · 工具调用 |
 
 ## 插件市场
 

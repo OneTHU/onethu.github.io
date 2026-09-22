@@ -173,34 +173,25 @@ section.block { position: relative; padding: 76px 0; border-bottom: 1px solid va
 .feature-row p { margin: 0; color: var(--text-2); font-size: var(--text-sm); max-width: 82ch; }
 .feature-row .k { color: var(--text-1); font-weight: 600; }
 
-/* ── 界面横滑轨道：snap 吸附 + 鼠标拖拽 + 箭头/进度 ── */
-.rail-wrap { position: relative; }
+/* ── 界面：完整截图一排横滑 ── */
 .rail {
-  display: grid; grid-auto-flow: column; grid-auto-columns: min(680px, 82%); gap: var(--gap-4);
+  display: grid; grid-auto-flow: column; grid-auto-columns: 252px; gap: var(--gap-4);
   overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity;
-  padding: 4px 4px 16px; scrollbar-width: none; cursor: grab;
+  padding: 4px 4px 18px; scrollbar-width: none;
 }
 .rail::-webkit-scrollbar { display: none; }
-.rail.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
-.rail .shot { scroll-snap-align: center; margin: 0; }
-.rail-ctl { display: flex; align-items: center; gap: 14px; margin-top: 2px; }
-.rail-count { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-3); letter-spacing: .06em; flex: none; }
-.rail-track { flex: 1; height: 3px; border-radius: 2px; background: var(--surface-3); overflow: hidden; }
-.rail-bar { height: 100%; width: 30%; border-radius: 2px; background: var(--accent); transition: width .15s ease, margin-left .15s ease; }
-.rail-btn {
-  flex: none; width: 34px; height: 34px; border-radius: var(--r-pill); border: 1px solid var(--border);
-  background: var(--surface); color: var(--text-1); display: grid; place-items: center; cursor: pointer;
-  transition: border-color .12s ease, opacity .12s ease, background .12s ease;
+.rail .shot { scroll-snap-align: start; }
+.shot {
+  border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+  background: var(--surface); box-shadow: var(--shadow-1);
+  transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
 }
-.rail-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.rail-btn:hover:not(:disabled) { border-color: var(--border-strong); background: var(--surface-2); }
-.rail-btn:disabled { opacity: .35; cursor: default; }
-@media (max-width: 640px) { .rail { grid-auto-columns: 86%; } }
-.shot { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: var(--surface-2); }
+.shot:hover { border-color: var(--accent-border); box-shadow: var(--shadow-2); transform: translateY(-2px); }
 .shot img { width: 100%; display: block; background: var(--bg); }
-.shot .cap { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--border-soft); }
-.shot .cap b { font-size: var(--text-sm); font-weight: 600; }
-.shot .cap span { color: var(--text-3); font-size: var(--text-xs); }
+.shot .cap { display: flex; flex-direction: column; gap: 1px; padding: 9px 12px 10px; border-top: 1px solid var(--border-soft); }
+.shot .cap b { font-size: var(--text-sm); font-weight: 650; }
+.shot .cap span { color: var(--text-3); font-size: var(--text-xxs); }
+@media (max-width: 640px) { .rail { grid-auto-columns: min(252px, 72vw); } }
 
 /* ── 插件市场（与应用内市场同款卡片观感） ── */
 .market-bar { display: flex; align-items: center; gap: var(--gap-3); flex-wrap: wrap; margin-bottom: var(--gap-4); }

@@ -371,66 +371,6 @@ async function copyButtons() {
   });
 }
 
-/* ── ④ 界面横滑轨道：scroll-snap + 鼠标拖拽 + 箭头 / 进度条 / 计数 ── */
-function initShotRail() {
-  const rail = document.getElementById('shots-rail');
-  if (!rail) return;
-  const bar = document.getElementById('rail-bar');
-  const count = document.getElementById('rail-count');
-  const prev = document.getElementById('rail-prev');
-  const next = document.getElementById('rail-next');
-  const n = rail.children.length;
-
-  function sync() {
-    const max = Math.max(0, rail.scrollWidth - rail.clientWidth);
-    const x = Math.min(Math.max(0, rail.scrollLeft), max);
-    if (bar) {
-      bar.style.width = (rail.clientWidth / rail.scrollWidth * 100) + '%';
-      bar.style.marginLeft = (x / rail.scrollWidth * 100) + '%';
-    }
-    if (count) {
-      const gap = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 16;
-      const step = rail.children[0].offsetWidth + gap;
-      const i = Math.round(x / step) + 1;
-      count.textContent = String(Math.min(n, Math.max(1, i))).padStart(2, '0') + ' / ' + String(n).padStart(2, '0');
-    }
-    if (prev) prev.disabled = x <= 2;
-    if (next) next.disabled = x >= max - 2;
-  }
-  function page(dir) {
-    rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: REDUCED ? 'auto' : 'smooth' });
-  }
-  prev?.addEventListener('click', () => page(-1));
-  next?.addEventListener('click', () => page(1));
-  rail.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') { e.preventDefault(); page(1); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); page(-1); }
-  });
-  let raf = 0;
-  rail.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(sync); }, { passive: true });
-  addEventListener('resize', sync);
-
-  /* 鼠标按住拖拽（触摸板 / 触屏走原生滚动） */
-  let down = null, moved = 0;
-  rail.addEventListener('pointerdown', (e) => {
-    if (e.pointerType !== 'mouse') return;
-    down = { x: e.clientX, left: rail.scrollLeft };
-    moved = 0;
-    rail.classList.add('dragging');
-  });
-  addEventListener('pointermove', (e) => {
-    if (!down) return;
-    const dx = e.clientX - down.x;
-    moved = Math.max(moved, Math.abs(dx));
-    rail.scrollLeft = down.left - dx;
-  });
-  addEventListener('pointerup', () => { down = null; rail.classList.remove('dragging'); });
-  rail.addEventListener('click', (e) => {
-    if (moved > 6) { e.preventDefault(); e.stopPropagation(); }
-  }, true);
-  sync();
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('bg');
   if (canvas) latticeField(canvas);
@@ -438,5 +378,4 @@ document.addEventListener('DOMContentLoaded', () => {
   detectPlatform();
   void copyButtons();
   void initMarket();
-  initShotRail();
 });
