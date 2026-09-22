@@ -2,7 +2,7 @@
    OneTHU 站点交互
    ① 首屏/页头几何背景（canvas：方框 + 圆 + 斜线交叉的格网，叠贯穿长线与一条蓝色弧；
       指针视差、DPR≤2、离屏暂停，prefers-reduced-motion 时只画静态一帧）
-   ② 插件市场：拉 OneTHU-Market 的 registry.json（GitHub contents API 优先、raw 兜底），
+   ② 插件市场：拉 OneTHU-Market 的 registry.json（GitHub contents API 优先、raw 作为备用通道），
       补齐各仓库 star 数（sessionStorage 缓存 10 分钟），按分类/搜索过滤
    ③ 滚动显现、平台识别、复制按钮
    ============================================================ */
@@ -179,7 +179,7 @@ async function fetchRegistry() {
       const res = await fetch(api, { headers: { Accept: 'application/vnd.github.raw' } });
       if (res.ok) return JSON.parse(await res.text());
     } catch {}
-    // raw 兜底（Fastly 缓存，最多滞后几分钟）
+    // raw 作为备用通道（有 CDN 缓存，最多滞后几分钟）
     try {
       const res = await fetch(`https://raw.githubusercontent.com/${MARKET_REPO}/main/${path}`);
       if (res.ok) return JSON.parse(await res.text());
@@ -188,7 +188,7 @@ async function fetchRegistry() {
   return null;
 }
 
-/** 分类：与应用内市场口径一致——主题插件单列，官方示例单列，其余归社区 */
+/** 分类与应用内市场一致：主题插件单列，官方示例单列，其余归社区 */
 function categorize(p) {
   const tags = Array.isArray(p.tags) ? p.tags : [];
   const repo = String(p.repo || '');
