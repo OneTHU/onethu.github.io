@@ -26,6 +26,8 @@ MAIN = "https://github.com/smartThise/OneTHU"
 RELEASES = MAIN + "/releases/latest"
 DOCS = "docs/"
 MARKET_REPO = "https://github.com/smartThise/OneTHU-Market"
+# 清华云盘镜像（校内直连；与 Releases 同一批安装包）
+MIRROR = "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/"
 
 BRAND = ('<span class="brand" aria-label="OneTHU">'
          '<span class="b-r"><span class="p">(</span><span class="b-one">One</span></span>'
@@ -102,6 +104,7 @@ FOOTER = """<footer class="bot">
         <h5>下载</h5>
         <a href="%s">最新版 Releases</a>
         <a href="%s/releases" target="_blank" rel="noopener">历史版本</a>
+        <a href="%s" target="_blank" rel="noopener">清华云盘镜像</a>
       </div>
       <div>
         <h5>文档</h5>
@@ -129,7 +132,7 @@ FOOTER = """<footer class="bot">
       <a href="%s/blob/dev3/LICENSE" target="_blank" rel="noopener">LICENSE</a>。
     </div>
   </div>
-</footer>""" % (RELEASES, MAIN, DOCS, DOCS, DOCS, DOCS, MARKET_REPO, MAIN, MAIN, MAIN)
+</footer>""" % (RELEASES, MAIN, MIRROR, DOCS, DOCS, DOCS, DOCS, MARKET_REPO, MAIN, MAIN, MAIN)
 
 
 def sync(name, active, title, desc):
