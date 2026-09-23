@@ -244,6 +244,22 @@ section.block { position: relative; padding: 76px 0; border-bottom: 1px solid va
 .dl .t { font-weight: 600; font-size: var(--text-sm); }
 .dl .s { color: var(--text-3); font-size: var(--text-xs); font-family: var(--font-mono); }
 
+/* ── 下载渠道：GitHub Releases 与清华云盘并排、等权重 ── */
+.channels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-3); margin-top: 18px; }
+@media (max-width: 640px) { .channels { grid-template-columns: 1fr; } }
+.channels .ch {
+  display: flex; align-items: center; gap: 12px; padding: 16px 18px; border: 1px solid var(--border);
+  border-radius: var(--r-lg); background: var(--surface); color: var(--text-1);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.channels .ch:hover { border-color: var(--accent); text-decoration: none; box-shadow: var(--shadow-2); }
+.channels .ch .ic { width: 34px; height: 34px; border-radius: 9px; margin-bottom: 0; }
+.channels .ch .ic svg { width: 18px; height: 18px; }
+.channels .ch .t { font-weight: 600; font-size: var(--text-base); }
+.channels .ch .s { color: var(--text-3); font-size: var(--text-xs); font-family: var(--font-mono); }
+.dl-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
+.dl-item.is-current { border-color: var(--accent); background: var(--accent-soft); }
+
 /* ── 仓库 / 链接行 ── */
 .repos { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--gap-3); }
 .repo-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--surface); }

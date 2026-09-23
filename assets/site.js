@@ -351,11 +351,25 @@ function observeReveals(root = document) {
   nodes.forEach((n) => revealObserver.observe(n));
 }
 
+/* 清华云盘：三端各一个文件夹，按浏览器 UA 导向对应文件夹（识别不出时给全部平台） */
+const CLOUD_LINKS = {
+  android: 'https://cloud.tsinghua.edu.cn/d/1a1f8f984a7c4174b960/',
+  macos: 'https://cloud.tsinghua.edu.cn/d/d41920d309094409b98f/',
+  windows: 'https://cloud.tsinghua.edu.cn/d/a706e756116b4e11b2f5/',
+  all: 'https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/',
+};
+
 function detectPlatform() {
   const ua = navigator.userAgent;
   const os = /Android/i.test(ua) ? 'android' : /Mac/i.test(ua) ? 'macos' : /Win/i.test(ua) ? 'windows' : '';
-  document.querySelectorAll(`.dl a[data-os="${os}"]`).forEach((el) => el.classList.add('is-current'));
+  document.querySelectorAll(`.dl [data-os="${os}"]`).forEach((el) => el.classList.add('is-current'));
   document.querySelectorAll('[data-os-name]').forEach((el) => { el.textContent = os === 'android' ? 'Android 版' : os === 'macos' ? 'macOS 版' : os === 'windows' ? 'Windows 版' : '最新版本'; });
+  const folder = os === 'android' ? 'Android' : os === 'macos' ? 'macOS' : os === 'windows' ? 'Windows' : '全部平台';
+  document.querySelectorAll('[data-cloud]').forEach((el) => {
+    el.href = CLOUD_LINKS[os] ?? CLOUD_LINKS.all;
+    const sub = el.querySelector('.s');
+    if (sub) sub.textContent = `${folder}文件夹 · 校内直连`;
+  });
 }
 
 async function copyButtons() {

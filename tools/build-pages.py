@@ -26,7 +26,7 @@ MAIN = "https://github.com/smartThise/OneTHU"
 RELEASES = MAIN + "/releases/latest"
 DOCS = "docs/"
 MARKET_REPO = "https://github.com/smartThise/OneTHU-Market"
-# 清华云盘镜像（校内直连；与 Releases 同一批安装包）
+# 清华云盘（校内直连；与 Releases 同一批安装包，按平台分文件夹）
 MIRROR = "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/"
 
 BRAND = ('<span class="brand" aria-label="OneTHU">'
@@ -104,7 +104,7 @@ FOOTER = """<footer class="bot">
         <h5>下载</h5>
         <a href="%s">最新版 Releases</a>
         <a href="%s/releases" target="_blank" rel="noopener">历史版本</a>
-        <a href="%s" target="_blank" rel="noopener">清华云盘镜像</a>
+        <a href="%s" target="_blank" rel="noopener" data-cloud>清华云盘下载</a>
       </div>
       <div>
         <h5>文档</h5>

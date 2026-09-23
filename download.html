@@ -34,13 +34,21 @@
   <div class="wrap">
     <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">按平台获取</h2></div>
     <div class="dl">
-      <a data-os="macos" href="https://github.com/smartThise/OneTHU/releases/latest"><span class="ic tint-ink"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="11" rx="1.5"/><path d="M2 19h20"/></svg></span><span><span class="t">macOS</span><br/><span class="s">.dmg · Apple Silicon / Intel</span></span></a>
-      <a data-os="windows" href="https://github.com/smartThise/OneTHU/releases/latest"><span class="ic tint-blue"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4.5" width="16" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span><span><span class="t">Windows</span><br/><span class="s">.exe · x64 安装器</span></span></a>
-      <a data-os="android" href="https://github.com/smartThise/OneTHU/releases/latest"><span class="ic tint-green"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 17.5h2"/></svg></span><span><span class="t">Android</span><br/><span class="s">.apk · arm64 / universal</span></span></a>
+      <div class="dl-item" data-os="macos"><span class="ic tint-ink"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="11" rx="1.5"/><path d="M2 19h20"/></svg></span><span><span class="t">macOS</span><br/><span class="s">.dmg · Apple Silicon / Intel</span></span></div>
+      <div class="dl-item" data-os="windows"><span class="ic tint-blue"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4.5" width="16" height="12" rx="1.5"/><path d="M8.5 20h7M12 16.5V20"/></svg></span><span><span class="t">Windows</span><br/><span class="s">.exe · x64 安装器</span></span></div>
+      <div class="dl-item" data-os="android"><span class="ic tint-green"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 17.5h2"/></svg></span><span><span class="t">Android</span><br/><span class="s">.apk · arm64</span></span></div>
     </div>
-    <div class="cta" style="display:flex;gap:var(--gap-3);flex-wrap:wrap;margin-top:22px">
-      <a class="btn btn-primary" href="https://github.com/smartThise/OneTHU/releases/latest">前往最新版 Releases</a>
-      <a class="btn" href="https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/" target="_blank" rel="noopener">清华云盘镜像</a>
+    <div class="channels">
+      <a class="ch" href="https://github.com/smartThise/OneTHU/releases/latest" target="_blank" rel="noopener">
+        <span class="ic tint-ink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10m0 0 3.5-3.5M12 13 8.5 9.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+        <span><span class="t">GitHub Releases</span><br/><span class="s">github.com · 需可访问 GitHub</span></span>
+      </a>
+      <a class="ch" data-cloud href="https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/" target="_blank" rel="noopener">
+        <span class="ic tint-blue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 17.5h9a3.5 3.5 0 0 0 .4-6.9A5 5 0 0 0 7.6 9.4 3.9 3.9 0 0 0 7.5 17.5Z"/><path d="M12 11.5v4.5m0 0 2-2m-2 2-2-2"/></svg></span>
+        <span><span class="t">清华云盘下载</span><br/><span class="s">全部平台文件夹 · 校内直连</span></span>
+      </a>
+    </div>
+    <div class="cta" style="display:flex;gap:var(--gap-3);flex-wrap:wrap;margin-top:18px">
       <a class="btn" href="https://github.com/smartThise/OneTHU#下载与上手" target="_blank" rel="noopener">安装与上手说明</a>
     </div>
   </div>
@@ -61,7 +69,7 @@
     <div class="feature-row"><span class="idx">i</span><div><h4>数据与许可</h4><p>只读校方公开接口，仅供个人学习与日常使用。自有代码以 MIT 开源并
       <strong>附两条限制</strong>（严禁商业用途；严禁用于对清华大学信息服务的攻击性访问），第三方组件按其自带许可，详见 <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSE" target="_blank" rel="noopener">LICENSE</a> 与
       <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSES/THIRD-PARTY.md" target="_blank" rel="noopener">第三方许可</a>。</p></div></div>
-    <div class="feature-row"><span class="idx">i</span><div><h4>下载渠道</h4><p>安装包同时发布在 GitHub Releases 与清华云盘（<a href="https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/" target="_blank" rel="noopener">云盘镜像</a>），两处为同一批文件；校内网络访问 GitHub 不畅时请使用云盘。</p></div></div>
+    <div class="feature-row"><span class="idx">i</span><div><h4>下载渠道</h4><p>安装包同时发布在 GitHub Releases 与<a href="https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/" target="_blank" rel="noopener">清华云盘</a>（按系统分 Android / macOS / Windows 三个文件夹），两处为同一批文件；校内网络访问 GitHub 不畅时请使用云盘。</p></div></div>
     <div class="feature-row"><span class="idx">i</span><div><h4>Android 升级须知</h4><p>从 0.9.0 或更早版本升级需先卸载旧版再安装：本版更换了签名证书，覆盖安装会失败。卸载会清除本机登录状态与已填凭据，安装后需重新登录；仅此一次，从 0.11 起可正常覆盖升级。</p></div></div>
     <div class="feature-row"><span class="idx">i</span><div><h4>数据异常的处理</h4><p>使用页面右下角的刷新按钮重试；仍异常时可在
       <a href="https://github.com/smartThise/OneTHU/issues" target="_blank" rel="noopener">Issues</a> 反馈，并附上设置页「自检」的结果。</p></div></div>
@@ -74,7 +82,7 @@
         <h5>下载</h5>
         <a href="https://github.com/smartThise/OneTHU/releases/latest">最新版 Releases</a>
         <a href="https://github.com/smartThise/OneTHU/releases" target="_blank" rel="noopener">历史版本</a>
-        <a href="https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/" target="_blank" rel="noopener">清华云盘镜像</a>
+        <a href="https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/" target="_blank" rel="noopener" data-cloud>清华云盘下载</a>
       </div>
       <div>
         <h5>文档</h5>

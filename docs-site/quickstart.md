@@ -1,11 +1,11 @@
 # 安装与上手
 
-> 最后更新：2026-09-23 10:16
+> 最后更新：2026-09-23 10:36
 
 ## 1. 安装
 
 安装包发布在 [GitHub Releases](https://github.com/smartThise/OneTHU/releases/latest)，也可从 [官网下载页](https://onethu.github.io/download.html) 按平台获取。
-校内网络访问 GitHub 不畅时，用 [清华云盘镜像](https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/)（与 Releases 同一批文件）。
+校内网络访问 GitHub 不畅时，用 [清华云盘下载](https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/)（与 Releases 同一批文件，按系统分 Android / macOS / Windows 三个文件夹）。
 
 | 平台 | 安装包 | 说明 |
 |---|---|---|
