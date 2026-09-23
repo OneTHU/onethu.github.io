@@ -55,15 +55,28 @@ PAGES = [
         "下载 · OneTHU",
         "OneTHU 下载：macOS DMG / Windows EXE / Android APK，按平台直达最新版 Releases。",
     ),
+    (
+        "community.html",
+        "community",
+        "交流与反馈 · OneTHU",
+        "OneTHU 交流与反馈：用户 QQ 群、Issues 提交指引与插件生态入口。",
+    ),
 ]
 
+ISSUES = MAIN + "/issues"
+
+# (href, 文案, 高亮键, 附加 class, 下拉项 [(href, 文案)…])
 NAV = [
-    ("index.html#features", "功能", "features", "hide-sm"),
-    ("index.html#shots", "界面", "shots", "hide-sm"),
-    ("market.html", "插件市场", "market", ""),
-    ("download.html", "下载", "download", ""),
-    (DOCS, "文档", "docs", ""),
-    (MAIN, "GitHub", "github", "hide-sm"),
+    ("index.html#features", "功能", "features", "hide-sm", ()),
+    ("index.html#shots", "界面", "shots", "hide-sm", ()),
+    ("market.html", "插件市场", "market", "", ()),
+    ("download.html", "下载", "download", "", ()),
+    (DOCS, "文档", "docs", "", ()),
+    ("community.html", "交流与反馈", "community", "", (
+        ("community.html#qq", "用户交流群"),
+        (ISSUES, "提交问题 / Issues"),
+    )),
+    (MAIN, "GitHub", "github", "hide-sm", ()),
 ]
 
 
@@ -84,10 +97,18 @@ def head(title, desc):
 
 def header(active):
     links = []
-    for href, label, key, cls in NAV:
+    for href, label, key, cls, menu in NAV:
         cls_attr = ' class="%s"' % cls if cls else ""
         cur = ' aria-current="page"' % () if key == active else ""
-        links.append('<a href="%s"%s%s>%s</a>' % (href, cls_attr, cur, label))
+        link = '<a href="%s"%s%s>%s</a>' % (href, cls_attr, cur, label)
+        if menu:
+            items = "".join(
+                '<a href="%s"%s>%s</a>' % (h, ' target="_blank" rel="noopener"' if h.startswith("http") else "", t)
+                for h, t in menu
+            )
+            links.append('<div class="nav-item">%s<div class="nav-menu">%s</div></div>' % (link, items))
+        else:
+            links.append(link)
     links.append('<a class="btn btn-primary btn-sm" href="%s">下载最新版</a>' % RELEASES)
     return """<header class="top">
   <div class="wrap top-in">
@@ -119,6 +140,8 @@ FOOTER = """<footer class="bot">
         <a href="%s" target="_blank" rel="noopener">市场名单仓库</a>
         <a href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener">示例插件</a>
         <a href="https://github.com/smartThise/OneTHU-Harness" target="_blank" rel="noopener">Harness</a>
+        <a href="community.html">交流与反馈</a>
+        <a href="https://github.com/smartThise/OneTHU/issues" target="_blank" rel="noopener">提交问题 / Issues</a>
       </div>
       <div>
         <h5>说明</h5>

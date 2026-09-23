@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>交流与反馈 · OneTHU</title>
+<meta name="description" content="OneTHU 交流与反馈：用户 QQ 群、Issues 提交指引与插件生态入口。"/>
+<link rel="icon" href="assets/img/icon.png"/>
+<link rel="stylesheet" href="assets/tokens.css"/>
+<link rel="stylesheet" href="assets/site.css"/>
+<meta property="og:title" content="交流与反馈 · OneTHU"/>
+<meta property="og:description" content="OneTHU 交流与反馈：用户 QQ 群、Issues 提交指引与插件生态入口。"/>
+<meta property="og:image" content="assets/img/banner.png"/>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a href="index.html" style="color:inherit"><span class="brand" aria-label="OneTHU"><span class="b-r"><span class="p">(</span><span class="b-one">One</span></span><span class="b-r b-r2"><span class="b-thu">THU</span><span class="p">)</span></span></span></a>
+    <nav><a href="index.html#features" class="hide-sm">功能</a><a href="index.html#shots" class="hide-sm">界面</a><a href="market.html">插件市场</a><a href="download.html">下载</a><a href="docs/">文档</a><div class="nav-item"><a href="community.html" aria-current="page">交流与反馈</a><div class="nav-menu"><a href="community.html#qq">用户交流群</a><a href="https://github.com/smartThise/OneTHU/issues" target="_blank" rel="noopener">提交问题 / Issues</a></div></div><a href="https://github.com/smartThise/OneTHU" class="hide-sm">GitHub</a><a class="btn btn-primary btn-sm" href="https://github.com/smartThise/OneTHU/releases/latest">下载最新版</a></nav>
+  </div>
+</header>
+
+<section class="page-head">
+  <div class="grid-bg"></div>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="wrap page-head-in">
+    <div class="crumb">COMMUNITY / FEEDBACK</div>
+    <h1>交流与反馈</h1>
+    <p>使用问题、功能需求与插件收录都在这里：先看交流群，需要留痕的走 Issues。</p>
+  </div>
+</section>
+
+<section class="block" id="qq">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">用户交流群</h2></div>
+    <div class="community">
+      <figure class="qr">
+        <img src="assets/img/qrcode_group.jpg" alt="OneTHU 用户 QQ 群二维码" width="480" height="480" loading="lazy"/>
+        <figcaption>扫码加入用户 QQ 群</figcaption>
+      </figure>
+      <div>
+        <p class="sec-sub" style="margin-top:0">群里可以问用法、提功能需求、交流使用经验，也可以先看看别人遇到的问题是否和你一样。</p>
+        <div class="feature-row"><span class="idx">01</span><div><h4>问用法</h4><p>课表、作业、图书馆座位、校园卡在哪里设置，群里问最快。</p></div></div>
+        <div class="feature-row"><span class="idx">02</span><div><h4>提需求</h4><p>希望增加的功能或希望接入的校园系统，直接说；被采纳的会进版本说明。</p></div></div>
+        <div class="feature-row"><span class="idx">03</span><div><h4>报问题</h4><p>需要留痕、需要附日志、可能被反复跟进的问题，请走 Issues（下方）。</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">提交问题</h2></div>
+    <p class="sec-sub">在 GitHub Issues 提交，按下面几项附上信息，定位会快很多。</p>
+    <div class="cta" style="display:flex;gap:var(--gap-3);flex-wrap:wrap;margin-bottom:26px">
+      <a class="btn btn-primary" href="https://github.com/smartThise/OneTHU/issues" target="_blank" rel="noopener">前往 Issues 提交</a>
+      <a class="btn" href="docs/community/" target="_blank" rel="noopener">反馈指引（文档）</a>
+    </div>
+    <div class="feature-row"><span class="idx">i</span><div><h4>应用版本与平台</h4><p>设置 → 关于，可看到版本号与代号。</p></div></div>
+    <div class="feature-row"><span class="idx">i</span><div><h4>诊断结果</h4><p>设置 → 通知 → 诊断，用于核对权限与提醒排程状态。</p></div></div>
+    <div class="feature-row"><span class="idx">i</span><div><h4>运行日志</h4><p>设置 → 关于 → 导出日志；Android 会转存到系统下载目录。</p></div></div>
+    <div class="feature-row"><span class="idx">i</span><div><h4>复现步骤</h4><p>具体操作路径与预期结果；涉及接口的问题请勿附带账号、学号或成绩。</p></div></div>
+  </div>
+</section>
+
+<section class="block" style="border-bottom:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">插件与贡献</h2></div>
+    <div class="cards">
+      <a class="card reveal" href="market.html" style="color:inherit"><div class="ic tint-blue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 9 1.2-5h13.6L20 9"/><path d="M4 9c0 1.5 1.3 2.6 2.7 2.6S9.3 10.5 9.3 9c0 1.5 1.2 2.6 2.7 2.6s2.7-1.1 2.7-2.6c0 1.5 1.3 2.6 2.7 2.6S20 10.5 20 9"/><path d="M5.5 12.8V20h13v-7.2"/><path d="M9.5 20v-4.5h5V20"/></svg></div><h3>插件市场</h3><p>与应用内同一份名单；想收录自己的插件，见市场仓库的提交说明。</p></a>
+      <a class="card reveal" href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener"><div class="ic tint-green"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v5M15 3v5"/><path d="M6 8h12l-.9 4.2a5.1 5.1 0 0 1-10.2 0L6 8Z"/><path d="M12 17.5V21"/></svg></div><h3>示例插件</h3><p>覆盖结构化结果、弹窗、剪贴板、自建功能页、原子化收藏与通知，可作为模板。</p></a>
+      <a class="card reveal" href="docs/plugin-development/" style="color:inherit"><div class="ic tint-ink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M13 3v6h6"/><path d="M9 13h6M9 16.5h6"/></svg></div><h3>插件开发指南</h3><p>清单规范、权限模型、UI 通道、发布与市场收录；改宿主见系统架构与构建发布。</p></a>
+    </div>
+  </div>
+</section>
+
+<footer class="bot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h5>下载</h5>
+        <a href="https://github.com/smartThise/OneTHU/releases/latest">最新版 Releases</a>
+        <a href="https://github.com/smartThise/OneTHU/releases" target="_blank" rel="noopener">历史版本</a>
+        <a href="https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/" target="_blank" rel="noopener" data-cloud>清华云盘下载</a>
+      </div>
+      <div>
+        <h5>文档</h5>
+        <a href="docs/">全部文档</a>
+        <a href="docs/plugin-development/">插件开发指南</a>
+        <a href="docs/api-reference/">API 参考</a>
+        <a href="docs/build-and-release/">构建与发布</a>
+      </div>
+      <div>
+        <h5>生态</h5>
+        <a href="market.html">插件市场</a>
+        <a href="https://github.com/smartThise/OneTHU-Market" target="_blank" rel="noopener">市场名单仓库</a>
+        <a href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener">示例插件</a>
+        <a href="https://github.com/smartThise/OneTHU-Harness" target="_blank" rel="noopener">Harness</a>
+        <a href="community.html">交流与反馈</a>
+        <a href="https://github.com/smartThise/OneTHU/issues" target="_blank" rel="noopener">提交问题 / Issues</a>
+      </div>
+      <div>
+        <h5>说明</h5>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSE" target="_blank" rel="noopener">许可（MIT + 使用限制）</a>
+        <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSES/THIRD-PARTY.md" target="_blank" rel="noopener">第三方组件许可</a>
+      </div>
+    </div>
+    <div class="fine">
+      OneTHU 是非官方的个人效率工具，与清华大学无关；所有数据均来自学校公开系统的网页接口，仅供个人学习与日常使用。<br/>
+      自有代码以 MIT 许可开源，<strong>附两条限制</strong>：严禁商业用途；严禁用于对清华大学信息服务的攻击性访问（抢课、自动预约提交等）。详见
+      <a href="https://github.com/smartThise/OneTHU/blob/dev3/LICENSE" target="_blank" rel="noopener">LICENSE</a>。
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -54,6 +54,27 @@ header.top {
 .top nav a.btn:not(.btn-primary) { color: var(--text-1); }
 @media (max-width: 860px) { .top nav .hide-sm { display: none; } }
 
+/* ── 导航下拉（交流与反馈：交流群 / Issues 直达） ── */
+.top nav .nav-item { position: relative; display: flex; align-items: center; }
+.top nav .nav-item > a { display: block; }
+.top nav .nav-menu {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  min-width: 172px; padding: 6px; margin-top: 6px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md);
+  box-shadow: var(--shadow-3); display: none; z-index: 60;
+}
+.top nav .nav-item:hover .nav-menu,
+.top nav .nav-item:focus-within .nav-menu { display: block; }
+.top nav .nav-menu a { display: block; padding: 8px 10px; border-radius: var(--r-sm); font-size: var(--text-sm); color: var(--text-2); white-space: nowrap; }
+.top nav .nav-menu a:hover { background: var(--hover); color: var(--text-1); text-decoration: none; }
+
+/* ── 交流与反馈：二维码 + 说明两栏 ── */
+.community { display: grid; grid-template-columns: 236px minmax(0, 1fr); gap: var(--gap-5); align-items: start; }
+@media (max-width: 760px) { .community { grid-template-columns: 1fr; } }
+.community .qr { margin: 0; padding: 10px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
+.community .qr img { display: block; width: 100%; height: auto; border-radius: var(--r-md); }
+.community .qr figcaption { margin-top: 8px; text-align: center; color: var(--text-3); font-size: var(--text-xs); }
+
 /* ── 品牌标识（与应用 brand-logo 同构：竖排两行、括号等宽 / One 衬线 / THU 重黑） ── */
 .brand { display: inline-flex; flex-direction: column; line-height: .92; font-size: 15px; }
 .brand .b-r { display: flex; align-items: baseline; gap: 2px; }
