@@ -246,6 +246,65 @@ async function fillStars(cards, items) {
   await Promise.all(workers);
 }
 
+/** 实时版本号：对市场条目的仓库逐个拉最新 manifest（contents API 优先，raw 降级），
+ *  失败的条目保留注册表快照；更新卡片里显示的版本 */
+async function fillLatestVersions(cards, items) {
+  const fetchText = async (u) => {
+    try {
+      const res = await fetch(u, { headers: { 'User-Agent': 'OneTHU-Site', Accept: 'application/vnd.github+json' } });
+      if (!res.ok) return null;
+      if (u.includes('/contents/')) {
+        const j = await res.json();
+        if (j.encoding !== 'base64' || typeof j.content !== 'string') return null;
+        return atob(j.content.replace(/\s/g, ''));
+      }
+      const t = await res.text();
+      return t.trim() ? t : null;
+    } catch { return null; }
+  };
+  const parseVer = (text) => {
+    const m = /(?:version|版本)\s*[:=]\s*["'`]([^"'`]+)["'`]/.exec(text);
+    return m && m[1] ? String(m[1]) : null;
+  };
+  const repoRef = (r) => {
+    let s = String(r || '').replace(/^git@github\.com:/i, 'https://github.com/').replace(/^github\.com\//i, 'https://github.com/');
+    const parts = s.replace(/^https?:\/\//i, '').split('/');
+    if (parts.length < 2) return null;
+    let owner = parts[0], repo = parts[1].replace(/\.git$/, ''), branch = null, sub = null;
+    if (parts[2] === 'tree' && parts[3]) { branch = parts[3]; sub = (parts.slice(4).join('/') || '') + '/'; }
+    else if (s.lastIndexOf('@') > 10) branch = s.slice(s.lastIndexOf('@') + 1) || null;
+    return { owner, repo, branch: branch || 'main', sub };
+  };
+  const queue = items.slice(0, 30);
+  const workers = Array.from({ length: 4 }, async () => {
+    while (queue.length) {
+      const item = queue.shift();
+      const cfg = repoRef(item.repo);
+      const el = cards.get(item.id);
+      if (!cfg || !el) continue;
+      const path = (cfg.sub || '') + (item.entry || 'plugin.js');
+      let v = null;
+      const api = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}?ref=${encodeURIComponent(cfg.branch)}`;
+      let text = await fetchText(api);
+      if (text == null) {
+        const raw = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/${cfg.branch}/${path}?t=${Date.now()}`;
+        text = await fetchText(raw);
+      }
+      v = text ? parseVer(text) : null;
+      if (v && el) {
+        const p = items.find((x) => x.id === item.id);
+        if (p) {
+          el.textContent = `v ${v}`;
+          p.version = v;
+          const meta = el.closest('.market-card')?.querySelector('.meta');
+          if (meta) meta.textContent = [p.author, 'v' + v, p.category].filter(Boolean).join(' · ');
+        }
+      }
+    }
+  });
+  await Promise.all(workers);
+}
+
 function marketCard(p) {
   const a = document.createElement('a');
   a.className = 'market-card reveal';
@@ -324,6 +383,7 @@ async function initMarket() {
     }
     observeReveals(grid);
     void fillStars(cardMap, list);
+    void fillLatestVersions(cardMap, list);
   }
 
   let cat = 'all';
