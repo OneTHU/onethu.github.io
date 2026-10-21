@@ -2,7 +2,7 @@
   "version": "0.11.0",
   "releaseUrl": "https://github.com/smartThise/OneTHU/releases/tag/v0.11.0",
   "mirrorUrl": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/",
-  "verifiedAt": "2026-10-21T07:28:39.058653+00:00",
+  "verifiedAt": "2026-10-21T09:21:50.173390+00:00",
   "assets": {
     "macos": {
       "name": "OneTHU_0.11.0_aarch64.dmg",
@@ -34,7 +34,7 @@
       "directory": "/Android/",
       "architecture": "ARM64",
       "size": 31912765,
-      "sha256": "e06cbb425c141ea0c74ffbe5a6d5d3f6ec1f0e99861d14b3beeb5ecc0a2dd18c",
+      "sha256": "0ae0f44d8396b3109c909330620c477cb9159818486744a2bc151dfef0ac6409",
       "url": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/files/?p=%2FAndroid%2FOneTHU_0.11.0_arm64.apk&dl=1",
       "githubUrl": "https://github.com/smartThise/OneTHU/releases/download/v0.11.0/OneTHU_0.11.0_arm64.apk",
       "folderUrl": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/?p=%2FAndroid%2F",
