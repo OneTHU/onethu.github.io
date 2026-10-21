@@ -1,0 +1,107 @@
+{
+  "version": "0.11.0",
+  "locale": "en-US",
+  "data": "fictional only; isolated browser contexts; no school account",
+  "files": [
+    {
+      "file": "home-desktop.webp",
+      "source": "home-desktop.png",
+      "sourceSha256": "892a692f044b74319d921ed483658931e86b0680dacc5b08de0c8086b8b740c1",
+      "sha256": "0fe3f94ff7c45a88cc96e4127e7096d3a943a075dc1902e7284d587cba97e6dd"
+    },
+    {
+      "file": "home-full.webp",
+      "source": "home-full.png",
+      "sourceSha256": "ac777e7173111472e0891a6db3ffecdeaddff3eb98bc871c72e64dbbabf94b08",
+      "sha256": "f266cf51709c3106ed97724c27861d5283cfdc47211f8e32b89c0b28306bbcc2"
+    },
+    {
+      "file": "home-landscape.webp",
+      "source": "home-landscape.png",
+      "sourceSha256": "0ec86dc774b0d288067bb744e94060a87f616b2b329868c9193a0f7a4f5a6fcc",
+      "sha256": "10e8681c0c0184d71e2730e16192f2c31769b26c6963369494af2b5dbb1da908"
+    },
+    {
+      "file": "home-practical.webp",
+      "source": "home-practical.png",
+      "sourceSha256": "4e2aab382f5a018592d5b197b8d6ff50ff2441b994a0306ebe8e7fd9bfc06b04",
+      "sha256": "054f0ce2fab79cc2ed13248ea6e8de149e0e0b7fd94dbbb7c828afbb7c40451b"
+    },
+    {
+      "file": "home-simple.webp",
+      "source": "home-simple.png",
+      "sourceSha256": "cb66989789b472d03cebebc86fb7153e1b16dd9cdefb9742ab82920c8f65df09",
+      "sha256": "0a934fc260c9a6c17881fbcccfa2e2f0d9f43af5ebd0127cc3fd7dfe12e96646"
+    },
+    {
+      "file": "learn-desktop.webp",
+      "source": "learn-desktop.png",
+      "sourceSha256": "10737b36e9dbf36fa89745d9c8cb3e8aff994694bc709c8851b632b7fec91c1f",
+      "sha256": "82aa4e586166da7e734d2429f80496e3b6120035fcc14b3ed0971e9952f73460"
+    },
+    {
+      "file": "learn.webp",
+      "source": "learn.png",
+      "sourceSha256": "f5bb811fc432c9f2394679654f927f337193b6ac4f6316054dcdb166b5caa61c",
+      "sha256": "a0f1a662ecf3eddf122ec124de449a927eefe941a7638f91fc0769fea85dfc0a"
+    },
+    {
+      "file": "oh.webp",
+      "source": "oh.png",
+      "sourceSha256": "33bbdafd491b8be203ef9f17c564c28849e3afa074eb193b1f2f3266fd852b5e",
+      "sha256": "cf69e448c20ba267f724ce33c7b840a5d81404c0ee9849c671119d5c0bf1a334"
+    },
+    {
+      "file": "organization.webp",
+      "source": "organization.png",
+      "sourceSha256": "fe55671a70248a11c6c5c45b093ca8c63bb2fc47a1d6dd60d5a33f21d31f1f8d",
+      "sha256": "e7731565b912c5a07a6b9553b1fa1485d2d14d28fdb8c91aecac341fe7a6caaa"
+    },
+    {
+      "file": "schedule-landscape.webp",
+      "source": "schedule-landscape.png",
+      "sourceSha256": "8e01d69ed5de097f85c416cb2168e1800c055056f71e389f8212006b79550a4a",
+      "sha256": "aaf832a47e6ca1f01d1e5e3068944b8edcb1286e5098df919e52021ed616f7cb"
+    },
+    {
+      "file": "schedule.webp",
+      "source": "schedule.png",
+      "sourceSha256": "0086b733d5361c50f3c232626a7fe7df7f68142992ad0ae2f50b2a6564f826fc",
+      "sha256": "11e3c3f098476146d38e60752afeed41df791291d11cc236698e722ba8d9b6da"
+    },
+    {
+      "file": "search.webp",
+      "source": "search.png",
+      "sourceSha256": "e76658f8a1973e76e3826203124b5508b5789583edada075f6f8362a2e90acfb",
+      "sha256": "98ffacbf929a9e4ad95b38dc14a50691b736efc3dfb49915af6caeac5612971a"
+    },
+    {
+      "file": "skills.webp",
+      "source": "skills.png",
+      "sourceSha256": "2f4c048c4940be6deff08bf0e4bb1df4d1b25c21480338ee983b330e663559da",
+      "sha256": "f069e8bb0f82848bbbed9992a0c8493f0c61898973bf9656f49bdbed5c9f58fd"
+    },
+    {
+      "file": "tasks.webp",
+      "source": "tasks.png",
+      "sourceSha256": "faedd2de6848565e7b9fe3e186990dd40b4fa0a88ba937a8ee2b77871dbf33b8",
+      "sha256": "04b6e12c53fdb2e97a23824ae23a01f07830327f97bac86034300b5201e5a225"
+    },
+    {
+      "file": "vault.webp",
+      "source": "vault.png",
+      "sourceSha256": "de804f0419416119e732c4b8d766c83e1f2fc77d71a67cebd2e04be9e8a82da1",
+      "sha256": "0662b678f102bb0dbf5f048ca42e38db3fa5d864aa71e7b1c102ac3ac39c7675"
+    },
+    {
+      "file": "xiaoda.webp",
+      "source": "xiaoda.png",
+      "sourceSha256": "8aa231182420a2a9d357a296d5330777081e20cdbd7e2583f0697d1896086c6e",
+      "sha256": "23b923a56926d3624a4b05671d9799c909e131f84801490a7e5bdf8a737cae95"
+    },
+    {
+      "file": "vault-drag.mp4",
+      "sha256": "19e23ce8883164eb51e3188872bf24eb95b915f1f461954194bb7716b4a9d801"
+    }
+  ]
+}

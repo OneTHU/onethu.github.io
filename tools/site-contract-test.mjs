@@ -14,6 +14,7 @@ for(const language of ['', 'en/'])for(const page of ['index','download','market'
   assert.ok(existsSync(path),`${language+page}: missing ${url}`);count++;
  }
  if(page==='developers'){assert.match(html,/contributors/);assert.match(html,/10,000/);assert.match(html,/smartThise/);assert.match(html,/xiao-dreamr/);}
+ for(const [,url] of html.matchAll(/(?:src|poster)="([^"]*assets\/preview\/[^"]+)"/g))assert.equal(url.includes('/en-US/'),Boolean(language),'Page language must match every image/video source: '+url);
  if(page==='index'){assert.match(html,/home-landscape.webp/);assert.match(html,/vault-drag.mp4/);assert.match(html,/OneTHU Harness/);}
  assert.doesNotMatch(html,/assets\/shots\//,'Old preview references must be gone');
 }
