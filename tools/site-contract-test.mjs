@@ -22,3 +22,18 @@ const report=JSON.parse(readFileSync(resolve(root,'assets/contributors.json'),'u
 assert.ok(report.contributors.length>=10);for(const p of report.contributors){assert.equal(p.major,p.codeAdded>10000);assert.ok(!('email' in p));}
 const assetManifest=JSON.parse(readFileSync(resolve(root,'assets/preview/manifest.json'),'utf8'));assert.match(assetManifest.data,/fictional/);
 console.log(`✓ 10 bilingual pages, ${count} local references, contributor threshold and fictional assets`);
+
+const downloads=JSON.parse(readFileSync(resolve(root,'assets/downloads.json'),'utf8'));
+for(const language of ['', 'en/']){
+ const html=readFileSync(resolve(root,language+'download.html'),'utf8');
+ for(const [platform,a] of Object.entries(downloads.assets)){
+  assert.match(html,new RegExp(`data-platform="${platform}"`));
+  assert.ok(html.includes(a.url.replaceAll('&','&amp;')),'Direct cloud download link missing');
+  assert.ok(html.includes(a.sha256),'Visible checksum missing');
+  assert.ok(a.url.includes(encodeURIComponent(a.directory+a.name)),'Cloud link must point into platform directory');
+  assert.equal(a.anonymousDownloadVerified,true);
+ }
+ assert.equal((html.match(/primary cloud-download/g)||[]).length,3,'Each platform needs a primary cloud action');
+ assert.doesNotMatch(html,/尚未同步|may lag behind|本站不会假称/);
+}
+console.log('✓ bilingual direct platform cloud downloads, visible checksums and verified snapshot');

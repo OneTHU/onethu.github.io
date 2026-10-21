@@ -4,7 +4,7 @@ name: pages
 # 文档站正文来自主仓 smartThise/OneTHU 的 docs/：
 #   · 主仓文档更新不会自动触发本仓库，由每日定时重建跟进；
 #     需要立即生效时在本仓库手动触发本工作流（或推送任意提交）。
-#   · 手动触发可指定主仓分支（默认 dev3）。
+#   · 手动触发可指定主仓分支（默认 main）。
 on:
   push:
     branches: [main]
@@ -15,7 +15,7 @@ on:
       onethu_ref:
         description: 主仓文档来源分支
         required: false
-        default: dev3
+        default: main
 
 permissions:
   contents: read
@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: smartThise/OneTHU
-          ref: ${{ inputs.onethu_ref || 'dev3' }}
+          ref: ${{ inputs.onethu_ref || 'main' }}
           path: .onethu
           fetch-depth: 0
 
@@ -53,6 +53,11 @@ jobs:
           python3 tools/build-pages.py
           npm test
           git diff --exit-code -- index.html market.html download.html developers.html community.html en/ assets/studio.js assets/studio-meta.json
+
+      - name: Verify latest cloud installers against GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .onethu/tools/check-release-mirrors.py --output assets/downloads.json
 
       - name: Refresh contributor snapshot from complete dev3 history
         env:
@@ -74,7 +79,7 @@ jobs:
 
       - name: 同步文档源（主仓 docs → docs-src）
         env:
-          ONETHU_REF: ${{ inputs.onethu_ref || 'dev3' }}
+          ONETHU_REF: ${{ inputs.onethu_ref || 'main' }}
         run: python3 tools/sync-docs.py .onethu/docs
 
       - name: 构建文档站（/docs/）
