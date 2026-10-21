@@ -1,0 +1,7 @@
+{
+  "bytes": 541514,
+  "dependencies": [
+    "three@0.186.1"
+  ],
+  "license": "MIT; see studio.js.LEGAL.txt"
+}

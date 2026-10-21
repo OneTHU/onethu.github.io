@@ -1,178 +1,60 @@
 #!/usr/bin/env python3
-"""同步三页共用的头部、导航与页脚（index / market / download）。
-
-由来：三页的头、导航、页脚必须完全一致，手改容易漂移；而正文（首屏、功能区、界面
-截图区、下载说明等）需要频繁调整排版。因此本脚本只维护**共用块**：
-
-  · `<head>` 内的标题、描述、og 标签与样式/图标引用
-  · `<header class="top">` 导航
-  · `<footer class="bot">` 页脚
-
-正文（`</header>` 之后到 `<footer>` 之前）不由本脚本改动，直接编辑 HTML 即可。
-导航或页脚有变动时改本脚本，然后运行：
-
-    python3 tools/build-pages.py
-
-重复运行不产生改动：内容一致时不写盘；CI 以 `git diff --exit-code` 校验三页与脚本一致。
-"""
-import io
-import os
-import re
-
-HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(HERE)
-
-MAIN = "https://github.com/smartThise/OneTHU"
-RELEASES = MAIN + "/releases/latest"
-DOCS = "docs/"
-MARKET_REPO = "https://github.com/smartThise/OneTHU-Market"
-# 清华云盘（校内直连；与 Releases 同一批安装包，按平台分文件夹）
-MIRROR = "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/"
-
-BRAND = ('<span class="brand" aria-label="OneTHU">'
-         '<span class="b-r"><span class="p">(</span><span class="b-one">One</span></span>'
-         '<span class="b-r b-r2"><span class="b-thu">THU</span><span class="p">)</span></span></span>')
-
-# 页面 → (文件名, 导航高亮键, 标题, 描述)
-PAGES = [
-    (
-        "index.html",
-        "features",
-        "OneTHU — One THUer should have OneTHU.",
-        "OneTHU：统一身份、统一数据层、统一界面的清华校园 App 与 Agent，覆盖 macOS / Windows / "
-        "Android；内置 OneTHU Harness（AI Agent），一句话覆盖作业、课表、预约、新闻等校园场景；"
-        "插件与 SDK 开放生态、桌面小组件、三端系统通知。",
-    ),
-    (
-        "market.html",
-        "market",
-        "插件市场 · OneTHU",
-        "OneTHU 插件市场：官方与社区插件一览，点击卡片进入对应仓库。",
-    ),
-    (
-        "download.html",
-        "download",
-        "下载 · OneTHU",
-        "OneTHU 下载：macOS DMG / Windows EXE / Android APK，按平台直达最新版 Releases。",
-    ),
-    (
-        "community.html",
-        "community",
-        "交流与反馈 · OneTHU",
-        "OneTHU 交流与反馈：用户 QQ 群、Issues 提交指引与插件生态入口。",
-    ),
-]
-
-ISSUES = MAIN + "/issues"
-
-# (href, 文案, 高亮键, 附加 class, 下拉项 [(href, 文案)…])
-NAV = [
-    ("index.html#features", "功能", "features", "hide-sm", ()),
-    ("index.html#shots", "界面", "shots", "hide-sm", ()),
-    ("market.html", "插件市场", "market", "", ()),
-    ("download.html", "下载", "download", "", ()),
-    (DOCS, "文档", "docs", "", ()),
-    ("community.html", "交流与反馈", "community", "", (
-        ("community.html#qq", "用户交流群"),
-        (ISSUES, "提交问题 / Issues"),
-    )),
-    (MAIN, "GitHub", "github", "hide-sm", ()),
-]
-
-
-def head(title, desc):
-    return """<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>%s</title>
-<meta name="description" content="%s"/>
-<link rel="icon" href="assets/img/icon.png"/>
-<link rel="stylesheet" href="assets/tokens.css"/>
-<link rel="stylesheet" href="assets/site.css"/>
-<meta property="og:title" content="%s"/>
-<meta property="og:description" content="%s"/>
-<meta property="og:image" content="assets/img/banner.png"/>
-</head>""" % (title, desc, title, desc)
-
-
-def header(active):
-    links = []
-    for href, label, key, cls, menu in NAV:
-        cls_attr = ' class="%s"' % cls if cls else ""
-        cur = ' aria-current="page"' % () if key == active else ""
-        link = '<a href="%s"%s%s>%s</a>' % (href, cls_attr, cur, label)
-        if menu:
-            items = "".join(
-                '<a href="%s"%s>%s</a>' % (h, ' target="_blank" rel="noopener"' if h.startswith("http") else "", t)
-                for h, t in menu
-            )
-            links.append('<div class="nav-item">%s<div class="nav-menu">%s</div></div>' % (link, items))
-        else:
-            links.append(link)
-    links.append('<a class="btn btn-primary btn-sm" href="%s">下载最新版</a>' % RELEASES)
-    return """<header class="top">
-  <div class="wrap top-in">
-    <a href="index.html" style="color:inherit">%s</a>
-    <nav>%s</nav>
-  </div>
-</header>""" % (BRAND, "".join(links))
-
-
-FOOTER = """<footer class="bot">
-  <div class="wrap">
-    <div class="cols">
-      <div>
-        <h5>下载</h5>
-        <a href="%s">最新版 Releases</a>
-        <a href="%s/releases" target="_blank" rel="noopener">历史版本</a>
-        <a href="%s" target="_blank" rel="noopener" data-cloud>清华云盘下载</a>
-      </div>
-      <div>
-        <h5>文档</h5>
-        <a href="%s">全部文档</a>
-        <a href="%splugin-development/">插件开发指南</a>
-        <a href="%sapi-reference/">API 参考</a>
-        <a href="%sbuild-and-release/">构建与发布</a>
-      </div>
-      <div>
-        <h5>生态</h5>
-        <a href="market.html">插件市场</a>
-        <a href="%s" target="_blank" rel="noopener">市场名单仓库</a>
-        <a href="https://github.com/smartThise/OneTHU-plugin-hello" target="_blank" rel="noopener">示例插件</a>
-        <a href="https://github.com/smartThise/OneTHU-Harness" target="_blank" rel="noopener">Harness</a>
-        <a href="community.html">交流与反馈</a>
-        <a href="https://github.com/smartThise/OneTHU/issues" target="_blank" rel="noopener">提交问题 / Issues</a>
-      </div>
-      <div>
-        <h5>说明</h5>
-        <a href="%s/blob/dev3/LICENSE" target="_blank" rel="noopener">许可（MIT + 使用限制）</a>
-        <a href="%s/blob/dev3/LICENSES/THIRD-PARTY.md" target="_blank" rel="noopener">第三方组件许可</a>
-      </div>
-    </div>
-    <div class="fine">
-      OneTHU 是非官方的个人效率工具，与清华大学无关；所有数据均来自学校公开系统的网页接口，仅供个人学习与日常使用。<br/>
-      自有代码以 MIT 许可开源，<strong>附两条限制</strong>：严禁商业用途；严禁用于对清华大学信息服务的攻击性访问（抢课、自动预约提交等）。详见
-      <a href="%s/blob/dev3/LICENSE" target="_blank" rel="noopener">LICENSE</a>。
-    </div>
-  </div>
-</footer>""" % (RELEASES, MAIN, MIRROR, DOCS, DOCS, DOCS, DOCS, MARKET_REPO, MAIN, MAIN, MAIN)
-
-
-def sync(name, active, title, desc):
-    path = os.path.join(ROOT, name)
-    src = io.open(path, encoding="utf-8").read()
-    out = re.sub(r"<head>[\s\S]*?</head>", lambda _: head(title, desc), src, count=1)
-    out = re.sub(
-        r'<header class="top">[\s\S]*?</header>', lambda _: header(active), out, count=1
-    )
-    out = re.sub(r'<footer class="bot">[\s\S]*?</footer>', lambda _: FOOTER, out, count=1)
-    if out == src:
-        print("未变", name)
-        return
-    io.open(path, "w", encoding="utf-8").write(out)
-    print("写入", name, len(out), "字符")
-
-
-if __name__ == "__main__":
-    for name, active, title, desc in PAGES:
-        sync(name, active, title, desc)
+"""Generate the bilingual public site. Content is explicit in both languages; no runtime translation."""
+from pathlib import Path
+from html import escape
+import json
+ROOT=Path(__file__).resolve().parents[1]
+REPO='https://github.com/smartThise/OneTHU'
+RELEASE=REPO+'/releases/latest'
+MIRROR='https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/'
+BRAND='<span class="brand brand-logo" aria-label="OneTHU"><span class="p">(</span><span class="word"><i>O</i><i>n</i><i>e</i></span><span></span><span class="p"> </span><span class="u">T</span><span class="u">H</span><span class="u">U</span><span class="p">)</span></span>'
+PAGES={'index':('校园万物，汇于一处。','Your campus. In one place.'),'download':('带上 OneTHU。','Take OneTHU with you.'),'market':('把能力，继续延伸。','Make room for more.'),'developers':('为校园，构建下一步。','Build what comes next.'),'community':('一起，让它更好用。','Make it better, together.')}
+for lang in ['zh','en']:
+ en=lang=='en';base='../' if en else '';folder=ROOT/'en' if en else ROOT;folder.mkdir(exist_ok=True)
+ def tr(zh,en):return en if lang=='en' else zh
+ def asset(name):return base+'assets/preview/'+name
+ def docs(name=''):return base+'docs/'+('en/' if en else '')+name
+ def button(text,href,kind=''):return f'<a class="button {kind}" href="{href}">{text}<span aria-hidden="true">↗</span></a>'
+ def cards(items):return '<div class="cards">'+''.join(f'<article class="card"><span class="card-index">{i+1:02}</span><h3>{a}</h3><p>{b}</p>{button(tr("了解更多","Read more"),c) if c else ""}</article>' for i,(a,b,c) in enumerate(items))+'</div>'
+ def image(name,title,wide=False):return f'<figure class="capture {"wide" if wide else ""}"><img src="{asset(name+".webp")}" alt="{escape(title)}" loading="lazy" width="{1440 if "desktop" in name else 844 if "landscape" in name else 390}" height="{900 if "desktop" in name else 390 if "landscape" in name else 844}"><figcaption>{title}</figcaption></figure>'
+ for key,titles in PAGES.items():
+  title=titles[1 if en else 0];nav=''
+  for target,label in [('index',tr('概览','Overview')),('market',tr('插件','Plugins')),('download',tr('下载','Download')),('developers',tr('开发者','Developers')),('community',tr('交流','Community'))]:nav+=f'<a href="{target}.html"'+(' aria-current="page"' if target==key else '')+'>'+label+'</a>'
+  nav+=f'<a href="{docs()}">{tr("文档","Docs")}</a>'
+  switch=('../'+key+'.html') if en else ('en/'+key+'.html')
+  head=f'''<!doctype html><html lang="{'en' if en else 'zh-CN'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{title} · OneTHU 0.11</title><meta name="description" content="{tr('OneTHU 0.11：三种模式、统一搜索、OH、OneTHU Harness、清小搭与插件。','OneTHU 0.11: three modes, unified search, OH, OneTHU Harness, Xiaoda and plugins.')}"><link rel="icon" href="{base}assets/img/icon.png"><link rel="canonical" href="https://onethu.github.io/{'en/' if en else ''}{key+'.html' if key!='index' else ''}"><link rel="alternate" hreflang="{'zh-CN' if en else 'en'}" href="https://onethu.github.io/{key+'.html' if en else 'en/'+key+'.html'}"><link rel="stylesheet" href="{base}assets/site.css"><meta property="og:image" content="https://onethu.github.io/assets/preview/home-desktop.webp"><script type="module" src="{base}assets/site.js"></script></head><body><a class="skip" href="#main">{tr('跳至内容','Skip to content')}</a><header class="top"><a class="brand-link" href="index.html">{BRAND}</a><nav aria-label="{tr('主导航','Main navigation')}">{nav}</nav><a class="language" data-language href="{switch}" lang="{'zh-CN' if en else 'en'}">{'中文' if en else 'EN'}</a></header><main id="main">'''
+  if key=='index':
+   body=f'''<section class="hero wrap"><div class="hero-copy"><div class="hero-mark">{BRAND}</div><p class="eyebrow">OneTHU 0.11 / Revolution</p><h1>{title}</h1><p class="lead">{tr('学习、生活、灵感。<br>主题、壁纸与布局，都按你的习惯来。','Study. Campus life. Your next idea.<br>Your themes. Your wallpapers. Your layout.')}</p><div class="actions">{button(tr('下载 OneTHU','Download OneTHU'),'download.html','primary')}{button(tr('探索三种模式','Explore three modes'),'#modes')}</div><p class="fine">macOS · Windows · Android</p></div><div class="studio" data-studio aria-label="{tr('随滚动展开的模拟界面三维演示','Scroll-driven 3D demonstration of fictional app screens')}"><img class="studio-poster" src="{asset('home-full.webp')}" alt="{tr('完整模式模拟首页','Full-mode home with fictional data')}" width="390" height="844"><canvas aria-hidden="true"></canvas><span class="studio-label">{tr('模拟数据 · 滚动查看','Fictional data · Scroll to explore')}</span></div></section>
+<section class="wrap section" id="modes"><p class="eyebrow">01 / {tr('自由选择','YOUR PACE')}</p><h2>{tr('刚刚好，也可以全都要。','Just enough. Or everything.')}</h2><p class="section-lead">{tr('三种模式，共用搜索与 OH。切换只改变显示方式，完整模式的设置与数据会保留。','All three modes retain search and OH. Switching changes visibility while preserving your full-mode settings and data.')}</p><div class="mode-tabs" role="tablist" aria-label="{tr('使用模式','Experience modes')}">'''
+   modes=[('simple',tr('极简','Minimal'),tr('五个 OneShot 入口、今日待办与课程；只留下当下需要的东西。','Five OneShot shortcuts, today’s tasks and classes. Focus on what matters now.')),('practical',tr('实用','Practical'),tr('保留清晰的常用入口，通过更多功能访问校园服务。','Keep everyday actions close, with more campus services one step away.')),('full',tr('完整','Full'),tr('白板、标签页、OneGO、暂存箱、组织、插件与清小搭，完整展开。','Open up your whiteboard, tabs, OneGO, staging box, organizations, plugins and Xiaoda.'))]
+   for mode,label,description in modes:body+=f'<button role="tab" id="tab-{mode}" aria-controls="mode-{mode}" aria-selected="{str(mode=="full").lower()}" tabindex="{0 if mode=="full" else -1}">{label}</button>'
+   body+='</div><div class="mode-grid">'
+   for mode,label,description in modes:body+=f'<article class="mode-panel" id="mode-{mode}" role="tabpanel" aria-labelledby="tab-{mode}"><div><h3>{label}</h3><p>{description}</p>{button(tr("比较模式","Compare modes"),docs("experience-modes/"))}</div>{image("home-"+mode,label)}</article>'
+   body+='</div></section>'
+   body+=f'''<section class="section wrap" id="features"><p class="eyebrow">02 / {tr('一个入口','ONE PLACE')}</p><h2>{tr('先找到，再做到。','Find it. Then make it happen.')}</h2>'''+cards([(tr('统一搜索','Unified search'),tr('从 OH 胶囊查找功能、校园服务和已接入的内容，直接前往对应页面。','Find features, campus services and integrated content from the OH capsule, then jump straight in.'),docs('oh-and-xiaoda/')),(tr('OH · OneTHU Harness','OH · OneTHU Harness'),tr('完整模式中，OH 可使用工具与插件。精简模式保留自填 API 与微信、飞书连接；工具能力以实际权限为准。','In full mode, OH works with tools and plugins. Compact modes retain your own API and WeChat/Feishu connections. Actual permissions determine tool access.'),docs('oh-and-xiaoda/')),(tr('清小搭 + 轻量技能','Xiaoda + lightweight skills'),tr('浏览清小搭智能体和技能广场。纯同步 JavaScript 可在受限 QuickJS 中运行；重型环境交给电脑 Agent。','Explore Xiaoda agents and skills. Pure synchronous JavaScript runs in a bounded QuickJS runtime; heavier environments belong in your desktop agent.'),docs('oh-and-xiaoda/'))])+'''</section>'''
+   body+=f'''<section class="section wrap split story"><div><p class="eyebrow">03 / {tr('长按，提起，收好','HOLD. LIFT. KEEP.')}</p><h2>{tr('一处暂存。<br>下一步，从容。','Keep it here.<br>Take it further.')}</h2><p>{tr('长按作业、课件或白板组件，移到高亮的暂存箱按钮，松手收纳。也支持已接入的标签页、工作区、搜索结果、日程、名片、邮件与云盘内容。','Hold an assignment, course file or whiteboard widget. Move it onto the highlighted staging-box button and release. Integrated tabs, workspaces, search results, events, cards, mail and cloud content are supported too.')}</p><p>{tr('再用在线短口令分享。NFC 目前可用性不稳定，请尽量使用口令。','Share with an online short code. NFC availability is currently unreliable; prefer short codes.')}</p>{button(tr('查看支持范围','See supported items'),docs('sharing-and-organizations/'))}</div><figure class="video-device"><video data-demo muted loop playsinline controls preload="none" poster="{asset('tasks.webp')}"><source src="{asset('vault-drag.mp4')}" type="video/mp4"></video><figcaption>{tr('真实交互录制 · 全部为模拟数据','Actual UI interaction · Entirely fictional data')}</figcaption></figure></section>'''
+   body+=f'<section class="section wrap" id="shots"><p class="eyebrow">04 / {tr("横竖之间","ROOM TO WORK")}</p><h2>{tr("小屏清晰。大屏舒展。","Clear on a phone. Roomy on a desktop.")}</h2><p class="fine">{tr("以下界面均由应用模拟数据视图采集，不包含真实用户资料。界面示例为中文，应用另有多语言支持。","All images come from the app with fictional fixtures, without real user records. Screens show the Chinese UI; the app also supports other languages.")}</p><div class="gallery">'+''.join(image(name,label,wide) for name,label,wide in [('learn',tr('网络学堂','Learning platform'),False),('schedule',tr('日程与作业截止','Schedule and deadlines'),False),('xiaoda',tr('清小搭','Xiaoda'),False),('home-landscape',tr('手机横屏','Phone landscape'),True),('home-desktop',tr('完整模式大屏','Full mode on a large screen'),True)])+'</div></section>'
+  elif key=='developers':
+   body=f'<section class="wrap section page-intro"><p class="eyebrow">DEVELOPERS / 0.11</p><h1>{title}</h1><p class="lead">{tr("从一次本地运行，到一个真正融入校园的工具。","From a local checkout to a tool that belongs on campus.")}</p><div class="actions">{button(tr("开发文档","Developer docs"),docs("developers/"),"primary")}{button("GitHub",REPO)}</div></section>'
+   body+='<section class="wrap section">'+cards([(tr('本地构建','Build locally'),tr('Node.js 20+、pnpm、Rust stable 和对应平台的 Tauri 依赖。先拉取子模块，再安装依赖。','Use Node.js 20+, pnpm, Rust stable and platform-specific Tauri prerequisites. Initialize submodules before installing dependencies.'),docs('developers/')),(tr('插件与 API','Plugins and APIs'),tr('JS、Rust sidecar 与 Android 内嵌插件。当前生成清单包含 36 个命名空间、255 个方法入口，权限由门面层检查。','JS plugins, Rust sidecars and Android embedded plugins. The generated surface lists 36 namespaces and 255 method entries, with permissions checked by the facade.'),docs('api-surface/')),(tr('OneTHU Harness','OneTHU Harness'),tr('独立 Rust Agent 子模块，通过宿主命令和工具与 OneTHU 对接。模型、MCP、IM 与技能的边界见集成说明。','A Rust agent submodule connected through host commands and tools. See the integration guide for model, MCP, IM and skill boundaries.'),docs('oh-and-xiaoda/')),(tr('OneGUI','OneGUI'),tr('令牌、主题与壁纸注入、组件和动效规范以 packages/gui 为准；扩展界面应复用同一套组件。','Tokens, theme and wallpaper injection, components and motion live in packages/gui. Extensions should reuse these components.'),docs('design-language/')),(tr('技能运行边界','Skill runtime boundaries'),tr('QuickJS：2 秒、32 MiB、无网络/文件/进程。Python、Node 依赖、原生程序与常驻服务需导出给外部 Agent。','QuickJS: 2 seconds, 32 MiB, no network, files or processes. Python, Node dependencies, native executables and services require export to an external agent.'),docs('oh-and-xiaoda/')),(tr('贡献与验证','Contribute and verify'),tr('提交前检查类型、国际化、相关测试和实际手机布局。使用模拟数据，反馈中隐藏凭据与个人信息。','Check types, localization, relevant tests and actual phone layouts. Use fixtures and redact credentials and personal data in reports.'),docs('developers/'))])+'</section>'
+   body+=f'<section class="wrap section code-block"><h2>{tr("开始运行","Start here")}</h2><pre><code>git clone --recurse-submodules {REPO}.git\ncd OneTHU\ngit switch dev3\ngit submodule update --init --recursive\npnpm install\npnpm dev</code></pre><p>{tr("浏览器预览不等于原生宿主：网络、凭据、文件和技能 IPC 需要 Tauri 环境。平台完整命令见构建文档。","A browser preview is not the native host: network, credentials, files and skill IPC need Tauri. See the build guide for platform commands.")}</p>{button(tr("阅读构建说明","Build instructions"),docs("developers/"))}</section>'
+  elif key=='download':
+   body=f'<section class="wrap section page-intro"><p class="eyebrow">DOWNLOAD / 0.11</p><h1>{title}</h1><p class="lead">{tr("安装包与更新说明，以发布页实际产物为准。","The release page is the source of truth for available packages and release notes.")}</p></section><section class="wrap section">'+cards([(platform,description,RELEASE) for platform,description in [('macOS',tr('下载适合芯片架构的 DMG。','Choose the DMG matching your chip architecture.')),('Windows',tr('下载 Windows 安装程序；WebView2 为运行依赖。','Install the Windows package; WebView2 is a runtime prerequisite.')),('Android',tr('下载 APK。开发版与正式版可能使用不同包名与签名。','Install the APK. Development and release builds may use different package IDs and signing keys.'))]])+f'<div class="actions">{button(tr("全部发布文件","All release assets"),RELEASE,"primary")}{button(tr("清华云盘镜像","Tsinghua cloud mirror"),MIRROR)}</div><p class="fine">{tr("镜像文件可能尚未同步到最新批次，请核对版本和发布时间。本站不会假称每个平台都已有同一批新包。","Mirror files may lag behind a release. Check the version and timestamp; this site does not assume every platform already has the same new build.")}</p></section><section class="wrap section"><h2>{tr("首次打开","First launch")}</h2><p>{tr("选择语言，再选择极简、实用或完整模式。使用统一认证登录，按需完成二次验证。支持的服务可能仍需独立授权。","Choose your language and then minimal, practical or full mode. Sign in with university authentication and complete second-factor verification when requested. Some services require separate authorization.")}</p>{button(tr("安装与排障","Setup and troubleshooting"),docs("getting-started/"))}</section>'
+  elif key=='market':
+   body=f'<section class="wrap section page-intro"><p class="eyebrow">PLUGINS / FULL MODE</p><h1>{title}</h1><p class="lead">{tr("从应用内「我的 → 插件」安装和管理。插件执行前请查看权限；桌面 sidecar 不会自动在手机上运行。","Install and manage plugins in My → Plugins. Review permissions before running them; desktop sidecars do not automatically run on phones.")}</p><div class="actions">{button(tr("打开插件注册表","Browse the plugin registry"),"https://github.com/smartThise/OneTHU-Market","primary")}{button(tr("开发插件","Build a plugin"),docs("plugin-development/"))}</div></section><section class="wrap section">'+cards([(tr('界面扩展','UI extensions'),tr('使用宿主 API 和 OneGUI 组件，扩展页面、入口与组件。','Extend pages, entries and widgets with host APIs and OneGUI components.'),docs('plugin-development/')),(tr('Agent 与工具','Agents and tools'),tr('OneTHU Harness 将已授权的工具接入 OH；清小搭技能需要匹配运行环境。','OneTHU Harness exposes authorized tools to OH. Xiaoda skills need a compatible runtime.'),docs('oh-and-xiaoda/')),(tr('平台边界','Platform boundaries'),tr('JS、桌面 Rust sidecar、Android 内嵌是不同交付形态。安装成功不代表具备全部外部运行环境。','JS, desktop Rust sidecars and Android embedded plugins are different delivery formats. Installation does not provide every external runtime.'),docs('developers/'))])+'</section>'
+  else:
+   body=f'<section class="wrap section page-intro"><p class="eyebrow">COMMUNITY</p><h1>{title}</h1><p class="lead">{tr("复现过程越清楚，修复就越接近。","A clear reproduction brings a fix closer.")}</p></section><section class="wrap section">'+cards([(tr('问题反馈','Report an issue'),tr('提供版本、系统、使用模式、复现步骤及已脱敏日志。不要上传账号密码、Token、二维码或真实课程个人资料。','Include the app version, OS, mode, reproduction steps and redacted logs. Never upload passwords, tokens, QR codes or private course records.'),REPO+'/issues'),(tr('功能建议','Feature ideas'),tr('说明使用场景、预期结果，以及当前操作遇到的阻碍。','Describe your scenario, expected outcome and what currently gets in the way.'),REPO+'/issues'),(tr('开源与许可','Source and license'),tr('非官方个人项目。许可证包含非商业与禁止攻击清华信息服务的附加限制；使用和分发前阅读原文。','An unofficial personal project. The license includes non-commercial and no-attack restrictions; read it before use or redistribution.'),REPO+'/blob/dev3/LICENSE')])+'</section>'
+  if key=='market':
+   body+=f'<section class="section wrap" id="registry"><h2>{tr("插件目录","Plugin directory")}</h2><p class="fine">{tr("名称、描述和版本来自市场维护者；外部描述保留原文。","Names, descriptions and versions are supplied by registry maintainers; external descriptions remain in their original language.")}</p><label class="market-search">{tr("搜索插件","Search plugins")}<input id="market-search" type="search" placeholder="{tr("名称、作者或描述","Name, author or description")}"></label><div id="market-filters" class="market-filters" aria-label="{tr("插件类别","Plugin categories")}"></div><p id="market-status" role="status">{tr("正在加载插件目录…","Loading plugin registry…")}</p><div id="market-grid" class="cards"></div><noscript><p>{tr("启用 JavaScript 可搜索目录；也可直接访问上方注册表仓库。","Enable JavaScript to search the directory, or use the registry link above.")}</p></noscript></section>'
+  if key=='community':
+   body+=f'<section class="section wrap split" id="qq"><div><h2>{tr("用户交流群","User community")}</h2><p class="section-lead">{tr("QQ 用户群：扫码加入。群二维码可能失效，遇到失效可通过 Issues 反馈。","Scan to join the QQ user group. Group codes can expire; report an expired code through Issues.")}</p></div><figure class="capture"><img src="{base}assets/img/qrcode_group.jpg" alt="{tr("OneTHU 公开 QQ 用户群二维码","Public OneTHU QQ user-group QR code")}" width="400" height="400" loading="lazy"><figcaption>{tr("公开社区入口，不用于校园账户认证。","Public community entry; not a campus authentication code.")}</figcaption></figure></section>'
+  if key=='developers':
+   report=json.loads((ROOT/'assets/contributors.json').read_text())
+   body+=f'<section class="section wrap" id="contributors"><p class="eyebrow">CONTRIBUTORS</p><h2>{tr("每一份贡献，都在这里。","Every contribution belongs here.")}</h2><p class="section-lead">{tr("主要贡献者：dev3 可追溯历史累计新增代码超过 10,000 行；不含合并重复、生成代码、依赖、词典、夹具及非代码文件。其余作者与署名共同作者同样列出；代码行数不代表贡献质量。","Major contributors have more than 10,000 cumulative added source-code lines in reachable dev3 history, excluding merge duplication, generated/vendor code, dictionaries, fixtures and non-code files. Other authors and credited coauthors are listed too; line counts do not measure impact.")}</p><div class="contributors">'
+   for person in report['contributors']:
+    name=escape(person['name']);label=f'<a href="{escape(person["github"])}">{name} ↗</a>' if person['github'] else name
+    body+=f'<article class="contributor"><strong>{label}</strong><small>{person["codeAdded"]:,} {tr("新增代码行","added code lines")} · {person["commits"]:,} {tr("次提交", "commit" if person["commits"]==1 else "commits")}</small>'+('<span class="badge">'+tr('主要贡献者','Major contributor')+'</span>' if person['major'] else '')+'</article>'
+   body+=f'</div><p class="fine">{tr("统计更新时间","Snapshot updated")}: {escape(report["generatedAt"][:10])} · {tr("统计提交","Source commit")}: <a href="{REPO}/commit/{report["ref"]}">{report["ref"][:8]}</a>. {tr("可识别的 GitHub 身份已合并；无法识别的别名可能单独显示。","Resolved GitHub identities are combined; unresolved aliases may remain separate.")}</p>{button(tr("统计明细与口径","Methodology and details"),docs("contributors/"))}</section>'
+  foot=f'''</main><footer class="footer wrap"><div class="footer-brand">{BRAND}<span class="release">0.11 · Revolution</span></div><p>{tr('非官方校园工具。学校服务、网络和账户策略可能影响可用性。','An unofficial campus tool. Availability depends on university services, networks and account policies.')}</p><div><a href="{docs('privacy-and-troubleshooting/')}">{tr('隐私与诊断','Privacy and diagnostics')}</a><a href="{REPO}">GitHub</a><a href="{docs()}">{tr('文档','Documentation')}</a><a href="{switch}">{'中文' if en else 'English'}</a></div></footer></body></html>'''
+  (folder/(key+'.html')).write_text(head+body+foot)
+print('Generated 10 bilingual pages')

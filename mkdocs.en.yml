@@ -1,0 +1,32 @@
+INHERIT: mkdocs.yml
+site_name: OneTHU Documentation
+site_description: OneTHU 0.11 user guides, developer resources, plugin APIs and historical records
+site_url: https://onethu.github.io/docs/en/
+docs_dir: docs-src/en
+site_dir: site/en
+theme:
+  language: en
+exclude_docs: ''
+nav:
+  - Using OneTHU:
+      - Documentation: index.md
+      - Getting started: getting-started.md
+      - Experience modes: experience-modes.md
+      - Workspace: workbench.md
+      - Staging, codes and organizations: sharing-and-organizations.md
+      - Schedule and synchronization: schedule-and-sync.md
+      - Search, OH and Xiaoda: oh-and-xiaoda.md
+      - Privacy and troubleshooting: privacy-and-troubleshooting.md
+      - 0.11 notes: release-0.11.md
+  - Developers:
+      - Developer center: developers.md
+      - Contributors: contributors.md
+      - Architecture: architecture.md
+      - Plugins: plugin-development.md
+      - API surface: api-surface.md
+      - OneGUI: design-language.md
+      - Fixture captures: screenshots.md
+  - References:
+      - Complete inventory and historical records: documentation-catalog.md
+      - License: license.md
+  - Website: https://onethu.github.io/en/

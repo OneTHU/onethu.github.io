@@ -2,3 +2,5 @@
 # 安装：pip install -r requirements-docs.txt
 # 本地预览可执行 tools/docs-serve.sh（venv 建于仓库外：exFAT 不支持 venv 的符号链接）。
 mkdocs-material==9.7.7
+
+mkdocs==1.6.1

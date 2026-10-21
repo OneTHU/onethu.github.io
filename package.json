@@ -1,0 +1,14 @@
+{
+  "name": "onethu-public-site",
+  "private": true,
+  "version": "0.11.0",
+  "type": "module",
+  "scripts": {
+    "build:studio": "node tools/build-studio.mjs",
+    "test": "node tools/site-contract-test.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "three": "0.186.1"
+  }
+}

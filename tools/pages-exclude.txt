@@ -15,5 +15,13 @@ mkdocs.yml
 requirements-docs.txt
 README.md
 .gitignore
+.gitattributes
 .DS_Store
 ._*
+
+node_modules/
+src/
+package.json
+package-lock.json
+mkdocs.en.yml
+assets/studio-meta.json

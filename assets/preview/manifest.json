@@ -1,0 +1,130 @@
+{
+  "version": "0.11.0",
+  "data": "fictional only; isolated browser contexts; no school account",
+  "files": [
+    {
+      "file": "home-desktop.webp",
+      "source": "home-desktop.png",
+      "sourceSha256": "dccb1ad0406b46bf1a911e2f1391fdf30c181561baae8d4b5b64a2ff9d960245",
+      "sha256": "56d14d6f39f2a73de45f2af85c88b9f9066ce23700edb44c07f03c12768c18e9"
+    },
+    {
+      "file": "home-full.webp",
+      "source": "home-full.png",
+      "sourceSha256": "9b01ba0c413274dc33a1282acb939d8a92e5c8149074f6d9d7467f3783063e52",
+      "sha256": "27671c77fcd5c1ad59a47fd53047a45e08f7f511c3bb4408f0bae8fc20032979"
+    },
+    {
+      "file": "home-landscape.webp",
+      "source": "home-landscape.png",
+      "sourceSha256": "5eee7582cbdb0ddc7c046c97f4760d447bce49ff4a993bcb0e6b60d3e0cee53c",
+      "sha256": "135290e04a5cc325b53716f68a0dd9ef35ac91d433ec30ae75138ce460aafc51"
+    },
+    {
+      "file": "home-practical.webp",
+      "source": "home-practical.png",
+      "sourceSha256": "30375faeeef22e1dd43f3dc866ad50c206a37443ab5dbe248949f2a03271be4f",
+      "sha256": "f663ba3de7763b2b582648f64800262574114d56f095412b9029d7cab8c5e892"
+    },
+    {
+      "file": "home-simple.webp",
+      "source": "home-simple.png",
+      "sourceSha256": "4bb646ac4cb1ff9a67da9890c2986e536d9318824d8fc57c8991fadfd95a9c3a",
+      "sha256": "987debee27a520f3a44801d82194e8b5d872bfdea23901aa5dea60a6bead5d25"
+    },
+    {
+      "file": "learn-desktop.webp",
+      "source": "learn-desktop.png",
+      "sourceSha256": "efd335599c2a847d735e90bbfa0d6bea704b29ee621e89f6987427957c82b32b",
+      "sha256": "a3288cbe994c06878a2b8a8c0173ffa6906ca3b1decbc579a3d36d4a90b26ea0"
+    },
+    {
+      "file": "learn.webp",
+      "source": "learn.png",
+      "sourceSha256": "5637fc38611209049232345cf6625fe653bf410e337ea2d01c8dbe1f8f29711b",
+      "sha256": "f30b7ab9938097baa50ad6004c7e785ce7ba6fe16cfe001d5a7ebb5b8fb5146d"
+    },
+    {
+      "file": "oh-practical.webp",
+      "source": "oh-practical.png",
+      "sourceSha256": "20867a0ac48efc941dd8cccde1595e3f9faf938bd704c3baee6db0c7896f9ee2",
+      "sha256": "f56e087ba0f5815ed7edbe44e5e010c2d078e0215044a5a8222934806393f309"
+    },
+    {
+      "file": "oh-simple.webp",
+      "source": "oh-simple.png",
+      "sourceSha256": "20867a0ac48efc941dd8cccde1595e3f9faf938bd704c3baee6db0c7896f9ee2",
+      "sha256": "f56e087ba0f5815ed7edbe44e5e010c2d078e0215044a5a8222934806393f309"
+    },
+    {
+      "file": "oh.webp",
+      "source": "oh.png",
+      "sourceSha256": "2e9867e24e25950ce34f07820d77196d2fceb988c32bb3d30131a477cdc8d7ce",
+      "sha256": "a2577587bfb2fd45f402aa154f146d3f9d1e898137758a55b61516942acbc6cc"
+    },
+    {
+      "file": "organization.webp",
+      "source": "organization.png",
+      "sourceSha256": "5b972cac83f785b8603d7e18449e0d57e04e28dea91403a1fb4e6f03b619c31e",
+      "sha256": "3ac1956c139deb3ce569331631b7d50b34789745edc91aa3a475a409e01455bc"
+    },
+    {
+      "file": "schedule-landscape.webp",
+      "source": "schedule-landscape.png",
+      "sourceSha256": "bb0e1392d3026d474beed2c80cd9757f4c6f59993009db7342d6f2ceedec34d4",
+      "sha256": "70d97c8a7b37d7223db862c2f241246fe7d1d488cfe50805667e7879b9058a98"
+    },
+    {
+      "file": "schedule.webp",
+      "source": "schedule.png",
+      "sourceSha256": "d42cc192f9f49b63908429251d4ca42705eea5ffbb2f5fc4c00acd3d56490414",
+      "sha256": "64a4fc877b8cc9472dcb9bf069cad437775438d0def8354a7ab69b54781eea86"
+    },
+    {
+      "file": "search-practical.webp",
+      "source": "search-practical.png",
+      "sourceSha256": "66f5fe53300bed7fc68ed8fcdad81a9dfd523aa2107f937e5ab7005871f4c498",
+      "sha256": "948c695892034f1919309b01fb50429d048795f5f41dc32e7dec58be90b2dddb"
+    },
+    {
+      "file": "search-simple.webp",
+      "source": "search-simple.png",
+      "sourceSha256": "4bb646ac4cb1ff9a67da9890c2986e536d9318824d8fc57c8991fadfd95a9c3a",
+      "sha256": "987debee27a520f3a44801d82194e8b5d872bfdea23901aa5dea60a6bead5d25"
+    },
+    {
+      "file": "search.webp",
+      "source": "search.png",
+      "sourceSha256": "a3879cf3e44da6fec3946af2cb4c5eab0350a727d31edb9a6f0efeebfab65183",
+      "sha256": "01d4c023235eb09ccd2c803b679883bb96bbb442a8c5a255a7da28846bf8f346"
+    },
+    {
+      "file": "skills.webp",
+      "source": "skills.png",
+      "sourceSha256": "2fa50a8ed5d319b26ab364bc1172fc433b7e78052a78a0ea1d80e7433eb59ff0",
+      "sha256": "ea29567fd48a4b5b93a7b1a637602be9471842481bb9fb535f6fe60e564d17cc"
+    },
+    {
+      "file": "tasks.webp",
+      "source": "tasks.png",
+      "sourceSha256": "7ca46690dad7cd702e0dddea57ee5742dfdcdd64fd9ebd0121f0d9b3cebc1b02",
+      "sha256": "34df86c1b743baa708b53eae54f445f86830ffbaa7c8865c0a982fb0c8f5e77b"
+    },
+    {
+      "file": "vault.webp",
+      "source": "vault.png",
+      "sourceSha256": "60c92686028d6e5823dbcfefb1aaf3a28cb4e60049e37dd2494a9b7261631e4d",
+      "sha256": "2982fe48a8e0d5249e0d9e215033a048ba72b1720ce211ee5ce7c283cff6e992"
+    },
+    {
+      "file": "xiaoda.webp",
+      "source": "xiaoda.png",
+      "sourceSha256": "6385ab9f16c32f2b9ff4e4d918225e22258206da8b6b32f06f46825a609c9c53",
+      "sha256": "a389f6b3f6e79e432b69cdf7043adeb8cb8b17b28451b6d98a54bb88a2229f2f"
+    },
+    {
+      "file": "vault-drag.mp4",
+      "sha256": "6e3626ef11ea631646123f13a8bbaf9aec74be6561d192d6e417d0c25f1d9e16"
+    }
+  ]
+}

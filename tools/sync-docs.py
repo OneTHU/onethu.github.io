@@ -1,128 +1,66 @@
 #!/usr/bin/env python3
-"""把主仓 docs/ 同步成本站 mkdocs 的文档源目录 docs-src/。
+"""Assemble bilingual docs; resolve each link against its original file, not a global ../ regex."""
+import os,re,shutil,sys
+from pathlib import Path
+from urllib.parse import urlsplit,unquote,quote
+ROOT=Path(__file__).resolve().parents[1];DEST=ROOT/'docs-src'
+REPO=os.environ.get('ONETHU_REPO_URL','https://github.com/smartThise/OneTHU');REF=os.environ.get('ONETHU_REF','dev3')
+def skipped(path):return any(p.startswith('._') or p in {'.DS_Store','.git','.github','node_modules'} for p in path.parts)
+def copy_tree(source,missing=False,all_files=False):
+ # Publish every document, but only its linked artifacts and approved current captures.
+ # Raw unreferenced test dumps, temporary captures and extraction catalogs stay in Git.
+ paths=[p for p in source.rglob('*') if p.is_file() and not skipped(p.relative_to(source))]
+ required={p.resolve() for p in paths if p.suffix=='.md'}
+ for path in paths:
+  if path.suffix!='.md':continue
+  text=path.read_text()
+  for value in re.findall(r'(?<=\]\()([^\s)]+)|(?:src|href)=["\']([^"\']+)',text):
+   raw=next((v for v in value if v),'');url=urlsplit(raw.strip('<>'))
+   if url.scheme or url.netloc or not url.path:continue
+   target=(path.parent/unquote(url.path)).resolve()
+   if target.is_relative_to(source):required.add(target)
+ for path in paths:
+  rel=path.relative_to(source)
+  if not all_files and path.resolve() not in required and not rel.as_posix().startswith('assets/0.11/') and rel.as_posix() not in {'api-surface.json','contributors.json'}:continue
+  target=DEST/rel
+  if missing and target.exists():continue
+  target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(path,target)
 
-用法：
-    python3 tools/sync-docs.py <主仓 docs 目录> [回退 docs 目录 ...]
-    # 例：python3 tools/sync-docs.py ../OneTHU/docs
-
-规则：
-  · 逐目录复制，后续目录只补前面缺失的文件（用于仅存在于 demo 分支的文档），互不覆盖；
-  · 跳过 macOS / exFAT 副产物（`._*`、`.DS_Store`），否则会被视为文档页；
-  · 主仓 `docs/README.md` 在站内改名为 `overview.md`：站内首页由本站自有的 `index.md` 提供；
-  · 指向仓库内其他文件（`../LICENSE` 等）的相对链接改写为主仓 GitHub 地址，避免站内 404；
-  · 最后叠加本站自有页面 `docs-site/`（可覆盖以上任意文件）。
-
-文档正文的权威位置始终是主仓；本脚本只做单向复制，不修改主仓文件。
-"""
-import os
-import re
-import shutil
-import sys
-
-HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(HERE)
-DEST = os.path.join(ROOT, 'docs-src')
-SITE_PAGES = os.path.join(ROOT, 'docs-site')
-
-REPO_URL = os.environ.get('ONETHU_REPO_URL', 'https://github.com/smartThise/OneTHU')
-REF = os.environ.get('ONETHU_REF', 'dev3')
-
-SKIP_NAMES = {'.DS_Store', '.git', '.github'}
-# 指向 docs/ 之外（仓库其他文件）的相对链接：]( ../LICENSES/THIRD-PARTY.md )
-OUTSIDE_LINK = re.compile(r'\]\(\.\./([^)\s]+)\)')
-
-
-def skipped(name):
-    return name in SKIP_NAMES or name.startswith('._')
-
-
-def copy_tree(src, dst, only_missing=False):
-    """复制目录树；only_missing=True 时只补目标里缺的文件。返回 (新增, 跳过) 列表。"""
-    added, skipped_existing = [], []
-    for base, dirs, files in os.walk(src):
-        dirs[:] = [d for d in dirs if not skipped(d)]
-        rel = os.path.relpath(base, src)
-        target_dir = dst if rel == '.' else os.path.join(dst, rel)
-        os.makedirs(target_dir, exist_ok=True)
-        for name in files:
-            if skipped(name):
-                continue
-            rel_path = name if rel == '.' else os.path.join(rel, name)
-            target = os.path.join(target_dir, name)
-            if only_missing and os.path.exists(target):
-                skipped_existing.append(rel_path)
-                continue
-            # 使用 copyfile 而非 copy2：exFAT 上复制元数据会生成 `._*` 旁文件，
-            # 该文件会被 mkdocs 视为文档页并混入构建产物
-            shutil.copyfile(os.path.join(base, name), target)
-            added.append(rel_path)
-    return added, skipped_existing
-
-
-def main(argv):
-    sources = [os.path.abspath(p) for p in argv]
-    if not sources:
-        print(__doc__)
-        return 2
-    for src in sources:
-        if not os.path.isdir(src):
-            print('× 目录不存在：%s' % src, file=sys.stderr)
-            return 2
-
-    if os.path.isdir(DEST):
-        shutil.rmtree(DEST)
-    os.makedirs(DEST)
-
-    for index, src in enumerate(sources):
-        added, existing = copy_tree(src, DEST, only_missing=index > 0)
-        tag = '主来源' if index == 0 else '回退补入'
-        print('· %s %s：复制 %d 个文件%s'
-              % (tag, src, len(added), '（跳过已存在 %d 个）' % len(existing) if existing else ''))
-
-    # 主仓 docs/README.md → overview.md
-    readme = os.path.join(DEST, 'README.md')
-    if os.path.exists(readme):
-        os.replace(readme, os.path.join(DEST, 'overview.md'))
-        print('· 主仓 README.md → overview.md（站内首页由 docs-site/index.md 提供）')
-
-    # 指向仓库其他文件的相对链接 → 主仓 GitHub 地址
-    rewritten = 0
-    for base, dirs, files in os.walk(DEST):
-        dirs[:] = [d for d in dirs if not skipped(d)]
-        for name in files:
-            if skipped(name) or not name.endswith('.md'):
-                continue
-            path = os.path.join(base, name)
-            with open(path, encoding='utf-8') as handle:
-                text = handle.read()
-            new = OUTSIDE_LINK.sub(lambda m: '](%s/blob/%s/%s)' % (REPO_URL, REF, m.group(1)), text)
-            if new != text:
-                with open(path, 'w', encoding='utf-8') as handle:
-                    handle.write(new)
-                rewritten += 1
-    if rewritten:
-        print('· 仓库内其他文件链接改为 GitHub 地址：%d 个文件（%s@%s）' % (rewritten, REPO_URL, REF))
-
-    # 本站自有页面叠加在最后
-    if os.path.isdir(SITE_PAGES):
-        added, _ = copy_tree(SITE_PAGES, DEST)
-        print('· 叠加本站自有页面 docs-site/：%d 个文件' % len(added))
-
-    # 清理任何来源留下的 AppleDouble 旁文件
-    removed = 0
-    for base, dirs, files in os.walk(DEST):
-        for name in files:
-            if name.startswith('._'):
-                os.remove(os.path.join(base, name))
-                removed += 1
-    if removed:
-        print('· 清理 `._*` 旁文件 %d 个' % removed)
-
-    pages = sum(len([f for f in files if f.endswith('.md') and not skipped(f)])
-                for _, _, files in os.walk(DEST))
-    print('√ 文档源就绪：%s（%d 个 Markdown 页面）' % (os.path.relpath(DEST, ROOT), pages))
-    return 0
-
-
-if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+def public_url(path,fragment=''):
+ rel=path.as_posix();rel='overview.md' if rel=='README.md' else rel
+ if rel.endswith('.md'):rel=rel[:-3];rel=rel.removesuffix('/index').removesuffix('/README');rel=rel+'/'
+ return 'https://onethu.github.io/docs/'+quote(rel,safe='/')+('#'+fragment if fragment else '')
+def rewrite(text,relative):
+ def destination(raw):
+  angle=raw.startswith('<') and raw.endswith('>');value=raw[1:-1] if angle else raw
+  url=urlsplit(value)
+  if url.scheme or url.netloc or value.startswith(('/','#')):return raw
+  normalized=Path(os.path.normpath(str(relative.parent/unquote(url.path))));parts=normalized.parts
+  if parts and parts[0]=='..':
+   target=Path(os.path.normpath(str(Path('docs')/normalized)))
+   return REPO+'/blob/'+quote(REF,safe='')+'/'+quote(target.as_posix(),safe='/')+('#'+url.fragment if url.fragment else '')
+  if parts and parts[0]=='en' and relative.parts[0]!='en':return public_url(normalized,url.fragment)
+  if relative.parts[0]=='en':
+   if not parts or parts[0]!='en':return public_url(normalized,url.fragment)
+   return os.path.relpath(normalized,relative.parent)+('#'+url.fragment if url.fragment else '')
+  if normalized.as_posix()=='README.md':return os.path.relpath('overview.md',relative.parent.as_posix())+('#'+url.fragment if url.fragment else '')
+  return raw
+ # Work on Markdown destinations and HTML image/source links. Keep link text and optional titles intact.
+ text=re.sub(r'(?<=\]\()(<[^>]+>|[^\s)]+)',lambda m:destination(m.group()),text)
+ text=re.sub(r'((?:src|href)=["\'])([^"\']+)(["\'])',lambda m:m[1]+destination(m[2])+m[3],text)
+ return text
+sources=[Path(p).resolve() for p in sys.argv[1:]]
+if not sources or not sources[0].is_dir():raise SystemExit('Usage: sync-docs.py <main docs> [fallback docs]')
+if DEST.exists():shutil.rmtree(DEST)
+DEST.mkdir()
+for index,source in enumerate(sources):
+ if source.is_dir():copy_tree(source,missing=index>0)
+copy_tree(ROOT/'docs-site',all_files=True)
+for path in list(DEST.rglob('*.md')):
+ rel=path.relative_to(DEST)
+ if not skipped(rel):path.write_text(rewrite(path.read_text(),rel))
+if (DEST/'README.md').exists():(DEST/'README.md').rename(DEST/'overview.md')
+# English build has its own docs_dir; share only the theme assets, not another copy of large captures.
+shutil.copytree(DEST/'assets',DEST/'en/assets',dirs_exist_ok=True,ignore=shutil.ignore_patterns('0.11','._*'))
+(DEST/'en/license.md').write_text('# License and acknowledgments\n\n[中文](https://onethu.github.io/docs/license/) · English\n\nOneTHU is unofficial. Project-owned code uses MIT with non-commercial and no-attack restrictions. Third-party components have their own terms, including THU Info authorization and LearnX exceptions. Read the [full license]('+REPO+'/blob/'+REF+'/LICENSE) and [third-party terms]('+REPO+'/blob/'+REF+'/LICENSES/THIRD-PARTY.md) before use or redistribution.\n')
+print('Assembled',sum(1 for p in DEST.rglob('*.md') if not skipped(p.relative_to(DEST))),'bilingual documentation pages')

@@ -1,0 +1,88 @@
+{
+  "ref": "6f89b1387bacbf6da90de2335c61ed39448aaee5",
+  "generatedAt": "2026-10-21T05:31:26.358154+00:00",
+  "majorThreshold": 10000,
+  "metric": "Cumulative added source-code lines in reachable dev3 history; non-merge commits, excluding generated/vendor/locales/fixtures and non-code files. GitHub account aliases combined when resolvable. Coauthors and merge-only authors are listed without duplicated line attribution. Not a ranking of impact.",
+  "contributors": [
+    {
+      "name": "smartThise",
+      "github": "https://github.com/smartThise",
+      "commits": 1653,
+      "codeAdded": 260896,
+      "codeDeleted": 71305,
+      "major": true
+    },
+    {
+      "name": "xiao-dreamr",
+      "github": "https://github.com/xiao-dreamr",
+      "commits": 263,
+      "codeAdded": 45038,
+      "codeDeleted": 5585,
+      "major": true
+    },
+    {
+      "name": "Just-lose-it",
+      "github": "https://github.com/Just-lose-it",
+      "commits": 1,
+      "codeAdded": 4371,
+      "codeDeleted": 26,
+      "major": false
+    },
+    {
+      "name": "Muelyses",
+      "github": "https://github.com/Muelyses",
+      "commits": 12,
+      "codeAdded": 4026,
+      "codeDeleted": 419,
+      "major": false
+    },
+    {
+      "name": "Zhiyu1723",
+      "github": "https://github.com/Zhiyu1723",
+      "commits": 2,
+      "codeAdded": 2919,
+      "codeDeleted": 228,
+      "major": false
+    },
+    {
+      "name": "user-A100",
+      "github": "https://github.com/user-A100",
+      "commits": 4,
+      "codeAdded": 388,
+      "codeDeleted": 55,
+      "major": false
+    },
+    {
+      "name": "Alchuang22-dev",
+      "github": "https://github.com/Alchuang22-dev",
+      "commits": 1,
+      "codeAdded": 105,
+      "codeDeleted": 9,
+      "major": false
+    },
+    {
+      "name": "Claude",
+      "github": null,
+      "commits": 0,
+      "codeAdded": 0,
+      "codeDeleted": 0,
+      "major": false
+    },
+    {
+      "name": "winefox",
+      "github": null,
+      "commits": 9,
+      "codeAdded": 0,
+      "codeDeleted": 0,
+      "major": false
+    },
+    {
+      "name": "WorkBuddy AI",
+      "github": null,
+      "commits": 0,
+      "codeAdded": 0,
+      "codeDeleted": 0,
+      "major": false
+    }
+  ]
+}

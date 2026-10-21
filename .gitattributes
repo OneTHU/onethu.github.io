@@ -1,0 +1,2 @@
+# Bundled Three.js contains upstream GLSL template literals; preserve their source.
+assets/studio.js linguist-generated=true -whitespace

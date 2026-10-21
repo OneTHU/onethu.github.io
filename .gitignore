@@ -7,3 +7,5 @@ site/
 # macOS / exFAT 副产物
 .DS_Store
 ._*
+
+node_modules/

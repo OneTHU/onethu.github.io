@@ -39,22 +39,29 @@ jobs:
           repository: smartThise/OneTHU
           ref: ${{ inputs.onethu_ref || 'dev3' }}
           path: .onethu
+          fetch-depth: 0
 
-      - name: 取回 demo 分支独有文档（脱敏演示版构建说明）
-        continue-on-error: true
-        run: |
-          git -C .onethu fetch --depth 1 origin demo
-          mkdir -p "$RUNNER_TEMP/onethu-demo-docs"
-          git -C .onethu archive FETCH_HEAD docs | tar -x -C "$RUNNER_TEMP/onethu-demo-docs" --strip-components=1
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
 
-      - name: 校验官网页面与生成脚本一致
+      - name: Build and verify public site
         run: |
-          python3 tools/build-pages.py >/dev/null
-          if ! git diff --quiet -- index.html market.html download.html; then
-            echo "::error::index/market/download.html 与 tools/build-pages.py 不一致；请重新执行脚本并提交"
-            git diff --stat -- index.html market.html download.html
-            exit 1
-          fi
+          npm ci --ignore-scripts
+          npm run build:studio
+          python3 tools/build-pages.py
+          npm test
+          git diff --exit-code -- index.html market.html download.html developers.html community.html en/ assets/studio.js assets/studio-meta.json
+
+      - name: Refresh contributor snapshot from complete dev3 history
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 .onethu/tools/contributors-report.py
+          cp .onethu/docs/contributors.json assets/contributors.json
+          python3 tools/build-pages.py
+          npm test
 
       - uses: actions/setup-python@v6
         with:
@@ -68,13 +75,14 @@ jobs:
       - name: 同步文档源（主仓 docs → docs-src）
         env:
           ONETHU_REF: ${{ inputs.onethu_ref || 'dev3' }}
-        run: python3 tools/sync-docs.py .onethu/docs "$RUNNER_TEMP/onethu-demo-docs"
+        run: python3 tools/sync-docs.py .onethu/docs
 
       - name: 构建文档站（/docs/）
         run: |
           set -o pipefail
           mkdir -p .pages
-          mkdocs build --site-dir .pages/docs 2>&1 | tee "$RUNNER_TEMP/mkdocs-build.log"
+          mkdocs build --strict --site-dir .pages/docs 2>&1 | tee "$RUNNER_TEMP/mkdocs-build.log"
+          mkdocs build --strict -f mkdocs.en.yml --site-dir .pages/docs/en
           if grep -q '^WARNING' "$RUNNER_TEMP/mkdocs-build.log"; then
             echo "::warning::文档构建存在警告，详见下方日志"
             grep '^WARNING' "$RUNNER_TEMP/mkdocs-build.log"
@@ -91,6 +99,7 @@ jobs:
 
       - name: 校验产物内容
         run: |
+          python3 tools/check-links.py .pages
           # 产物断言：混入源码或工作目录即中止发布。历史上曾将主仓检出一并打包，
           # 上传阶段因其中的符号链接失败
           stray=""
