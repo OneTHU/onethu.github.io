@@ -1,0 +1,419 @@
+{
+  "version": "0.11.2",
+  "verifiedAt": "2026-10-22T15:05:41.981186+00:00",
+  "applicationSource": "8e44d56b2118c5e13345d27a7b72cbe7ca556b2f",
+  "documentationSource": "9029e7c19257bdd03103fbea20906ab31563ca03",
+  "deployedWebsiteCommit": "16d276d9b60065e949ff558586c4734d94f2b4f3",
+  "pagesRun": {
+    "id": 39800629486,
+    "url": "https://github.com/OneTHU/onethu.github.io/actions/runs/39800629486",
+    "event": "workflow_dispatch",
+    "onethu_ref": "9029e7c19257bdd03103fbea20906ab31563ca03",
+    "providerResult": {
+      "conclusion": "success",
+      "headSha": "16d276d9b60065e949ff558586c4734d94f2b4f3",
+      "jobs": [
+        {
+          "completedAt": "2026-10-22T15:00:51Z",
+          "conclusion": "success",
+          "databaseId": 119899990629,
+          "name": "build",
+          "startedAt": "2026-10-22T14:59:49Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-22T14:59:51Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-22T14:59:50Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T14:59:52Z",
+              "conclusion": "success",
+              "name": "检出本站",
+              "number": 2,
+              "startedAt": "2026-10-22T14:59:51Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T14:59:57Z",
+              "conclusion": "success",
+              "name": "检出主仓（文档正文来源）",
+              "number": 3,
+              "startedAt": "2026-10-22T14:59:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T14:59:58Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@v5",
+              "number": 4,
+              "startedAt": "2026-10-22T14:59:57Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:01Z",
+              "conclusion": "success",
+              "name": "Build and verify public site",
+              "number": 5,
+              "startedAt": "2026-10-22T14:59:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:20Z",
+              "conclusion": "success",
+              "name": "Verify latest cloud installers against GitHub Release",
+              "number": 6,
+              "startedAt": "2026-10-22T15:00:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:24Z",
+              "conclusion": "success",
+              "name": "Refresh contributor snapshot from complete dev3 history",
+              "number": 7,
+              "startedAt": "2026-10-22T15:00:20Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:28Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v6",
+              "number": 8,
+              "startedAt": "2026-10-22T15:00:24Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:35Z",
+              "conclusion": "success",
+              "name": "安装文档站依赖",
+              "number": 9,
+              "startedAt": "2026-10-22T15:00:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:35Z",
+              "conclusion": "success",
+              "name": "同步文档源（主仓 docs → docs-src）",
+              "number": 10,
+              "startedAt": "2026-10-22T15:00:35Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:40Z",
+              "conclusion": "success",
+              "name": "构建文档站（/docs/）",
+              "number": 11,
+              "startedAt": "2026-10-22T15:00:35Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:40Z",
+              "conclusion": "success",
+              "name": "组装站点（官网静态页 + /docs/）",
+              "number": 12,
+              "startedAt": "2026-10-22T15:00:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:42Z",
+              "conclusion": "success",
+              "name": "校验产物内容",
+              "number": 13,
+              "startedAt": "2026-10-22T15:00:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:46Z",
+              "conclusion": "success",
+              "name": "Run actions/upload-pages-artifact@v5",
+              "number": 14,
+              "startedAt": "2026-10-22T15:00:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:46Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v6",
+              "number": 25,
+              "startedAt": "2026-10-22T15:00:46Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:48Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@v5",
+              "number": 26,
+              "startedAt": "2026-10-22T15:00:46Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:48Z",
+              "conclusion": "success",
+              "name": "Post 检出主仓（文档正文来源）",
+              "number": 27,
+              "startedAt": "2026-10-22T15:00:48Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:49Z",
+              "conclusion": "success",
+              "name": "Post 检出本站",
+              "number": 28,
+              "startedAt": "2026-10-22T15:00:48Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:00:49Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 29,
+              "startedAt": "2026-10-22T15:00:49Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/OneTHU/onethu.github.io/actions/runs/39800629486/job/119899990629"
+        },
+        {
+          "completedAt": "2026-10-22T15:01:08Z",
+          "conclusion": "success",
+          "databaseId": 119900601189,
+          "name": "deploy",
+          "startedAt": "2026-10-22T15:00:58Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-22T15:01:00Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-22T15:00:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:01:07Z",
+              "conclusion": "success",
+              "name": "Run actions/deploy-pages@v5",
+              "number": 2,
+              "startedAt": "2026-10-22T15:01:00Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-22T15:01:07Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 3,
+              "startedAt": "2026-10-22T15:01:07Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/OneTHU/onethu.github.io/actions/runs/39800629486/job/119900601189"
+        }
+      ],
+      "status": "completed",
+      "url": "https://github.com/OneTHU/onethu.github.io/actions/runs/39800629486"
+    }
+  },
+  "downloads": {
+    "anonymousFullDownloadVerified": true,
+    "githubAndCloudManifestsVerified": true,
+    "websiteSnapshot": {
+      "version": "0.11.2",
+      "releaseUrl": "https://github.com/smartThise/OneTHU/releases/tag/v0.11.2",
+      "mirrorUrl": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/",
+      "verifiedAt": "2026-10-22T14:57:40.463347+00:00",
+      "assets": {
+        "macos": {
+          "name": "OneTHU_0.11.2_aarch64.dmg",
+          "version": "0.11.2",
+          "directory": "/macOS/",
+          "architecture": "Apple Silicon",
+          "size": 18858681,
+          "sha256": "596d2b8793579a5329b9cb7bedb73e4f960743037dbcbc1e484f75062301ef11",
+          "url": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/files/?p=%2FmacOS%2FOneTHU_0.11.2_aarch64.dmg&dl=1",
+          "githubUrl": "https://github.com/smartThise/OneTHU/releases/download/v0.11.2/OneTHU_0.11.2_aarch64.dmg",
+          "folderUrl": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/?p=%2FmacOS%2F",
+          "anonymousDownloadVerified": true
+        },
+        "windows": {
+          "name": "OneTHU_0.11.2_x64-setup.exe",
+          "version": "0.11.2",
+          "directory": "/Windows/",
+          "architecture": "x64",
+          "size": 17282008,
+          "sha256": "08cf910d2be016ac5182cc5d3c8c8c26ebc34f6b883cc2372746956170f82788",
+          "url": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/files/?p=%2FWindows%2FOneTHU_0.11.2_x64-setup.exe&dl=1",
+          "githubUrl": "https://github.com/smartThise/OneTHU/releases/download/v0.11.2/OneTHU_0.11.2_x64-setup.exe",
+          "folderUrl": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/?p=%2FWindows%2F",
+          "anonymousDownloadVerified": true
+        },
+        "android": {
+          "name": "OneTHU_0.11.2_arm64.apk",
+          "version": "0.11.2",
+          "directory": "/Android/",
+          "architecture": "ARM64",
+          "size": 31851381,
+          "sha256": "25f97714a97c0a7f3e297a4b0b6e5a9242fa492f5fcdf380a988108b88b72d08",
+          "url": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/files/?p=%2FAndroid%2FOneTHU_0.11.2_arm64.apk&dl=1",
+          "githubUrl": "https://github.com/smartThise/OneTHU/releases/download/v0.11.2/OneTHU_0.11.2_arm64.apk",
+          "folderUrl": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/?p=%2FAndroid%2F",
+          "anonymousDownloadVerified": true
+        }
+      }
+    },
+    "frozenReleaseAssets": {
+      "macos": {
+        "name": "OneTHU_0.11.2_aarch64.dmg",
+        "size": 18858681,
+        "sha256": "596d2b8793579a5329b9cb7bedb73e4f960743037dbcbc1e484f75062301ef11",
+        "source": "8e44d56b2118c5e13345d27a7b72cbe7ca556b2f"
+      },
+      "windows": {
+        "name": "OneTHU_0.11.2_x64-setup.exe",
+        "size": 17282008,
+        "sha256": "08cf910d2be016ac5182cc5d3c8c8c26ebc34f6b883cc2372746956170f82788",
+        "source": "8e44d56b2118c5e13345d27a7b72cbe7ca556b2f"
+      },
+      "android": {
+        "name": "OneTHU_0.11.2_arm64.apk",
+        "size": 31851381,
+        "sha256": "25f97714a97c0a7f3e297a4b0b6e5a9242fa492f5fcdf380a988108b88b72d08",
+        "source": "8e44d56b2118c5e13345d27a7b72cbe7ca556b2f",
+        "versionCode": 11011
+      }
+    }
+  },
+  "localSiteTest": {
+    "pages": 10,
+    "localReferences": 136,
+    "passed": true
+  },
+  "liveUpdater": {
+    "platforms": [
+      "macos",
+      "windows",
+      "android"
+    ],
+    "matchingGitHubAndCloudHashes": true,
+    "githubFailureFallsBackToCloud": true,
+    "installerInvoked": false
+  },
+  "liveBrowser": {
+    "url": "https://onethu.github.io/",
+    "checks": [
+      "direct platform cloud links",
+      "44px minimum download targets",
+      "expandable full SHA-256",
+      "no horizontal overflow",
+      "works without JavaScript"
+    ],
+    "layouts": [
+      {
+        "width": 1440,
+        "language": "zh",
+        "noJavaScript": true,
+        "passed": true
+      },
+      {
+        "width": 1440,
+        "language": "en",
+        "noJavaScript": true,
+        "passed": true
+      },
+      {
+        "width": 768,
+        "language": "zh",
+        "noJavaScript": true,
+        "passed": true
+      },
+      {
+        "width": 768,
+        "language": "en",
+        "noJavaScript": true,
+        "passed": true
+      },
+      {
+        "width": 390,
+        "language": "zh",
+        "noJavaScript": true,
+        "passed": true
+      },
+      {
+        "width": 390,
+        "language": "en",
+        "noJavaScript": true,
+        "passed": true
+      },
+      {
+        "width": 320,
+        "language": "zh",
+        "noJavaScript": true,
+        "passed": true
+      },
+      {
+        "width": 320,
+        "language": "en",
+        "noJavaScript": true,
+        "passed": true
+      }
+    ],
+    "visualChecks": [
+      "zh-390.png",
+      "en-1440.png"
+    ],
+    "screenshots": [
+      {
+        "name": "en-1440.png",
+        "sha256": "5a2f47dc79962aa3803cfeea2a49f9efadce49148aa1813d4da04a00ca8cb149"
+      },
+      {
+        "name": "en-320.png",
+        "sha256": "698ee24444f47bb8f326128727e2bce65eb006f7d9189e7d3b65dff60e7af170"
+      },
+      {
+        "name": "en-390.png",
+        "sha256": "d8697f6a0caac25b45e450737cc7901f45f8761ce0648891cf5e1ff278a35cf9"
+      },
+      {
+        "name": "en-768.png",
+        "sha256": "13e5452768797081c9f4dce2a4473b54bc339749aa416e4464728cdc0738d847"
+      },
+      {
+        "name": "zh-1440.png",
+        "sha256": "edb5dd43b97781cc08a7cbcc8ea338c2577b56a839f83dc0639ea0d16b1d8e84"
+      },
+      {
+        "name": "zh-320.png",
+        "sha256": "89bb15e7525a592acf643e567830a952220fec0c9a3aee8876f6ced57ba60f10"
+      },
+      {
+        "name": "zh-390.png",
+        "sha256": "281fa1bd47f8cdf26cee6145b96c528e260e9afde430d1655e28d4b7500d32a2"
+      },
+      {
+        "name": "zh-768.png",
+        "sha256": "0dcc30ba581ee9b963ba6e5d376494dff5d3a41fd31835e030d4e30e48d8593b"
+      }
+    ]
+  },
+  "liveDocumentation": [
+    {
+      "url": "https://onethu.github.io/docs/release-0.11.2/",
+      "status": 200,
+      "contentVerified": true
+    },
+    {
+      "url": "https://onethu.github.io/docs/en/release-0.11.2/",
+      "status": 200,
+      "contentVerified": true
+    },
+    {
+      "url": "https://onethu.github.io/docs/reviews/2026-10-22-release-0.11.2/",
+      "status": 200,
+      "contentVerified": true
+    }
+  ],
+  "auditNote": "This evidence-only commit is marked [skip ci]. It preserves the deployed website commit and original successful provider response; it does not trigger a second Pages deployment."
+}
