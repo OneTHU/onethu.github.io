@@ -71,6 +71,9 @@ nav:
       - 日程、作业与同步: schedule-and-sync.md
       - 搜索、OH 与清小搭: oh-and-xiaoda.md
       - 隐私与排障: privacy-and-troubleshooting.md
+      - 0.11.4 CLI 与应用能力: release-0.11.4.md
+      - CLI 与常驻后台: onethu-cli.md
+      - OH 应用服务: oh-app-services.md
       - 0.11.3 登录修复: release-0.11.3.md
       - 0.11.2 修复: release-0.11.2.md
       - 0.11.1 修复: release-0.11.1.md
