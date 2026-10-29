@@ -1,0 +1,52 @@
+{
+  "version": "0.11.4-fix-3",
+  "releaseUrl": "https://github.com/smartThise/OneTHU/releases/tag/v0.11.4-fix-3",
+  "mirrorUrl": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/",
+  "verifiedAt": "2026-10-29T05:58:39.333280+00:00",
+  "assets": {
+    "macos": {
+      "name": "OneTHU_0.11.4-fix-3_aarch64.dmg",
+      "version": "0.11.4-fix-3",
+      "directory": "/macOS/",
+      "architecture": "Apple Silicon",
+      "size": 19248558,
+      "sha256": "1ae9c55e85ccf6c0658e1936f5c28593ce6e6e89d0ee712a14705cb884afad4f",
+      "url": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/files/?p=%2FmacOS%2FOneTHU_0.11.4-fix-3_aarch64.dmg&dl=1",
+      "githubUrl": "https://github.com/smartThise/OneTHU/releases/download/v0.11.4-fix-3/OneTHU_0.11.4-fix-3_aarch64.dmg",
+      "folderUrl": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/?p=%2FmacOS%2F",
+      "anonymousDownloadVerified": true
+    },
+    "windows": {
+      "name": "OneTHU_0.11.4-fix-3_x64-setup.exe",
+      "version": "0.11.4-fix-3",
+      "directory": "/Windows/",
+      "architecture": "x64",
+      "size": 17617587,
+      "sha256": "de1d9f8d9c6a1ed37d536b44960090cb79e3548e65d579d51f3b239cc1c51877",
+      "url": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/files/?p=%2FWindows%2FOneTHU_0.11.4-fix-3_x64-setup.exe&dl=1",
+      "githubUrl": "https://github.com/smartThise/OneTHU/releases/download/v0.11.4-fix-3/OneTHU_0.11.4-fix-3_x64-setup.exe",
+      "folderUrl": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/?p=%2FWindows%2F",
+      "anonymousDownloadVerified": true
+    },
+    "android": {
+      "name": "OneTHU_0.11.4-fix-3_arm64.apk",
+      "version": "0.11.4-fix-3",
+      "directory": "/Android/",
+      "architecture": "ARM64",
+      "size": 29750043,
+      "sha256": "ece765ac3ed29b3b55a05938097cfbe1b3f07d59a2c69e7a3acbdd5b8acdcb06",
+      "url": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/files/?p=%2FAndroid%2FOneTHU_0.11.4-fix-3_arm64.apk&dl=1",
+      "githubUrl": "https://github.com/smartThise/OneTHU/releases/download/v0.11.4-fix-3/OneTHU_0.11.4-fix-3_arm64.apk",
+      "folderUrl": "https://cloud.tsinghua.edu.cn/d/56f78a2a0b144a6ab737/?p=%2FAndroid%2F",
+      "anonymousDownloadVerified": true
+    }
+  },
+  "source": "43ce503015465015a2bd139fbbe865adc1883ce3",
+  "actionsRun": "https://github.com/smartThise/OneTHU/actions/runs/40824184159",
+  "androidActionsRun": "https://github.com/smartThise/OneTHU/actions/runs/40824676868",
+  "androidVersionCode": 11016,
+  "androidReleaseSignatureVerified": true,
+  "optionalCliPackagesVerified": true,
+  "nativeStartupAndEpochRegressionsPassed": true,
+  "reporterDeviceLoginTested": false
+}
