@@ -5,6 +5,7 @@
 .pages/
 # 工作流中主仓的检出目录（rsync 排除文件不支持行尾注释，注释须独立成行）
 .onethu/
+.onethu-docs/
 .onethu-demo/
 docs-src/
 docs-site/
@@ -12,6 +13,7 @@ overrides/
 tools/
 site/
 mkdocs.yml
+docs-source.json
 requirements-docs.txt
 README.md
 .gitignore

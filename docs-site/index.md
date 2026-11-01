@@ -13,6 +13,17 @@
 - [统一搜索、OH、OneTHU Harness 与清小搭](oh-and-xiaoda.md)
 - [隐私与排障](privacy-and-troubleshooting.md) · [0.11 说明](release-0.11.md)
 
+## 系统架构与接口
+
+技术文档对应 `web` 分支的已审阅源码，包含后续原型实现；安装包交付范围以发布说明为准。
+
+- [架构总览与部署边界](architecture.md)
+- [原型与数据模型](architecture/prototype-and-data.md)
+- [SDK 与服务运行时](architecture/sdk-and-api.md)
+- [CLI、智能体与调度](architecture/cli-and-agents.md)
+- [Gateway](architecture/gateway.md) · [OneGUI 架构](architecture/onegui.md)
+- [API 参考与协议](api-reference.md) · [生成的 API 签名清单](api-surface.md)
+
 ## 构建与扩展
 
 - [开发者中心](developers.md) · [贡献者](contributors.md)

@@ -2,20 +2,20 @@ name: pages
 
 # 官网（本仓库根目录的静态页）与文档站（/docs/）一起构建并发布到 GitHub Pages。
 # 文档站正文来自主仓 smartThise/OneTHU 的 docs/：
-#   · 主仓文档更新不会自动触发本仓库，由每日定时重建跟进；
+#   · 主仓文档更新后需更新 docs-source.json，定时构建保持此已审阅基线；
 #     需要立即生效时在本仓库手动触发本工作流（或推送任意提交）。
-#   · 手动触发可指定主仓分支（默认 main）。
+#   · 技术文档基线由 docs-source.json 固定，手动触发可临时指定分支或提交。
 on:
   push:
     branches: [main]
   schedule:
-    - cron: '17 20 * * *' # 每天 04:17（UTC+8）重建一次，跟进主仓文档更新
+    - cron: '17 20 * * *' # 每天 04:17（UTC+8）重建一次，保持固定文档基线并核验渠道
   workflow_dispatch:
     inputs:
       onethu_ref:
-        description: 主仓文档来源分支
+        description: 文档来源分支或提交（留空使用 docs-source.json）
         required: false
-        default: main
+        default: ''
 
 permissions:
   contents: read
@@ -33,13 +33,33 @@ jobs:
       - name: 检出本站
         uses: actions/checkout@v5
 
-      - name: 检出主仓（文档正文来源）
+      - name: Resolve reviewed documentation source
+        id: docs
+        env:
+          REQUESTED_REF: ${{ inputs.onethu_ref }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          source = json.load(open('docs-source.json'))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              print('repository=' + source['repository'], file=output)
+              print('ref=' + (os.environ.get('REQUESTED_REF') or source['ref']), file=output)
+          PY
+
+      - name: 检出主仓（发布与贡献者工具）
         uses: actions/checkout@v5
         with:
           repository: smartThise/OneTHU
-          ref: ${{ inputs.onethu_ref || 'main' }}
+          ref: main
           path: .onethu
           fetch-depth: 0
+
+      - name: 检出已审阅技术文档
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ steps.docs.outputs.repository }}
+          ref: ${{ steps.docs.outputs.ref }}
+          path: .onethu-docs
 
       - uses: actions/setup-node@v5
         with:
@@ -79,8 +99,8 @@ jobs:
 
       - name: 同步文档源（主仓 docs → docs-src）
         env:
-          ONETHU_REF: ${{ inputs.onethu_ref || 'main' }}
-        run: python3 tools/sync-docs.py .onethu/docs
+          ONETHU_REF: ${{ steps.docs.outputs.ref }}
+        run: python3 tools/sync-docs.py .onethu-docs/docs
 
       - name: 构建文档站（/docs/）
         run: |
@@ -92,6 +112,9 @@ jobs:
             echo "::warning::文档构建存在警告，详见下方日志"
             grep '^WARNING' "$RUNNER_TEMP/mkdocs-build.log"
           fi
+
+      - name: Verify documentation contracts
+        run: npm run test:docs
 
       - name: 组装站点（官网静态页 + /docs/）
         run: |
@@ -108,8 +131,8 @@ jobs:
           # 产物断言：混入源码或工作目录即中止发布。历史上曾将主仓检出一并打包，
           # 上传阶段因其中的符号链接失败
           stray=""
-          for path in docs-src docs-site tools site .onethu .onethu-demo .github .git \
-                      mkdocs.yml requirements-docs.txt README.md .gitignore; do
+          for path in docs-src docs-site tools site .onethu .onethu-docs .onethu-demo .github .git \
+                      mkdocs.yml mkdocs.en.yml docs-source.json requirements-docs.txt README.md .gitignore; do
             [ -e ".pages/$path" ] && stray="$stray $path"
           done
           if [ -n "$stray" ]; then

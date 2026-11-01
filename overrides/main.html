@@ -16,3 +16,11 @@
     <title>{{ page.title | striptags }} - {{ config.site_name }}</title>
   {% endif %}
 {% endblock %}
+
+{# Load the pinned local Mermaid runtime before Material initializes its diagrams. #}
+{% block scripts %}
+  {% if page and 'class="mermaid"' in page.content %}
+    <script src="{{ 'assets/mermaid.min.js' | url }}"></script>
+  {% endif %}
+  {{ super() }}
+{% endblock %}

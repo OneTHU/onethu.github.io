@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "build:studio": "node tools/build-studio.mjs",
-    "test": "node tools/site-contract-test.mjs"
+    "test": "node tools/site-contract-test.mjs",
+    "test:docs": "node tools/docs-contract-test.mjs"
   },
   "devDependencies": {
     "esbuild": "0.25.12",
+    "mermaid": "11.17.2",
     "three": "0.186.1"
   }
 }

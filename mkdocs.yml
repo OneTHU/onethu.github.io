@@ -36,7 +36,11 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.highlight
   - pymdownx.inlinehilite
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
 extra_css:
@@ -84,7 +88,13 @@ nav:
   - 开发者:
       - 开发者中心: developers.md
       - 贡献者: contributors.md
-      - 系统架构: architecture.md
+      - 系统架构:
+          - 总览与部署边界: architecture.md
+          - 原型与数据模型: architecture/prototype-and-data.md
+          - SDK 与服务运行时: architecture/sdk-and-api.md
+          - CLI、智能体与调度: architecture/cli-and-agents.md
+          - Gateway: architecture/gateway.md
+          - OneGUI 架构: architecture/onegui.md
       - 插件开发: plugin-development.md
       - API 使用约定: api-reference.md
       - 完整 API 清单: api-surface.md

@@ -8,7 +8,7 @@
 
 - 官网：<https://onethu.github.io/>；英文：<https://onethu.github.io/en/>
 - 文档：<https://onethu.github.io/docs/>；英文：<https://onethu.github.io/docs/en/>
-- 内容真源：主仓 `dev3` 的 `docs/`，历史研究显式标注，现行指南分中英文。
+- 内容真源：主仓 `docs/`，公开基线固定在 `docs-source.json`（当前为 `web` 的已审阅提交）。技术文档区分源码原型与发布包；历史研究显式标注，现行指南分中英文。
 - 开发者页显示全部 Git 作者与署名共同作者；可识别 GitHub 身份合并。累计新增代码严格超过 10,000 行标为主要贡献者，口径和提交时间可见。
 - 预览仅为隔离模拟数据，使用真实应用界面；包含手机横竖屏、大屏及真实长按拖入录制。
 - Three.js 本地打包，随滚动按需绘制；减少动态、无 JavaScript、WebGL 不可用时保留静态内容，不劫持滚轮。
@@ -25,6 +25,7 @@ python3 -m http.server 8766
 
 ```bash
 pip install -r requirements-docs.txt
+npm ci --ignore-scripts
 python3 tools/sync-docs.py ../OneTHU/docs
 mkdocs build --strict --site-dir .pages/docs
 mkdocs build --strict -f mkdocs.en.yml --site-dir .pages/docs/en
@@ -34,14 +35,14 @@ mkdocs build --strict -f mkdocs.en.yml --site-dir .pages/docs/en
 
 更新模拟素材：在主仓运行采集脚本后，使用 `python3 tools/sync-preview-assets.py ../OneTHU/docs/assets/0.11`（需 `cwebp`）重新生成 WebP 与哈希清单。来源检查通过后才可公开。贡献者重新生成工具为主仓 `tools/contributors-report.py`；公开产物不包含邮箱。
 
-推送 `main` 触发 Pages，同步主仓 `dev3` 后分别严格构建中英文文档。部署产物不含源工程、依赖、签名和临时文件。安装包只链接实际 Releases 与镜像，不宣称每个平台已发布新的同一批包。
+推送 `main` 触发 Pages，按 `docs-source.json` 检出技术文档，分别严格构建中英文文档；发布工具仍取 `main`。部署产物不含源工程、依赖、签名和临时文件。安装包只链接实际 Releases 与镜像，不宣称每个平台已发布新的同一批包。
 
 ## English
 
 The 0.11 site has Overview, Download, Plugins, Developers and Community pages in Chinese and English. Preserve the original stacked One / THU logo. Themes, wallpapers and layouts remain customizable; a default theme is not a fixed product appearance.
 
-The main repository’s `dev3/docs` owns documentation. Current user/developer guides have English counterparts; historical engineering records retain their original language with clear status labels. Contributors are reproducibly derived from reachable Git history. More than 10,000 cumulative added source-code lines qualifies as a major contributor; the public snapshot explains exclusions and dates and contains no email addresses.
+The main repository owns `docs/`; `docs-source.json` pins the reviewed public snapshot (currently from `web`). Architecture pages distinguish source prototypes from released installers. Current user/developer guides have English counterparts; historical engineering records retain their original language with clear status labels. Contributors are reproducibly derived from reachable Git history. More than 10,000 cumulative added source-code lines qualifies as a major contributor; the public snapshot explains exclusions and dates and contains no email addresses.
 
 The commands above build the static pages, locally bundled Three.js and both strict MkDocs sites. Edit `tools/build-pages.py`, not generated HTML. Public captures use fictional fixtures in the real UI. Do not replace them with private account screenshots. The 3D stage renders on scroll without hijacking the wheel, and provides reduced-motion, no-JavaScript and unavailable-WebGL fallbacks.
 
-Pushes to `main` deploy the website and both documentation languages through Pages. Release links reflect actual available packages rather than promising a new build for every platform.
+Pushes to `main` deploy the website and both documentation languages through Pages. Scheduled builds preserve the reviewed documentation ref; manual dispatch can temporarily override it. Mermaid is pinned and served locally. Release links reflect actual available packages rather than promising a new build for every platform.

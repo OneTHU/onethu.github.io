@@ -1,2 +1,22 @@
-// Keep current guide when its translated counterpart exists; historical records return to the language index.
-(()=>{const guides=new Set(['getting-started','experience-modes','workbench','sharing-and-organizations','schedule-and-sync','oh-and-xiaoda','privacy-and-troubleshooting','release-0.11','developers','contributors','architecture','plugin-development','api-surface','design-language','screenshots','documentation-catalog']);const parts=location.pathname.split('/').filter(Boolean);const isEnglish=parts[1]==='en';const page=parts[isEnglish?2:1];for(const a of document.querySelectorAll('.md-select__link[hreflang],.md-select__link')){const url=new URL(a.href,location.href);if(!url.pathname.startsWith('/docs/'))continue;const english=url.pathname.startsWith('/docs/en/');url.pathname='/docs/'+(english?'en/':'')+(guides.has(page)?page+'/':'');url.hash=location.hash;a.href=url.href;}})();
+// Preserve the full chapter only when a translated counterpart was assembled.
+(async () => {
+  const script = document.currentScript;
+  const parts = location.pathname.replace(/^\/docs\//, '').replace(/^en\//, '');
+  const page = parts.replace(/index\.html$/, '');
+  let routes;
+  try {
+    const response = await fetch(new URL('language-routes.json', script.src));
+    if (!response.ok) throw new Error('Language routes unavailable');
+    routes = new Set(await response.json());
+  } catch {
+    return; // Keep the server-rendered language index links usable.
+  }
+  for (const link of document.querySelectorAll('.md-select__link')) {
+    const url = new URL(link.href, location.href);
+    if (!url.pathname.startsWith('/docs/')) continue;
+    const english = url.pathname.startsWith('/docs/en/');
+    url.pathname = '/docs/' + (english ? 'en/' : '') + (routes.has(page) ? page : '');
+    url.hash = routes.has(page) ? location.hash : '';
+    link.href = url.href;
+  }
+})();

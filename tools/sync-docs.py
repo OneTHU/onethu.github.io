@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Assemble bilingual docs; resolve each link against its original file, not a global ../ regex."""
-import os,re,shutil,sys
+import json,os,re,shutil,sys
 from pathlib import Path
 from urllib.parse import urlsplit,unquote,quote
 ROOT=Path(__file__).resolve().parents[1];DEST=ROOT/'docs-src'
-REPO=os.environ.get('ONETHU_REPO_URL','https://github.com/smartThise/OneTHU');REF=os.environ.get('ONETHU_REF','dev3')
+SOURCE=json.loads((ROOT/'docs-source.json').read_text())
+REPO=os.environ.get('ONETHU_REPO_URL','https://github.com/'+SOURCE['repository']);REF=os.environ.get('ONETHU_REF',SOURCE['ref'])
 def skipped(path):return any(p.startswith('._') or p in {'.DS_Store','.git','.github','node_modules'} for p in path.parts)
 def copy_tree(source,missing=False,all_files=False):
  # Publish every document, but only its linked artifacts and approved current captures.
@@ -51,6 +52,8 @@ def rewrite(text,relative):
  return text
 sources=[Path(p).resolve() for p in sys.argv[1:]]
 if not sources or not sources[0].is_dir():raise SystemExit('Usage: sync-docs.py <main docs> [fallback docs]')
+mermaid=ROOT/'node_modules/mermaid/dist/mermaid.min.js'
+if not mermaid.is_file():raise SystemExit('Missing diagram runtime. Run npm ci --ignore-scripts before syncing docs.')
 if DEST.exists():shutil.rmtree(DEST)
 DEST.mkdir()
 for index,source in enumerate(sources):
@@ -60,6 +63,13 @@ for path in list(DEST.rglob('*.md')):
  rel=path.relative_to(DEST)
  if not skipped(rel):path.write_text(rewrite(path.read_text(),rel))
 if (DEST/'README.md').exists():(DEST/'README.md').rename(DEST/'overview.md')
+# Switch full chapter paths only where both languages actually exist.
+zh_pages={p.relative_to(DEST).as_posix() for p in DEST.rglob('*.md') if p.relative_to(DEST).parts[0]!='en' and not skipped(p.relative_to(DEST))}
+en_pages={p.relative_to(DEST/'en').as_posix() for p in (DEST/'en').rglob('*.md') if not skipped(p.relative_to(DEST/'en'))}
+routes=sorted('' if path=='index.md' else path.removesuffix('.md').removesuffix('/index')+'/' for path in zh_pages & en_pages)
+(DEST/'assets/language-routes.json').write_text(json.dumps(routes,ensure_ascii=False)+'\n')
+shutil.copyfile(mermaid,DEST/'assets/mermaid.min.js')
+shutil.copyfile(mermaid.parent.parent/'LICENSE',DEST/'assets/mermaid-LICENSE.txt')
 # English build has its own docs_dir; share only the theme assets, not another copy of large captures.
 shutil.copytree(DEST/'assets',DEST/'en/assets',dirs_exist_ok=True,ignore=shutil.ignore_patterns('0.11','._*'))
 (DEST/'en/license.md').write_text('# License and acknowledgments\n\n[中文](https://onethu.github.io/docs/license/) · English\n\nOneTHU is unofficial. Project-owned code uses MIT with non-commercial and no-attack restrictions. Third-party components have their own terms, including THU Info authorization and LearnX exceptions. Read the [full license]('+REPO+'/blob/'+REF+'/LICENSE) and [third-party terms]('+REPO+'/blob/'+REF+'/LICENSES/THIRD-PARTY.md) before use or redistribution.\n')
