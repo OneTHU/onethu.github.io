@@ -2,33 +2,33 @@
 
 中文 · [English](en/index.md)
 
-0.11 支持自定义主题、壁纸与布局，提供极简、实用、完整三种模式。所有公开预览素材均为模拟数据。
+OneTHU 0.11 支持自由定制主题、壁纸与界面布局，并提供**极简、实用、完整**三种使用模式。站内预览截图均采用离线模拟数据生成。
 
 ## 开始使用
 
-- [安装与上手](getting-started.md) · [模式比较](experience-modes.md)
+- [安装与上手](getting-started.md) · [三种模式对比](experience-modes.md)
 - [白板、标签页与快捷入口](workbench.md)
 - [暂存、口令与组织](sharing-and-organizations.md)
 - [日程、作业与同步](schedule-and-sync.md)
 - [统一搜索、OH、OneTHU Harness 与清小搭](oh-and-xiaoda.md)
-- [隐私与排障](privacy-and-troubleshooting.md) · [0.11 说明](release-0.11.md)
+- [隐私与排障](privacy-and-troubleshooting.md) · [0.11 版本说明](release-0.11.md)
 
 ## 系统架构与接口
 
-技术文档对应 `web` 分支的已审阅源码，包含后续原型实现；安装包交付范围以发布说明为准。
+技术架构章节基于 `web` 分支最新审阅源码整理（包含持续演进中的网关与运行时能力；各正式安装包的具体功能范围可对照对应版本的发布说明）。
 
-- [架构总览与部署边界](architecture.md)
+- [系统架构总览](architecture.md)
 - [原型与数据模型](architecture/prototype-and-data.md)
 - [SDK 与服务运行时](architecture/sdk-and-api.md)
 - [CLI、智能体与调度](architecture/cli-and-agents.md)
-- [Gateway](architecture/gateway.md) · [OneGUI 架构](architecture/onegui.md)
-- [API 参考与协议](api-reference.md) · [生成的 API 签名清单](api-surface.md)
+- [Gateway 校园网关](architecture/gateway.md) · [OneGUI 架构](architecture/onegui.md)
+- [API 参考与协议](api-reference.md) · [插件 API 完整清单](api-surface.md)
 
 ## 构建与扩展
 
-- [开发者中心](developers.md) · [贡献者](contributors.md)
-- [插件开发](plugin-development.md) · [完整 API 清单](api-surface.md)
-- [架构](architecture.md) · [OneGUI](design-language.md)
-- [模拟素材来源](screenshots.md)
+- [开发者中心](developers.md) · [贡献者名录](contributors.md)
+- [插件开发指南](plugin-development.md) · [插件 API 完整清单](api-surface.md)
+- [系统架构](architecture.md) · [OneGUI 设计语言](design-language.md)
+- [模拟截图来源](screenshots.md)
 
-旧研究、计划和验收记录仍在 [全量清单](documentation-catalog.md)，已标明历史性质。不要将旧方案或夹具测试视为当前发布和真机验证的证明。
+早期的设计提案、专题调研与阶段验收记录统一整理在 [文档全量清单](documentation-catalog.md) 中供回溯参考；日常使用与二次开发请直接查阅上方的现行指南。
