@@ -70,7 +70,8 @@ routes=sorted('' if path=='index.md' else path.removesuffix('.md').removesuffix(
 (DEST/'assets/language-routes.json').write_text(json.dumps(routes,ensure_ascii=False)+'\n')
 shutil.copyfile(mermaid,DEST/'assets/mermaid.min.js')
 shutil.copyfile(mermaid.parent.parent/'LICENSE',DEST/'assets/mermaid-LICENSE.txt')
+if (DEST/'contributors.json').exists():
+ shutil.copyfile(DEST/'contributors.json',DEST/'assets/contributors.json')
 # English build has its own docs_dir; share only the theme assets, not another copy of large captures.
 shutil.copytree(DEST/'assets',DEST/'en/assets',dirs_exist_ok=True,ignore=shutil.ignore_patterns('0.11','._*'))
-(DEST/'en/license.md').write_text('# License and acknowledgments\n\n[中文](https://onethu.github.io/docs/license/) · English\n\nOneTHU is an unofficial community-built campus project. Project-owned code is shared under a custom noncommercial license with fair-use protections for Tsinghua University information services, while third-party components follow their respective licenses, including the THU Info grant and LearnX conditions. Please review the [full license]('+REPO+'/blob/'+REF+'/LICENSE) and [third-party notices]('+REPO+'/blob/'+REF+'/LICENSES/THIRD-PARTY.md) before reuse or redistribution.\n')
 print('Assembled',sum(1 for p in DEST.rglob('*.md') if not skipped(p.relative_to(DEST))),'bilingual documentation pages')

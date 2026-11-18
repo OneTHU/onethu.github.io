@@ -47,6 +47,7 @@ extra_css:
   - assets/extra.css
 extra_javascript:
   - assets/language.js
+  - assets/contributors.js
 plugins:
   - search:
       lang: [zh, en]

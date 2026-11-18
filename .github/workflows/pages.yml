@@ -9,7 +9,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: '17 20 * * *' # 每天 04:17（UTC+8）重建一次，保持固定文档基线并核验渠道
+    - cron: '17 */6 * * *' # 每 6 小时自动同步一次贡献者快照与下载渠道核验
   workflow_dispatch:
     inputs:
       onethu_ref:
@@ -79,11 +79,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: python3 .onethu/tools/check-release-mirrors.py --output assets/downloads.json
 
-      - name: Refresh contributor snapshot from complete dev3 history
+      - name: Refresh contributor snapshot across all official branches
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 .onethu/tools/contributors-report.py
+          python3 .onethu/tools/contributors-report.py --branches origin/main origin/dev3 origin/web
           cp .onethu/docs/contributors.json assets/contributors.json
           python3 tools/build-pages.py
           npm test
@@ -100,7 +100,11 @@ jobs:
       - name: 同步文档源（主仓 docs → docs-src）
         env:
           ONETHU_REF: ${{ steps.docs.outputs.ref }}
-        run: python3 tools/sync-docs.py .onethu-docs/docs
+        run: |
+          cp .onethu/docs/contributors.json .onethu-docs/docs/contributors.json
+          cp .onethu/docs/contributors.md .onethu-docs/docs/contributors.md
+          cp .onethu/docs/en/contributors.md .onethu-docs/docs/en/contributors.md
+          python3 tools/sync-docs.py .onethu-docs/docs
 
       - name: 构建文档站（/docs/）
         run: |

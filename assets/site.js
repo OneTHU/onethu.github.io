@@ -28,3 +28,77 @@ if(market){
   for(const cat of categories){const b=document.createElement('button');b.type='button';b.textContent=labels[cat]||cat;b.setAttribute('aria-pressed',String(cat==='all'));b.addEventListener('click',()=>{category=cat;for(const item of filters.children)item.setAttribute('aria-pressed',String(item===b));render();});filters.append(b);}input.addEventListener('input',render);render();
  }).catch(()=>{status.textContent=label('插件目录暂时无法加载（网络或 GitHub 限额），请使用上方注册表入口。','The registry is unavailable (network or GitHub quota). Use the registry link above.');});
 }
+const contributorsSection=document.querySelector('#contributors');
+if(contributorsSection){
+ const en=document.documentElement.lang==='en',grid=contributorsSection.querySelector('[data-contributors-grid]')||contributorsSection.querySelector('.contributors'),meta=contributorsSection.querySelector('[data-contributors-meta]');
+ const repoUrl='https://github.com/smartThise/OneTHU',srcUrl=contributorsSection.dataset.contributorsRoot||'assets/contributors.json';
+ const cacheKey='onethu.contributors.github.v1',ttlMs=300000;
+ const fetchGithubLive=async()=>{
+  try{const raw=sessionStorage.getItem(cacheKey);if(raw){const cached=JSON.parse(raw);if(Date.now()-cached.ts<ttlMs)return cached.data;}}catch{}
+  const [cRes,bRes]=await Promise.all([
+   fetch('https://api.github.com/repos/smartThise/OneTHU/contributors?per_page=100',{headers:{Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(8000)}),
+   fetch('https://api.github.com/repos/smartThise/OneTHU/branches?per_page=20',{headers:{Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(8000)}),
+  ]);
+  if(!cRes.ok)throw new Error('GitHub contributors unavailable');
+  const data={contributors:await cRes.json(),branches:bRes.ok?await bRes.json():[]};
+  try{sessionStorage.setItem(cacheKey,JSON.stringify({ts:Date.now(),data}));}catch{}
+  return data;
+ };
+ (async()=>{
+  let report=null;
+  try{const res=await fetch(srcUrl,{cache:'no-store',signal:AbortSignal.timeout(8000)});if(res.ok)report=await res.json();}catch{}
+  let live=null;
+  try{live=await fetchGithubLive();}catch{}
+  if(!report&&!live)return;
+  const list=(report?.contributors||[]).map(p=>({...p}));
+  const byKey=new Map();
+  for(const p of list){
+   if(p.github)byKey.set('gh:'+p.github.split('/').pop().toLowerCase(),p);
+   byKey.set('name:'+String(p.name).toLowerCase(),p);
+  }
+  if(live&&Array.isArray(live.contributors)){
+   for(const gh of live.contributors){
+    if(!gh||!gh.login||gh.type==='Bot')continue;
+    const key='gh:'+String(gh.login).toLowerCase(),existing=byKey.get(key)||byKey.get('name:'+String(gh.login).toLowerCase());
+    if(existing){
+     existing.github=existing.github||gh.html_url||('https://github.com/'+gh.login);
+     if(Number.isFinite(gh.contributions)&&gh.contributions>existing.commits)existing.commits=gh.contributions;
+    }else{
+     const entry={name:String(gh.login),github:gh.html_url||('https://github.com/'+gh.login),commits:Number(gh.contributions)||1,codeAdded:0,codeDeleted:0,major:false};
+     list.push(entry);byKey.set(key,entry);
+    }
+   }
+  }
+  list.sort((a,b)=>(b.codeAdded-a.codeAdded)||(b.commits-a.commits)||String(a.name).localeCompare(String(b.name),'en',{sensitivity:'base'}));
+  if(grid&&list.length){
+   const cards=list.map(p=>{
+    const card=document.createElement('article');card.className='contributor';
+    const strong=document.createElement('strong');
+    if(p.github){const a=document.createElement('a');a.href=p.github;a.textContent=p.name+' ↗';strong.append(a);}else strong.textContent=p.name;
+    const small=document.createElement('small');
+    const linesText=`${Number(p.codeAdded||0).toLocaleString('en-US')} ${en?'added code lines':'新增代码行'}`;
+    const commitsCount=Number(p.commits||0);
+    const commitsText=`${commitsCount.toLocaleString('en-US')} ${en?(commitsCount===1?'commit':'commits'):'次提交'}`;
+    small.textContent=`${linesText} · ${commitsText}`;
+    card.append(strong,small);
+    if(p.major){const badge=document.createElement('span');badge.className='badge';badge.textContent=en?'Major contributor':'主要贡献者';card.append(badge);}
+    return card;
+   });
+   grid.replaceChildren(...cards);
+  }
+  if(meta&&(report||live)){
+   let ref=report?.ref||'';
+   let dateStr=(report?.generatedAt||'').slice(0,10);
+   if(live&&Array.isArray(live.branches)&&live.branches.length){
+    const preferred=['web','dev3','main'].map(n=>live.branches.find(b=>b.name===n)).find(Boolean)||live.branches[0];
+    if(preferred?.commit?.sha){ref=preferred.commit.sha;dateStr=new Date().toISOString().slice(0,10);}
+   }
+   if(ref){
+    meta.replaceChildren();
+    meta.append((en?'Snapshot updated: ':'统计更新时间: ')+(dateStr||'—')+(en?' · Source commit: ':' · 统计提交: '));
+    const a=document.createElement('a');a.href=`${repoUrl}/commit/${ref}`;a.textContent=ref.slice(0,8);
+    meta.append(a,en?'. Linked GitHub identities merge automatically and sync live with the latest commits.':'. 已关联的同一 GitHub 账号自动合并，页面打开时实时同步最新提交。');
+   }
+  }
+ })();
+}
